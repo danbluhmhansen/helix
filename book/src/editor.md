@@ -120,6 +120,7 @@ The `[editor.statusline]` key takes the following sub-keys:
 | `mode.select` | The text shown in the `mode` element for select mode | `"SEL"` |
 | `diagnostics` | A list of severities which are displayed for the current buffer | `["warning", "error"]` |
 | `workspace-diagnostics` | A list of severities which are displayed for the workspace | `["warning", "error"]` |
+| `merge-with-commandline` | If set, the command line and statusline will merge into a single line. Status text will replace the statusline briefly | `false` |
 
 The following statusline elements can be configured:
 

@@ -499,6 +499,7 @@ pub struct StatusLineConfig {
     pub mode: ModeConfig,
     pub diagnostics: Vec<Severity>,
     pub workspace_diagnostics: Vec<Severity>,
+    pub merge_with_commandline: bool,
 }
 
 impl Default for StatusLineConfig {
@@ -525,6 +526,7 @@ impl Default for StatusLineConfig {
             mode: ModeConfig::default(),
             diagnostics: vec![Severity::Warning, Severity::Error],
             workspace_diagnostics: vec![Severity::Warning, Severity::Error],
+            merge_with_commandline: false,
         }
     }
 }
