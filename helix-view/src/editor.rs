@@ -499,6 +499,7 @@ pub struct StatusLineConfig {
     pub mode: ModeConfig,
     pub diagnostics: Vec<Severity>,
     pub workspace_diagnostics: Vec<Severity>,
+    pub merge_with_commandline: bool,
 }
 
 impl Default for StatusLineConfig {
@@ -511,6 +512,7 @@ impl Default for StatusLineConfig {
                 E::Spinner,
                 E::FileName,
                 E::ReadOnlyIndicator,
+                E::Zoom,
                 E::FileModificationIndicator,
             ],
             center: vec![],
@@ -525,6 +527,7 @@ impl Default for StatusLineConfig {
             mode: ModeConfig::default(),
             diagnostics: vec![Severity::Warning, Severity::Error],
             workspace_diagnostics: vec![Severity::Warning, Severity::Error],
+            merge_with_commandline: false,
         }
     }
 }
@@ -612,6 +615,9 @@ pub enum StatusLineElement {
 
     /// Indicator for selected register
     Register,
+
+    /// Current zoom/zen state
+    Zoom,
 }
 
 // Cursor shape is read and used on every rendered frame and so needs

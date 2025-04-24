@@ -1,0 +1,152 @@
+From 91f97c329af7abacdce50d4929efe987bf7f0aeb Mon Sep 17 00:00:00 2001
+From: Dan Bluhm Hansen <dan.bluhm@bjornlunden.com>
+Date: Wed, 23 Apr 2025 09:41:27 +0200
+Subject: [PATCH] merge 12204/merge-statusline-cmdline
+
+---
+ book/src/editor.md               |  1 +
+ helix-term/src/commands/typed.rs |  5 +++++
+ helix-term/src/ui/editor.rs      | 23 ++++++++++++++++++-----
+ helix-term/src/ui/prompt.rs      |  6 +++++-
+ helix-view/src/editor.rs         |  2 ++
+ 5 files changed, 31 insertions(+), 6 deletions(-)
+
+diff --git a/book/src/editor.md b/book/src/editor.md
+index b7979205..0182c537 100644
+--- a/book/src/editor.md
++++ b/book/src/editor.md
+@@ -120,6 +120,7 @@ ### `[editor.statusline]` Section
+ | `mode.select` | The text shown in the `mode` element for select mode | `"SEL"` |
+ | `diagnostics` | A list of severities which are displayed for the current buffer | `["warning", "error"]` |
+ | `workspace-diagnostics` | A list of severities which are displayed for the workspace | `["warning", "error"]` |
++| `merge-with-commandline` | If set, the command line and statusline will merge into a single line. Status text will replace the statusline briefly | `false` |
+ 
+ The following statusline elements can be configured:
+ 
+diff --git a/helix-term/src/commands/typed.rs b/helix-term/src/commands/typed.rs
+index 8b7180f8..70d4cf7c 100644
+--- a/helix-term/src/commands/typed.rs
++++ b/helix-term/src/commands/typed.rs
+@@ -3628,6 +3628,11 @@ pub(super) fn command_mode(cx: &mut Context) {
+             }
+         },
+     );
++    if cx.editor.config().statusline.merge_with_commandline {
++        // command line prompt has the same background as the statusline when
++        // the statusline and the command line are merged
++        prompt.background = Some(cx.editor.theme.get("ui.statusline"))
++    }
+     prompt.doc_fn = Box::new(command_line_doc);
+ 
+     // Calculate initial completion
+diff --git a/helix-term/src/ui/editor.rs b/helix-term/src/ui/editor.rs
+index 6be56574..81fab50d 100644
+--- a/helix-term/src/ui/editor.rs
++++ b/helix-term/src/ui/editor.rs
+@@ -239,7 +239,7 @@ pub fn render_view(
+         let mut context =
+             statusline::RenderContext::new(editor, doc, view, is_focused, &self.spinners);
+ 
+-        statusline::render(&mut context, statusline_area, surface);
++        statusline::render(&mut context, statusline_area, surface)
+     }
+ 
+     pub fn render_rulers(
+@@ -1551,8 +1551,15 @@ fn render(&mut self, area: Rect, surface: &mut Surface, cx: &mut Context) {
+             _ => false,
+         };
+ 
+-        // -1 for commandline and -1 for bufferline
+-        let mut editor_area = area.clip_bottom(1);
++        // If merge_with_commandline option is set, then status message renders on top of the statusline, in which case we will not show the statusline
++        // Otherwise, status message renders in a separate line, so we give it 1 line of vertical space
++        let mut editor_area = area.clip_bottom(if config.statusline.merge_with_commandline {
++            0
++        } else {
++            1
++        });
++
++        // Editor area decreases by 1, to give 1 line of vertical space for bufferline
+         if use_bufferline {
+             editor_area = editor_area.clip_top(1);
+         }
+@@ -1614,9 +1621,15 @@ fn render(&mut self, area: Rect, surface: &mut Surface, cx: &mut Context) {
+             } else {
+                 0
+             };
++            let y_offset = if config.statusline.merge_with_commandline {
++                // render macros and key sequences 1 line above
++                1
++            } else {
++                0
++            };
+             surface.set_string(
+                 area.x + area.width.saturating_sub(key_width + macro_width),
+-                area.y + area.height.saturating_sub(1),
++                (area.y + area.height.saturating_sub(1)).saturating_sub(y_offset),
+                 disp.get(disp.len().saturating_sub(key_width as usize)..)
+                     .unwrap_or(&disp),
+                 style,
+@@ -1628,7 +1641,7 @@ fn render(&mut self, area: Rect, surface: &mut Surface, cx: &mut Context) {
+                     .add_modifier(Modifier::BOLD);
+                 surface.set_string(
+                     area.x + area.width.saturating_sub(3),
+-                    area.y + area.height.saturating_sub(1),
++                    (area.y + area.height.saturating_sub(1)).saturating_sub(y_offset),
+                     &disp,
+                     style,
+                 );
+diff --git a/helix-term/src/ui/prompt.rs b/helix-term/src/ui/prompt.rs
+index 3c97a93c..27b5ef4f 100644
+--- a/helix-term/src/ui/prompt.rs
++++ b/helix-term/src/ui/prompt.rs
+@@ -30,6 +30,7 @@ pub struct Prompt {
+     prompt: Cow<'static, str>,
+     line: String,
+     cursor: usize,
++    pub background: Option<helix_view::theme::Style>,
+     // Fields used for Component callbacks and rendering:
+     line_area: Rect,
+     anchor: usize,
+@@ -96,6 +97,7 @@ pub fn new(
+             selection: None,
+             history_register,
+             history_pos: None,
++            background: None,
+             completion_fn: Box::new(completion_fn),
+             callback_fn: Box::new(callback_fn),
+             doc_fn: Box::new(|_| None),
+@@ -405,7 +407,9 @@ pub fn render_prompt(&mut self, area: Rect, surface: &mut Surface, cx: &mut Cont
+         let completion_color = theme.get("ui.menu");
+         let selected_color = theme.get("ui.menu.selected");
+         let suggestion_color = theme.get("ui.text.inactive");
+-        let background = theme.get("ui.background");
++        let background = self
++            .background
++            .unwrap_or_else(|| theme.get("ui.background"));
+         // completion
+ 
+         let max_len = self
+diff --git a/helix-view/src/editor.rs b/helix-view/src/editor.rs
+index eab291e4..045a4658 100644
+--- a/helix-view/src/editor.rs
++++ b/helix-view/src/editor.rs
+@@ -499,6 +499,7 @@ pub struct StatusLineConfig {
+     pub mode: ModeConfig,
+     pub diagnostics: Vec<Severity>,
+     pub workspace_diagnostics: Vec<Severity>,
++    pub merge_with_commandline: bool,
+ }
+ 
+ impl Default for StatusLineConfig {
+@@ -525,6 +526,7 @@ fn default() -> Self {
+             mode: ModeConfig::default(),
+             diagnostics: vec![Severity::Warning, Severity::Error],
+             workspace_diagnostics: vec![Severity::Warning, Severity::Error],
++            merge_with_commandline: false,
+         }
+     }
+ }
+-- 
+2.49.0.windows.1
+

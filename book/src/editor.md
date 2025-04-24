@@ -111,7 +111,7 @@ The `[editor.statusline]` key takes the following sub-keys:
 
 | Key           | Description | Default |
 | ---           | ---         | ---     |
-| `left`        | A list of elements aligned to the left of the statusline | `["mode", "spinner", "file-name", "read-only-indicator", "file-modification-indicator"]` |
+| `left`        | A list of elements aligned to the left of the statusline | `["mode", "spinner", "file-name", "read-only-indicator", "zoom", "file-modification-indicator"]` |
 | `center`      | A list of elements aligned to the middle of the statusline | `[]` |
 | `right`       | A list of elements aligned to the right of the statusline | `["diagnostics", "selections", "register", "position", "file-encoding"]` |
 | `separator`   | The character used to separate elements in the statusline | `"│"` |
@@ -120,6 +120,7 @@ The `[editor.statusline]` key takes the following sub-keys:
 | `mode.select` | The text shown in the `mode` element for select mode | `"SEL"` |
 | `diagnostics` | A list of severities which are displayed for the current buffer | `["warning", "error"]` |
 | `workspace-diagnostics` | A list of severities which are displayed for the workspace | `["warning", "error"]` |
+| `merge-with-commandline` | If set, the command line and statusline will merge into a single line. Status text will replace the statusline briefly | `false` |
 
 The following statusline elements can be configured:
 
@@ -146,6 +147,7 @@ The following statusline elements can be configured:
 | `spacer` | Inserts a space between elements (multiple/contiguous spacers may be specified) |
 | `version-control` | The current branch name or detached commit hash of the opened workspace |
 | `register` | The current selected register |
+| `zoom` | The current window zoom/zen state |
 
 ### `[editor.lsp]` Section
 
