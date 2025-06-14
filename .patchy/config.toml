@@ -18,7 +18,7 @@ pull-requests = [
   # yank-join
   "13599",
   # paste-join
-  "13600",
+  # "13600",
 ]
 
-patches = ["zen-view"]
+patches = ["zen-view", "paste-join"]
