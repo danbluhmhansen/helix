@@ -3,8 +3,8 @@ remote-branch = "master"
 local-branch = "patchy"
 
 pull-requests = [
-  # zoom & max-width
-  "9838",
+  # zen-view
+  # "9838",
   # pull diagnostics
   "11315",
   # change case of text
@@ -21,4 +21,4 @@ pull-requests = [
   "13600",
 ]
 
-patches = []
+patches = ["zen-view"]
