@@ -4,6 +4,7 @@ use super::*;
 
 mod insert;
 mod movement;
+mod paste_join;
 mod write;
 mod yank_join;
 

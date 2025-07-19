@@ -33,6 +33,7 @@
 | `:cquit!`, `:cq!` | Force quit with exit code (default 1) ignoring unsaved changes. Accepts an optional integer exit code (:cq! 2). |
 | `:theme` | Change the editor theme (show current theme if no name specified). |
 | `:yank-join`, `:yj` | Yank the selections joined with a separator |
+| `:paste-join`, `:pj` | Join selections with a separator and paste |
 | `:clipboard-yank` | Yank main selection into system clipboard. |
 | `:primary-clipboard-yank` | Yank main selection into system primary clipboard. |
 | `:clipboard-paste-after` | Paste system clipboard after selections. |
