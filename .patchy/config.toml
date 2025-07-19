@@ -1,0 +1,26 @@
+repo = "helix-editor/helix"
+remote-branch = "master"
+local-branch = "patchy"
+
+pull-requests = [
+  # zen-view
+  # "9838",
+  # pull diagnostics
+  # "11315",
+  # change case of text
+  "12043",
+  # merge-statusline-cmdline
+  "12204",
+  # full screen overlays
+  "12311",
+  # picker titles
+  "12520",
+  # yank-join
+  "13599",
+  # paste-join
+  # "13600",
+]
+
+# branches = ["danbluhmhansen/helix/zen-view"]
+
+patches = ["pull-diagnostics", "paste-join", "zen-view"]

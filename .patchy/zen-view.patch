@@ -1,0 +1,366 @@
+From f0d095af85016e7893f47ec4293c37d743e965d3 Mon Sep 17 00:00:00 2001
+From: Dan Bluhm Hansen <00.pavers_dither@icloud.com>
+Date: Sat, 19 Jul 2025 09:14:23 +0200
+Subject: [PATCH] Squashed commit of the following:
+
+commit 65e2d927a0457b00a15c3da66721fc21873105c7
+Author: Elizabeth <gammon.jocular.0w@icloud.com>
+Date:   Fri Apr 12 19:03:24 2024 +0100
+
+    Added zoom mode & max width
+---
+ book/src/editor.md                |  3 ++-
+ book/src/generated/static-cmd.md  |  1 +
+ book/src/generated/typable-cmd.md |  1 +
+ book/src/keymap.md                |  1 +
+ book/src/remapping.md             |  3 +++
+ helix-term/src/commands.rs        |  6 +++++
+ helix-term/src/commands/typed.rs  | 45 +++++++++++++++++++++++++++++++
+ helix-term/src/keymap/default.rs  |  2 ++
+ helix-term/src/ui/editor.rs       | 24 ++++++++++++-----
+ helix-term/src/ui/statusline.rs   | 10 +++++++
+ helix-view/src/editor.rs          |  4 +++
+ helix-view/src/tree.rs            | 32 +++++++++++++++++++---
+ 12 files changed, 122 insertions(+), 10 deletions(-)
+
+diff --git a/book/src/editor.md b/book/src/editor.md
+index 8d0d3452..c4937ff3 100644
+--- a/book/src/editor.md
++++ b/book/src/editor.md
+@@ -113,7 +113,7 @@ ### `[editor.statusline]` Section
+ 
+ | Key           | Description | Default |
+ | ---           | ---         | ---     |
+-| `left`        | A list of elements aligned to the left of the statusline | `["mode", "spinner", "file-name", "read-only-indicator", "file-modification-indicator"]` |
++| `left`        | A list of elements aligned to the left of the statusline | `["mode", "spinner", "file-name", "read-only-indicator", "zoom", "file-modification-indicator"]` |
+ | `center`      | A list of elements aligned to the middle of the statusline | `[]` |
+ | `right`       | A list of elements aligned to the right of the statusline | `["diagnostics", "selections", "register", "position", "file-encoding"]` |
+ | `separator`   | The character used to separate elements in the statusline | `"│"` |
+@@ -150,6 +150,7 @@ ### `[editor.statusline]` Section
+ | `spacer` | Inserts a space between elements (multiple/contiguous spacers may be specified) |
+ | `version-control` | The current branch name or detached commit hash of the opened workspace |
+ | `register` | The current selected register |
++| `zoom` | The current window zoom/zen state |
+ 
+ ### `[editor.lsp]` Section
+ 
+diff --git a/book/src/generated/static-cmd.md b/book/src/generated/static-cmd.md
+index 20478e23..7373a713 100644
+--- a/book/src/generated/static-cmd.md
++++ b/book/src/generated/static-cmd.md
+@@ -255,6 +255,7 @@
+ | `vsplit_new` | Vertical right split scratch buffer | normal: `` <C-w>nv ``, `` <space>wnv ``, `` <C-w>n<C-v> ``, `` <space>wn<C-v> ``, select: `` <C-w>nv ``, `` <space>wnv ``, `` <C-w>n<C-v> ``, `` <space>wn<C-v> `` |
+ | `wclose` | Close window | normal: `` <C-w>q ``, `` <space>wq ``, `` <C-w><C-q> ``, `` <space>w<C-q> ``, select: `` <C-w>q ``, `` <space>wq ``, `` <C-w><C-q> ``, `` <space>w<C-q> `` |
+ | `wonly` | Close windows except current | normal: `` <C-w>o ``, `` <space>wo ``, `` <C-w><C-o> ``, `` <space>w<C-o> ``, select: `` <C-w>o ``, `` <space>wo ``, `` <C-w><C-o> ``, `` <space>w<C-o> `` |
++| `toggle_zoom` | Toggle zoom for current window | normal: `` <C-w>z ``, `` <space>wz ``, select: `` <C-w>z ``, `` <space>wz `` |
+ | `select_register` | Select register | normal: `` " ``, select: `` " `` |
+ | `insert_register` | Insert register | insert: `` <C-r> `` |
+ | `copy_between_registers` | Copy between two registers |  |
+diff --git a/book/src/generated/typable-cmd.md b/book/src/generated/typable-cmd.md
+index ef74d669..96ea0f4e 100644
+--- a/book/src/generated/typable-cmd.md
++++ b/book/src/generated/typable-cmd.md
+@@ -88,3 +88,4 @@
+ | `:read`, `:r` | Load a file into buffer |
+ | `:echo` | Prints the given arguments to the statusline. |
+ | `:noop` | Does nothing. |
++| `:set-max-width` | Set the maximum width of the editor, or swap between 2 widths. If set to 0 it will take up the entire width. |
+diff --git a/book/src/keymap.md b/book/src/keymap.md
+index 056a0344..3812601e 100644
+--- a/book/src/keymap.md
++++ b/book/src/keymap.md
+@@ -293,6 +293,7 @@ #### Window mode
+ | `J`                    | Swap window downwards                                | `swap_view_down`  |
+ | `K`                    | Swap window upwards                                  | `swap_view_up`    |
+ | `L`                    | Swap window to the right                             | `swap_view_right` |
++| `z`                    | Toggle zoom for the focused view                     | `toggle_zoom`     |
+ 
+ #### Space mode
+ 
+diff --git a/book/src/remapping.md b/book/src/remapping.md
+index 23bb80c5..d940250d 100644
+--- a/book/src/remapping.md
++++ b/book/src/remapping.md
+@@ -68,6 +68,9 @@ # create a new minor mode bound to `+`
+ m = ":run-shell-command make"
+ c = ":run-shell-command cargo build"
+ t = ":run-shell-command cargo test"
++
++# Creates a basic 'zen-mode' similar to VSCode's
++z = ["toggle_zoom", ":set-max-width 120 0", ":set gutters.layout []"]
+ ```
+ 
+ ## Special keys and modifiers
+diff --git a/helix-term/src/commands.rs b/helix-term/src/commands.rs
+index e46e5737..253892f1 100644
+--- a/helix-term/src/commands.rs
++++ b/helix-term/src/commands.rs
+@@ -559,6 +559,7 @@ pub fn doc(&self) -> &str {
+         vsplit_new, "Vertical right split scratch buffer",
+         wclose, "Close window",
+         wonly, "Close windows except current",
++        toggle_zoom, "Toggle zoom for current window",
+         select_register, "Select register",
+         insert_register, "Insert register",
+         copy_between_registers, "Copy between two registers",
+@@ -5725,6 +5726,11 @@ fn wonly(cx: &mut Context) {
+     }
+ }
+ 
++fn toggle_zoom(cx: &mut Context) {
++    cx.editor.tree.zoom = !cx.editor.tree.zoom;
++    cx.editor.tree.recalculate();
++}
++
+ fn select_register(cx: &mut Context) {
+     cx.editor.autoinfo = Some(Info::from_registers(
+         "Select register",
+diff --git a/helix-term/src/commands/typed.rs b/helix-term/src/commands/typed.rs
+index 64e95074..693dd03e 100644
+--- a/helix-term/src/commands/typed.rs
++++ b/helix-term/src/commands/typed.rs
+@@ -2696,6 +2696,40 @@ fn noop(_cx: &mut compositor::Context, _args: Args, _event: PromptEvent) -> anyh
+     Ok(())
+ }
+ 
++fn set_max_width(
++    cx: &mut compositor::Context,
++    args: Args,
++    _event: PromptEvent,
++) -> anyhow::Result<()> {
++    let mut args = args.iter();
++    let Some(width) = args.next() else {
++        bail!(":set-max-width takes 1 or 2 arguments")
++    };
++    let width: u16 = width.parse()?;
++    let alt_width: Option<u16> = args.next().map(|w| w.parse()).transpose()?;
++
++    let set_width = match alt_width {
++        Some(alt_width) if cx.editor.tree.max_width == width => {
++            cx.editor.tree.max_width = alt_width;
++            alt_width
++        }
++        _ => {
++            cx.editor.tree.max_width = width;
++            width
++        }
++    };
++    cx.editor.tree.recalculate();
++
++    if set_width == 0 {
++        cx.editor.set_status("Unset maximum width");
++    } else {
++        cx.editor
++            .set_status(format!("Set maximum width to {}", set_width));
++    }
++
++    Ok(())
++}
++
+ /// This command accepts a single boolean --skip-visible flag and no positionals.
+ const BUFFER_CLOSE_OTHERS_SIGNATURE: Signature = Signature {
+     positionals: (0, Some(0)),
+@@ -3750,6 +3784,17 @@ fn noop(_cx: &mut compositor::Context, _args: Args, _event: PromptEvent) -> anyh
+             ..Signature::DEFAULT
+         },
+     },
++    TypableCommand {
++        name: "set-max-width",
++        aliases: &[],
++        doc: "Set the maximum width of the editor, or swap between 2 widths. If set to 0 it will take up the entire width.",
++        fun: set_max_width,
++        completer: CommandCompleter::none(),
++        signature: Signature {
++            positionals: (0, Some(2)),
++            ..Signature::DEFAULT
++        },
++    },
+ ];
+ 
+ pub static TYPABLE_COMMAND_MAP: Lazy<HashMap<&'static str, &'static TypableCommand>> =
+diff --git a/helix-term/src/keymap/default.rs b/helix-term/src/keymap/default.rs
+index 3abc4995..119160f5 100644
+--- a/helix-term/src/keymap/default.rs
++++ b/helix-term/src/keymap/default.rs
+@@ -220,6 +220,7 @@ pub fn default() -> HashMap<Mode, KeyTrie> {
+                 "C-s" | "s" => hsplit_new,
+                 "C-v" | "v" => vsplit_new,
+             },
++            "z" => toggle_zoom,
+         },
+ 
+         // move under <space>c
+@@ -287,6 +288,7 @@ pub fn default() -> HashMap<Mode, KeyTrie> {
+                     "C-s" | "s" => hsplit_new,
+                     "C-v" | "v" => vsplit_new,
+                 },
++                "z" => toggle_zoom,
+             },
+             "y" => yank_to_clipboard,
+             "Y" => yank_main_selection_to_clipboard,
+diff --git a/helix-term/src/ui/editor.rs b/helix-term/src/ui/editor.rs
+index 5f601beb..3d698ba0 100644
+--- a/helix-term/src/ui/editor.rs
++++ b/helix-term/src/ui/editor.rs
+@@ -196,8 +196,8 @@ pub fn render_view(
+             decorations,
+         );
+ 
+-        // if we're not at the edge of the screen, draw a right border
+-        if viewport.right() != view.area.right() {
++        // if we're not at the edge of the screen or zoomed, draw a right border
++        if viewport.right() != view.area.right() && !editor.tree.zoom {
+             let x = area.right();
+             let border_style = theme.get("ui.window");
+             for y in area.top()..area.bottom() {
+@@ -1102,8 +1102,13 @@ fn handle_mouse_event(
+             ..
+         } = *event;
+ 
++        // In zoom, only the focused view is interactable.
++        let zoom = cxt.editor.tree.zoom;
+         let pos_and_view = |editor: &Editor, row, column, ignore_virtual_text| {
+-            editor.tree.views().find_map(|(view, _focus)| {
++            editor.tree.views().find_map(|(view, focus)| {
++                if zoom && !focus {
++                    return None;
++                }
+                 view.pos_at_screen_coords(
+                     &editor.documents[&view.doc],
+                     row,
+@@ -1115,7 +1120,10 @@ fn handle_mouse_event(
+         };
+ 
+         let gutter_coords_and_view = |editor: &Editor, row, column| {
+-            editor.tree.views().find_map(|(view, _focus)| {
++            editor.tree.views().find_map(|(view, focus)| {
++                if zoom && !focus {
++                    return None;
++                }
+                 view.gutter_coords_at_screen_coords(row, column)
+                     .map(|coords| (coords, view.id))
+             })
+@@ -1522,8 +1530,12 @@ fn render(&mut self, area: Rect, surface: &mut Surface, cx: &mut Context) {
+         }
+ 
+         for (view, is_focused) in cx.editor.tree.views() {
+-            let doc = cx.editor.document(view.doc).unwrap();
+-            self.render_view(cx.editor, doc, view, area, surface, is_focused);
++            // If in zoom, only the focused document is rendered, with the unfocused ones being
++            // positioned off-screen.
++            if !cx.editor.tree.zoom || is_focused {
++                let doc = cx.editor.document(view.doc).unwrap();
++                self.render_view(cx.editor, doc, view, area, surface, is_focused);
++            }
+         }
+ 
+         if config.auto_info {
+diff --git a/helix-term/src/ui/statusline.rs b/helix-term/src/ui/statusline.rs
+index ea3d27bd..7e19fdb4 100644
+--- a/helix-term/src/ui/statusline.rs
++++ b/helix-term/src/ui/statusline.rs
+@@ -158,6 +158,7 @@ fn get_render_function<'a, F>(element_id: StatusLineElementID) -> impl Fn(&mut R
+         helix_view::editor::StatusLineElement::Spacer => render_spacer,
+         helix_view::editor::StatusLineElement::VersionControl => render_version_control,
+         helix_view::editor::StatusLineElement::Register => render_register,
++        helix_view::editor::StatusLineElement::Zoom => render_zoom,
+     }
+ }
+ 
+@@ -573,3 +574,12 @@ fn render_file_indent_style<'a, F>(context: &mut RenderContext<'a>, write: F)
+         },
+     );
+ }
++
++fn render_zoom<'a, F>(context: &mut RenderContext<'a>, write: F)
++where
++    F: Fn(&mut RenderContext<'a>, Span<'a>) + Copy,
++{
++    if context.editor.tree.zoom {
++        write(context, "[zoom]".into())
++    }
++}
+diff --git a/helix-view/src/editor.rs b/helix-view/src/editor.rs
+index 3645b09b..803c93db 100644
+--- a/helix-view/src/editor.rs
++++ b/helix-view/src/editor.rs
+@@ -525,6 +525,7 @@ fn default() -> Self {
+                 E::Spinner,
+                 E::FileName,
+                 E::ReadOnlyIndicator,
++                E::Zoom,
+                 E::FileModificationIndicator,
+             ],
+             center: vec![],
+@@ -630,6 +631,9 @@ pub enum StatusLineElement {
+ 
+     /// Indicator for selected register
+     Register,
++
++    /// Current zoom/zen state
++    Zoom,
+ }
+ 
+ // Cursor shape is read and used on every rendered frame and so needs
+diff --git a/helix-view/src/tree.rs b/helix-view/src/tree.rs
+index aba947a2..d981d4ee 100644
+--- a/helix-view/src/tree.rs
++++ b/helix-view/src/tree.rs
+@@ -8,8 +8,13 @@ pub struct Tree {
+     root: ViewId,
+     // (container, index inside the container)
+     pub focus: ViewId,
+-    // fullscreen: bool,
+     area: Rect,
++    // Maximum width the views will take up. If 0 then they will take up the
++    // entire width regardless of state.
++    pub max_width: u16,
++    // If true, the focused view gets all the available space and the rest are
++    // not rendered.
++    pub zoom: bool,
+ 
+     nodes: HopSlotMap<ViewId, Node>,
+ 
+@@ -96,8 +101,9 @@ pub fn new(area: Rect) -> Self {
+         Self {
+             root,
+             focus: root,
+-            // fullscreen: false,
+             area,
++            max_width: 0,
++            zoom: false,
+             nodes,
+             stack: Vec::new(),
+         }
+@@ -360,7 +366,27 @@ pub fn recalculate(&mut self) {
+             return;
+         }
+ 
+-        self.stack.push((self.root, self.area));
++        let area = if self.max_width > 0 {
++            let width = std::cmp::min(self.max_width, self.area.width);
++            Rect::new(
++                self.area.width / 2 - width / 2,
++                self.area.y,
++                width,
++                self.area.height,
++            )
++        } else {
++            self.area
++        };
++
++        if self.zoom {
++            for (view, _focused) in self.views_mut() {
++                view.area = area;
++            }
++
++            return;
++        }
++
++        self.stack.push((self.root, area));
+ 
+         // take the area
+         // fetch the node
+-- 
+2.48.1
+
