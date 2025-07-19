@@ -196,8 +196,8 @@ impl EditorView {
             decorations,
         );
 
-        // if we're not at the edge of the screen, draw a right border
-        if viewport.right() != view.area.right() {
+        // if we're not at the edge of the screen or zoomed, draw a right border
+        if viewport.right() != view.area.right() && !editor.tree.zoom {
             let x = area.right();
             let border_style = theme.get("ui.window");
             for y in area.top()..area.bottom() {
@@ -222,7 +222,7 @@ impl EditorView {
         let mut context =
             statusline::RenderContext::new(editor, doc, view, is_focused, &self.spinners);
 
-        statusline::render(&mut context, statusline_area, surface);
+        statusline::render(&mut context, statusline_area, surface)
     }
 
     pub fn render_rulers(
@@ -1102,8 +1102,13 @@ impl EditorView {
             ..
         } = *event;
 
+        // In zoom, only the focused view is interactable.
+        let zoom = cxt.editor.tree.zoom;
         let pos_and_view = |editor: &Editor, row, column, ignore_virtual_text| {
-            editor.tree.views().find_map(|(view, _focus)| {
+            editor.tree.views().find_map(|(view, focus)| {
+                if zoom && !focus {
+                    return None;
+                }
                 view.pos_at_screen_coords(
                     &editor.documents[&view.doc],
                     row,
@@ -1115,7 +1120,10 @@ impl EditorView {
         };
 
         let gutter_coords_and_view = |editor: &Editor, row, column| {
-            editor.tree.views().find_map(|(view, _focus)| {
+            editor.tree.views().find_map(|(view, focus)| {
+                if zoom && !focus {
+                    return None;
+                }
                 view.gutter_coords_at_screen_coords(row, column)
                     .map(|coords| (coords, view.id))
             })
@@ -1501,8 +1509,15 @@ impl Component for EditorView {
             _ => false,
         };
 
-        // -1 for commandline and -1 for bufferline
-        let mut editor_area = area.clip_bottom(1);
+        // If merge_with_commandline option is set, then status message renders on top of the statusline, in which case we will not show the statusline
+        // Otherwise, status message renders in a separate line, so we give it 1 line of vertical space
+        let mut editor_area = area.clip_bottom(if config.statusline.merge_with_commandline {
+            0
+        } else {
+            1
+        });
+
+        // Editor area decreases by 1, to give 1 line of vertical space for bufferline
         if use_bufferline {
             editor_area = editor_area.clip_top(1);
         }
@@ -1515,8 +1530,12 @@ impl Component for EditorView {
         }
 
         for (view, is_focused) in cx.editor.tree.views() {
-            let doc = cx.editor.document(view.doc).unwrap();
-            self.render_view(cx.editor, doc, view, area, surface, is_focused);
+            // If in zoom, only the focused document is rendered, with the unfocused ones being
+            // positioned off-screen.
+            if !cx.editor.tree.zoom || is_focused {
+                let doc = cx.editor.document(view.doc).unwrap();
+                self.render_view(cx.editor, doc, view, area, surface, is_focused);
+            }
         }
 
         if config.auto_info {
@@ -1564,9 +1583,15 @@ impl Component for EditorView {
             } else {
                 0
             };
+            let y_offset = if config.statusline.merge_with_commandline {
+                // render macros and key sequences 1 line above
+                1
+            } else {
+                0
+            };
             surface.set_string(
                 area.x + area.width.saturating_sub(key_width + macro_width),
-                area.y + area.height.saturating_sub(1),
+                (area.y + area.height.saturating_sub(1)).saturating_sub(y_offset),
                 disp.get(disp.len().saturating_sub(key_width as usize)..)
                     .unwrap_or(&disp),
                 style,
@@ -1578,7 +1603,7 @@ impl Component for EditorView {
                     .add_modifier(Modifier::BOLD);
                 surface.set_string(
                     area.x + area.width.saturating_sub(3),
-                    area.y + area.height.saturating_sub(1),
+                    (area.y + area.height.saturating_sub(1)).saturating_sub(y_offset),
                     &disp,
                     style,
                 );

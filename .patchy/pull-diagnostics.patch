@@ -1,0 +1,606 @@
+From 6d5ac3bce92aeb140cc6a8b660548bffa96a93ed Mon Sep 17 00:00:00 2001
+From: Dan Bluhm Hansen <00.pavers_dither@icloud.com>
+Date: Sat, 19 Jul 2025 09:07:00 +0200
+Subject: [PATCH] Squashed commit of the following:
+
+commit 7b15b55ce03d80364d236b7a2c8638f9cb7a316a
+Author: Sofus Addington <sofus@addington.dk>
+Date:   Tue Jul 8 12:58:52 2025 +0200
+
+    Use TaskController to cancel requests
+
+commit 9246f11b355a7c1d69bae81fc5f97f538529238e
+Author: Sofus Addington <sofus@addington.dk>
+Date:   Mon Jul 7 10:26:34 2025 +0200
+
+    Adjust debounce
+
+commit 858484a5133c3a8063ec008ef2c93e06447a7cdd
+Author: Sofus Addington <sofus@addington.dk>
+Date:   Thu May 8 08:27:33 2025 +0200
+
+    Add separate event for pulling visible documents diagnostics
+
+commit b987f842cb2b9b453b770cfea19ab3714babe6cc
+Author: Sofus Addington <sofus@addington.dk>
+Date:   Mon May 5 15:32:06 2025 +0200
+
+    Cancel ongoing pull diagnostic events
+
+commit 6d40ca4f378afa4c058c57a97537c68c9df70d33
+Author: Sofus Addington <sofus@addington.dk>
+Date:   Wed Apr 23 08:25:24 2025 +0200
+
+    Remove related documents changes
+
+commit 30ef3a38b7ad70c08f5b38d58a95b0549cfb80af
+Author: Sofus Addington <sofus@addington.dk>
+Date:   Wed Apr 16 16:48:16 2025 +0200
+
+    Update document by path
+
+commit 12815400e866a76682db1e5d16298b6be2ba61e6
+Author: Sofus Addington <sofus@addington.dk>
+Date:   Mon Jan 27 08:22:21 2025 +0100
+
+    Pull diagnostics
+---
+ helix-core/src/syntax/config.rs        |   2 +
+ helix-lsp/src/client.rs                |  34 +++
+ helix-lsp/src/lib.rs                   |   2 +
+ helix-term/src/application.rs          |  14 ++
+ helix-term/src/handlers.rs             |   8 +-
+ helix-term/src/handlers/diagnostics.rs | 281 ++++++++++++++++++++++++-
+ helix-view/src/document.rs             |   9 +
+ helix-view/src/handlers.rs             |   2 +
+ helix-view/src/handlers/lsp.rs         |   6 +
+ 9 files changed, 354 insertions(+), 4 deletions(-)
+
+diff --git a/helix-core/src/syntax/config.rs b/helix-core/src/syntax/config.rs
+index ddff26f1..e085f459 100644
+--- a/helix-core/src/syntax/config.rs
++++ b/helix-core/src/syntax/config.rs
+@@ -268,6 +268,7 @@ pub enum LanguageServerFeature {
+     WorkspaceSymbols,
+     // Symbols, use bitflags, see above?
+     Diagnostics,
++    PullDiagnostics,
+     RenameSymbol,
+     InlayHints,
+     DocumentColors,
+@@ -292,6 +293,7 @@ fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+             DocumentSymbols => "document-symbols",
+             WorkspaceSymbols => "workspace-symbols",
+             Diagnostics => "diagnostics",
++            PullDiagnostics => "pull-diagnostics",
+             RenameSymbol => "rename-symbol",
+             InlayHints => "inlay-hints",
+             DocumentColors => "document-colors",
+diff --git a/helix-lsp/src/client.rs b/helix-lsp/src/client.rs
+index afb3b3a5..ebc619e2 100644
+--- a/helix-lsp/src/client.rs
++++ b/helix-lsp/src/client.rs
+@@ -372,6 +372,7 @@ pub fn supports_feature(&self, feature: LanguageServerFeature) -> bool {
+                 Some(OneOf::Left(true) | OneOf::Right(_))
+             ),
+             LanguageServerFeature::Diagnostics => true, // there's no extra server capability
++            LanguageServerFeature::PullDiagnostics => capabilities.diagnostic_provider.is_some(),
+             LanguageServerFeature::RenameSymbol => matches!(
+                 capabilities.rename_provider,
+                 Some(OneOf::Left(true)) | Some(OneOf::Right(_))
+@@ -602,6 +603,9 @@ pub(crate) async fn initialize(&self, enable_snippets: bool) -> Result<lsp::Init
+                         did_rename: Some(true),
+                         ..Default::default()
+                     }),
++                    diagnostic: Some(lsp::DiagnosticWorkspaceClientCapabilities {
++                        refresh_support: Some(true),
++                    }),
+                     ..Default::default()
+                 }),
+                 text_document: Some(lsp::TextDocumentClientCapabilities {
+@@ -679,6 +683,10 @@ pub(crate) async fn initialize(&self, enable_snippets: bool) -> Result<lsp::Init
+                         }),
+                         ..Default::default()
+                     }),
++                    diagnostic: Some(lsp::DiagnosticClientCapabilities {
++                        dynamic_registration: Some(false),
++                        related_document_support: Some(true),
++                    }),
+                     publish_diagnostics: Some(lsp::PublishDiagnosticsClientCapabilities {
+                         version_support: Some(true),
+                         tag_support: Some(lsp::TagSupport {
+@@ -1229,6 +1237,32 @@ pub fn text_document_range_formatting(
+         Some(self.call::<lsp::request::RangeFormatting>(params))
+     }
+ 
++    pub fn text_document_diagnostic(
++        &self,
++        text_document: lsp::TextDocumentIdentifier,
++        previous_result_id: Option<String>,
++    ) -> Option<impl Future<Output = Result<lsp::DocumentDiagnosticReportResult>>> {
++        let capabilities = self.capabilities();
++
++        // Return early if the server does not support pull diagnostic.
++        let identifier = match capabilities.diagnostic_provider.as_ref()? {
++            lsp::DiagnosticServerCapabilities::Options(cap) => cap.identifier.clone(),
++            lsp::DiagnosticServerCapabilities::RegistrationOptions(cap) => {
++                cap.diagnostic_options.identifier.clone()
++            }
++        };
++
++        let params = lsp::DocumentDiagnosticParams {
++            text_document,
++            identifier,
++            previous_result_id,
++            work_done_progress_params: lsp::WorkDoneProgressParams::default(),
++            partial_result_params: lsp::PartialResultParams::default(),
++        };
++
++        Some(self.call::<lsp::request::DocumentDiagnosticRequest>(params))
++    }
++
+     pub fn text_document_document_highlight(
+         &self,
+         text_document: lsp::TextDocumentIdentifier,
+diff --git a/helix-lsp/src/lib.rs b/helix-lsp/src/lib.rs
+index 567e8a70..450a3769 100644
+--- a/helix-lsp/src/lib.rs
++++ b/helix-lsp/src/lib.rs
+@@ -463,6 +463,7 @@ pub enum MethodCall {
+     RegisterCapability(lsp::RegistrationParams),
+     UnregisterCapability(lsp::UnregistrationParams),
+     ShowDocument(lsp::ShowDocumentParams),
++    WorkspaceDiagnosticRefresh,
+ }
+ 
+ impl MethodCall {
+@@ -494,6 +495,7 @@ pub fn parse(method: &str, params: jsonrpc::Params) -> Result<MethodCall> {
+                 let params: lsp::ShowDocumentParams = params.parse()?;
+                 Self::ShowDocument(params)
+             }
++            lsp::request::WorkspaceDiagnosticRefresh::METHOD => Self::WorkspaceDiagnosticRefresh,
+             _ => {
+                 return Err(Error::Unhandled);
+             }
+diff --git a/helix-term/src/application.rs b/helix-term/src/application.rs
+index cf09aac0..edf4392c 100644
+--- a/helix-term/src/application.rs
++++ b/helix-term/src/application.rs
+@@ -1021,6 +1021,20 @@ macro_rules! language_server {
+                         let result = self.handle_show_document(params, offset_encoding);
+                         Ok(json!(result))
+                     }
++                    Ok(MethodCall::WorkspaceDiagnosticRefresh) => {
++                        let documents: Vec<_> =
++                            self.editor.documents.values().map(|x| x.id()).collect();
++
++                        for document in documents {
++                            handlers::diagnostics::request_document_diagnostics(
++                                &mut self.editor,
++                                document,
++                                false,
++                            );
++                        }
++
++                        Ok(serde_json::Value::Null)
++                    }
+                 };
+ 
+                 let language_server = language_server!();
+diff --git a/helix-term/src/handlers.rs b/helix-term/src/handlers.rs
+index 9c46a650..46fdbb69 100644
+--- a/helix-term/src/handlers.rs
++++ b/helix-term/src/handlers.rs
+@@ -1,11 +1,13 @@
+ use std::sync::Arc;
+ 
+ use arc_swap::ArcSwap;
++use diagnostics::PullAllDocumentsDiagnosticHandler;
+ use helix_event::AsyncHook;
+ 
+ use crate::config::Config;
+ use crate::events;
+ use crate::handlers::auto_save::AutoSaveHandler;
++use crate::handlers::diagnostics::PullDiagnosticsHandler;
+ use crate::handlers::signature_help::SignatureHelpHandler;
+ 
+ pub use helix_view::handlers::{word_index, Handlers};
+@@ -14,7 +16,7 @@
+ 
+ mod auto_save;
+ pub mod completion;
+-mod diagnostics;
++pub mod diagnostics;
+ mod document_colors;
+ mod signature_help;
+ mod snippet;
+@@ -27,6 +29,8 @@ pub fn setup(config: Arc<ArcSwap<Config>>) -> Handlers {
+     let auto_save = AutoSaveHandler::new().spawn();
+     let document_colors = DocumentColorsHandler::default().spawn();
+     let word_index = word_index::Handler::spawn();
++    let pull_diagnostics = PullDiagnosticsHandler::new().spawn();
++    let pull_all_documents_diagnostics = PullAllDocumentsDiagnosticHandler::new().spawn();
+ 
+     let handlers = Handlers {
+         completions: helix_view::handlers::completion::CompletionHandler::new(event_tx),
+@@ -34,6 +38,8 @@ pub fn setup(config: Arc<ArcSwap<Config>>) -> Handlers {
+         auto_save,
+         document_colors,
+         word_index,
++        pull_diagnostics,
++        pull_all_documents_diagnostics,
+     };
+ 
+     helix_view::handlers::register_hooks(&handlers);
+diff --git a/helix-term/src/handlers/diagnostics.rs b/helix-term/src/handlers/diagnostics.rs
+index 3e44d416..8a06fad0 100644
+--- a/helix-term/src/handlers/diagnostics.rs
++++ b/helix-term/src/handlers/diagnostics.rs
+@@ -1,12 +1,27 @@
+-use helix_event::{register_hook, send_blocking};
++use futures_util::stream::FuturesOrdered;
++use std::collections::HashSet;
++use std::time::Duration;
++use tokio::time::Instant;
++use tokio_stream::StreamExt;
++
++use helix_core::diagnostic::DiagnosticProvider;
++use helix_core::syntax::config::LanguageServerFeature;
++use helix_core::Uri;
++use helix_event::{cancelable_future, register_hook, send_blocking};
++use helix_lsp::lsp;
+ use helix_view::document::Mode;
+-use helix_view::events::DiagnosticsDidChange;
++use helix_view::events::{
++    DiagnosticsDidChange, DocumentDidChange, DocumentDidOpen, LanguageServerInitialized,
++};
+ use helix_view::handlers::diagnostics::DiagnosticEvent;
++use helix_view::handlers::lsp::{PullAllDocumentsDiagnosticsEvent, PullDiagnosticsEvent};
+ use helix_view::handlers::Handlers;
++use helix_view::{DocumentId, Editor};
+ 
+ use crate::events::OnModeSwitch;
++use crate::job;
+ 
+-pub(super) fn register_hooks(_handlers: &Handlers) {
++pub(super) fn register_hooks(handlers: &Handlers) {
+     register_hook!(move |event: &mut DiagnosticsDidChange<'_>| {
+         if event.editor.mode != Mode::Insert {
+             for (view, _) in event.editor.tree.views_mut() {
+@@ -21,4 +36,264 @@ pub(super) fn register_hooks(_handlers: &Handlers) {
+         }
+         Ok(())
+     });
++
++    let tx = handlers.pull_diagnostics.clone();
++    let tx_all_documents = handlers.pull_all_documents_diagnostics.clone();
++    register_hook!(move |event: &mut DocumentDidChange<'_>| {
++        if event
++            .doc
++            .has_language_server_with_feature(LanguageServerFeature::PullDiagnostics)
++            && !event.ghost_transaction
++        {
++            // Cancel the ongoing request, if present.
++            event.doc.pull_diagnostic_controller.cancel();
++            let document_id = event.doc.id();
++            send_blocking(&tx, PullDiagnosticsEvent { document_id });
++            send_blocking(&tx_all_documents, PullAllDocumentsDiagnosticsEvent {});
++        }
++        Ok(())
++    });
++
++    register_hook!(move |event: &mut DocumentDidOpen<'_>| {
++        request_document_diagnostics(event.editor, event.doc, false);
++
++        Ok(())
++    });
++
++    register_hook!(move |event: &mut LanguageServerInitialized<'_>| {
++        let doc_ids: Vec<_> = event.editor.documents().map(|doc| doc.id()).collect();
++
++        for doc_id in doc_ids {
++            request_document_diagnostics(event.editor, doc_id, false);
++        }
++
++        Ok(())
++    });
++}
++
++#[derive(Debug)]
++pub(super) struct PullDiagnosticsHandler {
++    document_ids: HashSet<DocumentId>,
++}
++
++impl PullDiagnosticsHandler {
++    pub fn new() -> Self {
++        PullDiagnosticsHandler {
++            document_ids: Default::default(),
++        }
++    }
++}
++
++impl helix_event::AsyncHook for PullDiagnosticsHandler {
++    type Event = PullDiagnosticsEvent;
++
++    fn handle_event(
++        &mut self,
++        event: Self::Event,
++        _timeout: Option<tokio::time::Instant>,
++    ) -> Option<tokio::time::Instant> {
++        self.document_ids.insert(event.document_id);
++        Some(Instant::now() + Duration::from_millis(250))
++    }
++
++    fn finish_debounce(&mut self) {
++        let document_ids = self.document_ids.clone();
++        job::dispatch_blocking(move |editor, _| {
++            for document_id in document_ids {
++                request_document_diagnostics(editor, document_id, false);
++            }
++        })
++    }
++}
++
++#[derive(Debug)]
++pub(super) struct PullAllDocumentsDiagnosticHandler {}
++
++impl PullAllDocumentsDiagnosticHandler {
++    pub fn new() -> Self {
++        PullAllDocumentsDiagnosticHandler {}
++    }
++}
++
++impl helix_event::AsyncHook for PullAllDocumentsDiagnosticHandler {
++    type Event = PullAllDocumentsDiagnosticsEvent;
++
++    fn handle_event(
++        &mut self,
++        _event: Self::Event,
++        _timeout: Option<tokio::time::Instant>,
++    ) -> Option<tokio::time::Instant> {
++        Some(Instant::now() + Duration::from_secs(1))
++    }
++
++    fn finish_debounce(&mut self) {
++        job::dispatch_blocking(move |editor, _| {
++            let documents: Vec<_> = editor.documents.values().map(|doc| doc.id()).collect();
++
++            for document in documents {
++                request_document_diagnostics(editor, document, true);
++            }
++        })
++    }
++}
++
++pub fn request_document_diagnostics(
++    editor: &mut Editor,
++    doc_id: DocumentId,
++    only_providers_with_inter_file_dependencies: bool,
++) {
++    let Some(doc) = editor.document_mut(doc_id) else {
++        return;
++    };
++
++    let mut seen_language_servers = HashSet::new();
++    let mut futures: FuturesOrdered<_> = doc
++        .language_servers_with_feature(LanguageServerFeature::PullDiagnostics)
++        .filter(|ls| seen_language_servers.insert(ls.id()))
++        .filter_map(|language_server| {
++            if only_providers_with_inter_file_dependencies
++                && !language_server
++                    .capabilities()
++                    .diagnostic_provider
++                    .as_ref()
++                    .is_some_and(|diagnostic_provider| match diagnostic_provider {
++                        lsp::DiagnosticServerCapabilities::Options(options) => {
++                            options.inter_file_dependencies
++                        }
++                        lsp::DiagnosticServerCapabilities::RegistrationOptions(options) => {
++                            options.diagnostic_options.inter_file_dependencies
++                        }
++                    })
++            {
++                return None;
++            }
++
++            let future = language_server
++                .text_document_diagnostic(doc.identifier(), doc.previous_diagnostic_id.clone())?;
++
++            let identifier = language_server
++                .capabilities()
++                .diagnostic_provider
++                .as_ref()
++                .and_then(|diagnostic_provider| match diagnostic_provider {
++                    lsp::DiagnosticServerCapabilities::Options(options) => {
++                        options.identifier.clone()
++                    }
++                    lsp::DiagnosticServerCapabilities::RegistrationOptions(options) => {
++                        options.diagnostic_options.identifier.clone()
++                    }
++                });
++
++            let language_server_id = language_server.id();
++            let provider = DiagnosticProvider::Lsp {
++                server_id: language_server_id,
++                identifier,
++            };
++            let uri = doc.uri()?;
++
++            Some(async move {
++                let result = future.await;
++
++                (result, provider, uri)
++            })
++        })
++        .collect();
++
++    if futures.is_empty() {
++        return;
++    }
++
++    job::dispatch_blocking(move |editor, _| {
++        let Some(doc) = editor.document_mut(doc_id) else {
++            return;
++        };
++
++        let cancel = doc.pull_diagnostic_controller.restart();
++
++        tokio::spawn(async move {
++            loop {
++                match cancelable_future(futures.next(), &cancel).await {
++                    Some(Some(future_result)) => match future_result.0 {
++                        Ok(result) => {
++                            job::dispatch(move |editor, _| {
++                                handle_pull_diagnostics_response(
++                                    editor,
++                                    result,
++                                    future_result.1,
++                                    future_result.2,
++                                    doc_id,
++                                )
++                            })
++                            .await
++                        }
++                        Err(err) => {
++                            let parsed_cancellation_data = if let helix_lsp::Error::Rpc(error) = err
++                            {
++                                error.data.and_then(|data| {
++                                    serde_json::from_value::<lsp::DiagnosticServerCancellationData>(
++                                        data,
++                                    )
++                                    .ok()
++                                })
++                            } else {
++                                log::error!("Pull diagnostic request failed: {err}");
++                                return;
++                            };
++
++                            if let Some(parsed_cancellation_data) = parsed_cancellation_data {
++                                if parsed_cancellation_data.retrigger_request {
++                                    tokio::time::sleep(Duration::from_millis(500)).await;
++
++                                    job::dispatch(move |editor, _| {
++                                        request_document_diagnostics(
++                                            editor,
++                                            doc_id,
++                                            only_providers_with_inter_file_dependencies,
++                                        );
++                                    })
++                                    .await;
++                                }
++                            }
++                        }
++                    },
++                    Some(None) => break,
++                    // The request was cancelled.
++                    None => return,
++                }
++            }
++        });
++    });
++}
++
++fn handle_pull_diagnostics_response(
++    editor: &mut Editor,
++    result: lsp::DocumentDiagnosticReportResult,
++    provider: DiagnosticProvider,
++    uri: Uri,
++    document_id: DocumentId,
++) {
++    match result {
++        lsp::DocumentDiagnosticReportResult::Report(report) => {
++            let result_id = match report {
++                lsp::DocumentDiagnosticReport::Full(report) => {
++                    editor.handle_lsp_diagnostics(
++                        &provider,
++                        uri,
++                        None,
++                        report.full_document_diagnostic_report.items,
++                    );
++
++                    report.full_document_diagnostic_report.result_id
++                }
++                lsp::DocumentDiagnosticReport::Unchanged(report) => {
++                    Some(report.unchanged_document_diagnostic_report.result_id)
++                }
++            };
++
++            if let Some(doc) = editor.document_mut(document_id) {
++                doc.previous_diagnostic_id = result_id;
++            };
++        }
++        lsp::DocumentDiagnosticReportResult::Partial(_) => {}
++    };
+ }
+diff --git a/helix-view/src/document.rs b/helix-view/src/document.rs
+index 04b7703c..67d7a821 100644
+--- a/helix-view/src/document.rs
++++ b/helix-view/src/document.rs
+@@ -204,11 +204,14 @@ pub struct Document {
+ 
+     pub readonly: bool,
+ 
++    pub previous_diagnostic_id: Option<String>,
++
+     /// Annotations for LSP document color swatches
+     pub color_swatches: Option<DocumentColorSwatches>,
+     // NOTE: ideally this would live on the handler for color swatches. This is blocked on a
+     // large refactor that would make `&mut Editor` available on the `DocumentDidChange` event.
+     pub color_swatch_controller: TaskController,
++    pub pull_diagnostic_controller: TaskController,
+ 
+     // NOTE: this field should eventually go away - we should use the Editor's syn_loader instead
+     // of storing a copy on every doc. Then we can remove the surrounding `Arc` and use the
+@@ -728,6 +731,8 @@ pub fn from(
+             color_swatches: None,
+             color_swatch_controller: TaskController::new(),
+             syn_loader,
++            previous_diagnostic_id: None,
++            pull_diagnostic_controller: TaskController::new(),
+         }
+     }
+ 
+@@ -2284,6 +2289,10 @@ pub fn inlay_hints(&self, view_id: ViewId) -> Option<&DocumentInlayHints> {
+     pub fn reset_all_inlay_hints(&mut self) {
+         self.inlay_hints = Default::default();
+     }
++
++    pub fn has_language_server_with_feature(&self, feature: LanguageServerFeature) -> bool {
++        self.language_servers_with_feature(feature).next().is_some()
++    }
+ }
+ 
+ #[derive(Debug, Default)]
+diff --git a/helix-view/src/handlers.rs b/helix-view/src/handlers.rs
+index 6aba17d6..6f3ad1ed 100644
+--- a/helix-view/src/handlers.rs
++++ b/helix-view/src/handlers.rs
+@@ -24,6 +24,8 @@ pub struct Handlers {
+     pub auto_save: Sender<AutoSaveEvent>,
+     pub document_colors: Sender<lsp::DocumentColorsEvent>,
+     pub word_index: word_index::Handler,
++    pub pull_diagnostics: Sender<lsp::PullDiagnosticsEvent>,
++    pub pull_all_documents_diagnostics: Sender<lsp::PullAllDocumentsDiagnosticsEvent>,
+ }
+ 
+ impl Handlers {
+diff --git a/helix-view/src/handlers/lsp.rs b/helix-view/src/handlers/lsp.rs
+index c1041b2a..84ba3118 100644
+--- a/helix-view/src/handlers/lsp.rs
++++ b/helix-view/src/handlers/lsp.rs
+@@ -30,6 +30,12 @@ pub enum SignatureHelpEvent {
+     RequestComplete { open: bool },
+ }
+ 
++pub struct PullDiagnosticsEvent {
++    pub document_id: DocumentId,
++}
++
++pub struct PullAllDocumentsDiagnosticsEvent {}
++
+ #[derive(Debug)]
+ pub struct ApplyEditError {
+     pub kind: ApplyEditErrorKind,
+-- 
+2.48.1
+

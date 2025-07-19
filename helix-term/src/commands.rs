@@ -20,7 +20,7 @@ use tui::{
 pub use typed::*;
 
 use helix_core::{
-    char_idx_at_visual_offset,
+    case_conversion, char_idx_at_visual_offset,
     chars::char_is_word,
     command_line, comment,
     doc_formatter::TextFormat,
@@ -68,7 +68,6 @@ use crate::{
 
 use crate::job::{self, Jobs};
 use std::{
-    char::{ToLowercase, ToUppercase},
     cmp::Ordering,
     collections::{HashMap, HashSet},
     error::Error,
@@ -76,6 +75,7 @@ use std::{
     future::Future,
     io::Read,
     num::NonZeroUsize,
+    str::FromStr,
 };
 
 use std::{
@@ -216,6 +216,10 @@ pub enum MappableCommand {
     },
     Static {
         name: &'static str,
+        // TODO: Change the signature to
+        // fn(cx: &mut Context) -> anyhow::Result<()>
+        //
+        // Then handle the error by using `Editor::set_error` in a single place
         fun: fn(cx: &mut Context),
         doc: &'static str,
     },
@@ -353,9 +357,15 @@ impl MappableCommand {
         extend_prev_char, "Extend to previous occurrence of char",
         repeat_last_motion, "Repeat last motion",
         replace, "Replace with new char",
-        switch_case, "Switch (toggle) case",
-        switch_to_uppercase, "Switch to uppercase",
+        switch_to_alternate_case, "Switch to aLTERNATE cASE",
+        switch_to_uppercase, "Switch to UPPERCASE",
         switch_to_lowercase, "Switch to lowercase",
+        switch_to_pascal_case, "Switch to PascalCase",
+        switch_to_camel_case, "Switch to camelCase",
+        switch_to_title_case, "Switch to Title Case",
+        switch_to_sentence_case, "Switch to Sentence case",
+        switch_to_snake_case, "Switch to snake_case",
+        switch_to_kebab_case, "Switch to kebab-case",
         page_up, "Move page up",
         page_down, "Move page down",
         half_page_up, "Move half page up",
@@ -500,6 +510,9 @@ impl MappableCommand {
         paste_clipboard_before, "Paste clipboard before selections",
         paste_primary_clipboard_after, "Paste primary clipboard after selections",
         paste_primary_clipboard_before, "Paste primary clipboard before selections",
+        paste_before_joined_with_newline, "Join all selections with a newline and paste before cursor",
+        paste_after_joined_with_newline, "Join all selections with a newline and paste after cursor",
+        replace_joined_with_newline, "Replace selection with all selections joined with a newline", 
         indent, "Indent selection",
         unindent, "Unindent selection",
         format_selections, "Format selection",
@@ -546,6 +559,7 @@ impl MappableCommand {
         vsplit_new, "Vertical right split scratch buffer",
         wclose, "Close window",
         wonly, "Close windows except current",
+        toggle_zoom, "Toggle zoom for current window",
         select_register, "Select register",
         insert_register, "Insert register",
         copy_between_registers, "Copy between two registers",
@@ -1739,80 +1753,62 @@ fn replace(cx: &mut Context) {
     })
 }
 
+#[inline]
 fn switch_case_impl<F>(cx: &mut Context, change_fn: F)
 where
-    F: Fn(RopeSlice) -> Tendril,
+    F: for<'a> Fn(&mut (dyn Iterator<Item = char> + 'a)) -> Tendril,
 {
     let (view, doc) = current!(cx.editor);
-    let selection = doc.selection(view.id);
-    let transaction = Transaction::change_by_selection(doc.text(), selection, |range| {
-        let text: Tendril = change_fn(range.slice(doc.text().slice(..)));
+    let view_id = view.id;
 
-        (range.from(), range.to(), Some(text))
-    });
+    let selection = doc.selection(view_id);
 
-    doc.apply(&transaction, view.id);
+    let transaction = {
+        Transaction::change_by_selection(doc.text(), selection, |range| {
+            let mut chars = range.slice(doc.text().slice(..)).chars();
+            let text: Tendril = change_fn(&mut chars);
+            (range.from(), range.to(), Some(text))
+        })
+    };
+
+    doc.apply(&transaction, view_id);
     exit_select_mode(cx);
 }
 
-enum CaseSwitcher {
-    Upper(ToUppercase),
-    Lower(ToLowercase),
-    Keep(Option<char>),
+fn switch_to_pascal_case(cx: &mut Context) {
+    switch_case_impl(cx, |chars| case_conversion::to_pascal_case(chars))
 }
 
-impl Iterator for CaseSwitcher {
-    type Item = char;
-
-    fn next(&mut self) -> Option<Self::Item> {
-        match self {
-            CaseSwitcher::Upper(upper) => upper.next(),
-            CaseSwitcher::Lower(lower) => lower.next(),
-            CaseSwitcher::Keep(ch) => ch.take(),
-        }
-    }
-
-    fn size_hint(&self) -> (usize, Option<usize>) {
-        match self {
-            CaseSwitcher::Upper(upper) => upper.size_hint(),
-            CaseSwitcher::Lower(lower) => lower.size_hint(),
-            CaseSwitcher::Keep(ch) => {
-                let n = if ch.is_some() { 1 } else { 0 };
-                (n, Some(n))
-            }
-        }
-    }
-}
-
-impl ExactSizeIterator for CaseSwitcher {}
-
-fn switch_case(cx: &mut Context) {
-    switch_case_impl(cx, |string| {
-        string
-            .chars()
-            .flat_map(|ch| {
-                if ch.is_lowercase() {
-                    CaseSwitcher::Upper(ch.to_uppercase())
-                } else if ch.is_uppercase() {
-                    CaseSwitcher::Lower(ch.to_lowercase())
-                } else {
-                    CaseSwitcher::Keep(Some(ch))
-                }
-            })
-            .collect()
-    });
-}
-
-fn switch_to_uppercase(cx: &mut Context) {
-    switch_case_impl(cx, |string| {
-        string.chunks().map(|chunk| chunk.to_uppercase()).collect()
-    });
+fn switch_to_camel_case(cx: &mut Context) {
+    switch_case_impl(cx, |chars| case_conversion::to_camel_case(chars))
 }
 
 fn switch_to_lowercase(cx: &mut Context) {
-    switch_case_impl(cx, |string| {
-        string.chunks().map(|chunk| chunk.to_lowercase()).collect()
-    });
+    switch_case_impl(cx, |chars| case_conversion::to_lowercase(chars))
+}
+
+fn switch_to_uppercase(cx: &mut Context) {
+    switch_case_impl(cx, |chars| case_conversion::to_uppercase(chars))
+}
+
+fn switch_to_alternate_case(cx: &mut Context) {
+    switch_case_impl(cx, |chars| case_conversion::to_alternate_case(chars))
+}
+
+fn switch_to_title_case(cx: &mut Context) {
+    switch_case_impl(cx, |chars| case_conversion::to_title_case(chars))
+}
+
+fn switch_to_sentence_case(cx: &mut Context) {
+    switch_case_impl(cx, |chars| case_conversion::to_sentence_case(chars))
+}
+
+fn switch_to_snake_case(cx: &mut Context) {
+    switch_case_impl(cx, |chars| case_conversion::to_snake_case(chars))
+}
+
+fn switch_to_kebab_case(cx: &mut Context) {
+    switch_case_impl(cx, |chars| case_conversion::to_kebab_case(chars))
 }
 
 pub fn scroll(cx: &mut Context, offset: usize, direction: Direction, sync_cursor: bool) {
@@ -2671,7 +2667,8 @@ fn global_search(cx: &mut Context) {
         Some((path.as_path().into(), Some((*line_num, *line_num))))
     })
     .with_history_register(Some(reg))
-    .with_dynamic_query(get_files, Some(275));
+    .with_dynamic_query(get_files, Some(275))
+    .with_title("Search".into());
 
     cx.push_layer(Box::new(overlaid(picker)));
 }
@@ -3207,7 +3204,8 @@ fn buffer_picker(cx: &mut Context) {
             (cursor_line, cursor_line)
         });
         Some((meta.id.into(), lines))
-    });
+    })
+    .with_title("Buffers".into());
     cx.push_layer(Box::new(overlaid(picker)));
 }
 
@@ -3298,7 +3296,8 @@ fn jumplist_picker(cx: &mut Context) {
         let doc = &editor.documents.get(&meta.id)?;
         let line = meta.selection.primary().cursor_line(doc.text().slice(..));
         Some((meta.id.into(), Some((line, line))))
-    });
+    })
+    .with_title("Jump List".into());
     cx.push_layer(Box::new(overlaid(picker)));
 }
 
@@ -3380,7 +3379,8 @@ fn changed_file_picker(cx: &mut Context) {
             }
         },
     )
-    .with_preview(|_editor, meta| Some((meta.path().into(), None)));
+    .with_preview(|_editor, meta| Some((meta.path().into(), None)))
+    .with_title("Changed Files".into());
     let injector = picker.injector();
 
     cx.editor
@@ -3472,7 +3472,8 @@ pub fn command_palette(cx: &mut Context) {
                         doc.append_changes_to_history(view);
                     }
                 }
-            });
+            })
+            .with_title("Command Palette".into());
             compositor.push(Box::new(overlaid(picker)));
         },
     ));
@@ -4634,6 +4635,35 @@ enum Paste {
     Cursor,
 }
 
+/// Where to paste joined selections
+#[derive(Copy, Clone, Default)]
+pub enum PasteJoined {
+    /// Paste before the cursor
+    Before,
+    /// Paste after the cursor
+    #[default]
+    After,
+    /// Replace the selection with cursor
+    Replace,
+}
+
+impl PasteJoined {
+    const VARIANTS: [&'static str; 3] = ["before", "after", "replace"];
+}
+
+impl FromStr for PasteJoined {
+    type Err = anyhow::Error;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "before" => Ok(Self::Before),
+            "after" => Ok(Self::After),
+            "replace" => Ok(Self::Replace),
+            _ => Err(anyhow!("Invalid paste position: {s}")),
+        }
+    }
+}
+
 static LINE_ENDING_REGEX: Lazy<Regex> = Lazy::new(|| Regex::new(r"\r\n|\r|\n").unwrap());
 
 fn paste_impl(
@@ -4761,17 +4791,25 @@ fn replace_with_yanked(cx: &mut Context) {
 }
 
 fn replace_with_yanked_impl(editor: &mut Editor, register: char, count: usize) {
-    let Some(values) = editor
-        .registers
-        .read(register, editor)
-        .filter(|values| values.len() > 0)
-    else {
+    let scrolloff = editor.config().scrolloff;
+
+    let Some(values) = editor.registers.read(register, editor) else {
         return;
     };
-    let scrolloff = editor.config().scrolloff;
-    let (view, doc) = current_ref!(editor);
+    let yanked = values.map(|value| value.to_string()).collect::<Vec<_>>();
+    let (view, doc) = current!(editor);
 
-    let map_value = |value: &Cow<str>| {
+    replace_impl(&yanked, doc, view, count, scrolloff)
+}
+
+fn replace_impl(
+    values: &[String],
+    doc: &mut Document,
+    view: &mut View,
+    count: usize,
+    scrolloff: usize,
+) {
+    let map_value = |value: &String| {
         let value = LINE_ENDING_REGEX.replace_all(value, doc.line_ending.as_str());
         let mut out = Tendril::from(value.as_ref());
         for _ in 1..count {
@@ -4779,14 +4817,12 @@ fn replace_with_yanked_impl(editor: &mut Editor, register: char, count: usize) {
         }
         out
     };
-    let mut values_rev = values.rev().peekable();
-    // `values` is asserted to have at least one entry above.
-    let last = values_rev.peek().unwrap();
+    let mut values_rev = values.iter().rev().peekable();
+    let Some(last) = values_rev.peek() else {
+        return;
+    };
     let repeat = std::iter::repeat(map_value(last));
-    let mut values = values_rev
-        .rev()
-        .map(|value| map_value(&value))
-        .chain(repeat);
+    let mut values = values_rev.rev().map(map_value).chain(repeat);
     let selection = doc.selection(view.id);
     let transaction = Transaction::change_by_selection(doc.text(), selection, |range| {
         if !range.is_empty() {
@@ -4795,9 +4831,7 @@ fn replace_with_yanked_impl(editor: &mut Editor, register: char, count: usize) {
             (range.from(), range.to(), None)
         }
     });
-    drop(values);
 
-    let (view, doc) = current!(editor);
     doc.apply(&transaction, view.id);
     doc.append_changes_to_history(view);
     view.ensure_cursor_in_view(doc, scrolloff);
@@ -5690,6 +5724,11 @@ fn wonly(cx: &mut Context) {
             cx.editor.close(view_id);
         }
     }
+}
+
+fn toggle_zoom(cx: &mut Context) {
+    cx.editor.tree.zoom = !cx.editor.tree.zoom;
+    cx.editor.tree.recalculate();
 }
 
 fn select_register(cx: &mut Context) {
@@ -6645,6 +6684,38 @@ fn replay_macro(cx: &mut Context) {
         // replaying recursively.
         cx.editor.macro_replaying.pop();
     }));
+}
+
+fn paste_before_joined_with_newline(cx: &mut Context) {
+    if let Err(err) = paste_joined_impl(
+        cx.editor,
+        cx.count(),
+        PasteJoined::Before,
+        cx.register,
+        None,
+    ) {
+        cx.editor.set_error(err.to_string());
+    };
+}
+
+fn paste_after_joined_with_newline(cx: &mut Context) {
+    if let Err(err) =
+        paste_joined_impl(cx.editor, cx.count(), PasteJoined::After, cx.register, None)
+    {
+        cx.editor.set_error(err.to_string());
+    };
+}
+
+fn replace_joined_with_newline(cx: &mut Context) {
+    if let Err(err) = paste_joined_impl(
+        cx.editor,
+        cx.count(),
+        PasteJoined::Replace,
+        cx.register,
+        None,
+    ) {
+        cx.editor.set_error(err.to_string());
+    };
 }
 
 fn goto_word(cx: &mut Context) {

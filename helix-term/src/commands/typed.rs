@@ -1,5 +1,6 @@
 use std::fmt::Write;
 use std::io::BufReader;
+use std::num::NonZero;
 use std::ops::{self, Deref};
 
 use crate::job::Job;
@@ -1034,23 +1035,46 @@ fn yank_main_selection_to_clipboard(
     Ok(())
 }
 
-fn yank_joined(cx: &mut compositor::Context, args: Args, event: PromptEvent) -> anyhow::Result<()> {
-    if event != PromptEvent::Validate {
-        return Ok(());
+pub fn paste_joined_impl(
+    editor: &mut Editor,
+    count: usize,
+    paste_position: PasteJoined,
+    register: Option<char>,
+    separator: Option<&str>,
+) -> anyhow::Result<()> {
+    let config = editor.config();
+    let register = register.unwrap_or(config.default_yank_register);
+    let scrolloff = config.scrolloff;
+
+    let register_values = editor
+        .registers
+        .read(register, editor)
+        .ok_or_else(|| anyhow!("Register {register} is empty"))?;
+
+    let doc = doc!(editor);
+    let separator = separator.unwrap_or_else(|| doc.line_ending.as_str());
+
+    // Intersperse register values with a separator
+    let paste = register_values.fold(String::new(), |mut pasted, value| {
+        if !pasted.is_empty() {
+            pasted.push_str(separator);
+        }
+        pasted.push_str(&value);
+        pasted
+    });
+
+    let (view, doc) = current!(editor);
+
+    match paste_position {
+        PasteJoined::Before => paste_impl(&[paste], doc, view, Paste::Before, count, editor.mode),
+        PasteJoined::After => paste_impl(&[paste], doc, view, Paste::After, count, editor.mode),
+        PasteJoined::Replace => replace_impl(&[paste], doc, view, count, scrolloff),
     }
 
-    let doc = doc!(cx.editor);
-    let default_sep = Cow::Borrowed(doc.line_ending.as_str());
-    let separator = args.first().unwrap_or(&default_sep);
-    let register = cx
-        .editor
-        .selected_register
-        .unwrap_or(cx.editor.config().default_yank_register);
-    yank_joined_impl(cx.editor, separator, register);
     Ok(())
 }
 
-fn yank_joined_to_clipboard(
+fn paste_joined(
     cx: &mut compositor::Context,
     args: Args,
     event: PromptEvent,
@@ -1059,10 +1083,61 @@ fn yank_joined_to_clipboard(
         return Ok(());
     }
 
+    let count = args
+        .get_flag("count")
+        .map(|count| count.parse::<NonZero<usize>>())
+        .transpose()?
+        .map_or(1, |count| count.get());
+
+    let paste_position = args
+        .get_flag("position")
+        .map(|pos| pos.parse::<PasteJoined>())
+        .transpose()?
+        .unwrap_or_default();
+
+    let register = args
+        .get_flag("register")
+        .map(|reg| {
+            reg.parse::<char>()
+                .map_err(|_| anyhow!("Invalid register: {reg}"))
+        })
+        .transpose()?
+        .or(cx.editor.selected_register);
+
+    paste_joined_impl(
+        cx.editor,
+        count,
+        paste_position,
+        register,
+        args.get_flag("separator"),
+    )?;
+
+    Ok(())
+}
+
+fn yank_joined(cx: &mut compositor::Context, args: Args, event: PromptEvent) -> anyhow::Result<()> {
+    if event != PromptEvent::Validate {
+        return Ok(());
+    }
+
     let doc = doc!(cx.editor);
-    let default_sep = Cow::Borrowed(doc.line_ending.as_str());
-    let separator = args.first().unwrap_or(&default_sep);
-    yank_joined_impl(cx.editor, separator, '+');
+
+    let separator = args
+        .get_flag("separator")
+        .unwrap_or_else(|| doc.line_ending.as_str());
+
+    let register = args
+        .get_flag("register")
+        .map(|reg| {
+            reg.parse::<char>()
+                .map_err(|_| anyhow!("Invalid register: {reg}"))
+        })
+        .transpose()?
+        .or(cx.editor.selected_register)
+        .unwrap_or_else(|| cx.editor.config().default_yank_register);
+
+    yank_joined_impl(cx.editor, separator, register);
+
     Ok(())
 }
 
@@ -1076,22 +1151,6 @@ fn yank_main_selection_to_primary_clipboard(
     }
 
     yank_primary_selection_impl(cx.editor, '*');
-    Ok(())
-}
-
-fn yank_joined_to_primary_clipboard(
-    cx: &mut compositor::Context,
-    args: Args,
-    event: PromptEvent,
-) -> anyhow::Result<()> {
-    if event != PromptEvent::Validate {
-        return Ok(());
-    }
-
-    let doc = doc!(cx.editor);
-    let default_sep = Cow::Borrowed(doc.line_ending.as_str());
-    let separator = args.first().unwrap_or(&default_sep);
-    yank_joined_impl(cx.editor, separator, '*');
     Ok(())
 }
 
@@ -1525,7 +1584,8 @@ fn lsp_workspace_command(
                         move |cx, (ls_id, command), _action| {
                             cx.editor.execute_lsp_command(command.clone(), *ls_id);
                         },
-                    );
+                    )
+                    .with_title("LSP Commands".into());
                     compositor.push(Box::new(overlaid(picker)))
                 },
             ));
@@ -2636,6 +2696,40 @@ fn noop(_cx: &mut compositor::Context, _args: Args, _event: PromptEvent) -> anyh
     Ok(())
 }
 
+fn set_max_width(
+    cx: &mut compositor::Context,
+    args: Args,
+    _event: PromptEvent,
+) -> anyhow::Result<()> {
+    let mut args = args.iter();
+    let Some(width) = args.next() else {
+        bail!(":set-max-width takes 1 or 2 arguments")
+    };
+    let width: u16 = width.parse()?;
+    let alt_width: Option<u16> = args.next().map(|w| w.parse()).transpose()?;
+
+    let set_width = match alt_width {
+        Some(alt_width) if cx.editor.tree.max_width == width => {
+            cx.editor.tree.max_width = alt_width;
+            alt_width
+        }
+        _ => {
+            cx.editor.tree.max_width = width;
+            width
+        }
+    };
+    cx.editor.tree.recalculate();
+
+    if set_width == 0 {
+        cx.editor.set_status("Unset maximum width");
+    } else {
+        cx.editor
+            .set_status(format!("Set maximum width to {}", set_width));
+    }
+
+    Ok(())
+}
+
 /// This command accepts a single boolean --skip-visible flag and no positionals.
 const BUFFER_CLOSE_OTHERS_SIGNATURE: Signature = Signature {
     positionals: (0, Some(0)),
@@ -3032,13 +3126,64 @@ pub const TYPABLE_COMMAND_LIST: &[TypableCommand] = &[
         },
     },
     TypableCommand {
+        name: "paste-join",
+        aliases: &["pj"],
+        doc: "Join selections with a separator and paste",
+        fun: paste_joined,
+        completer: CommandCompleter::none(),
+        signature: Signature {
+            positionals: (0, Some(0)),
+            flags: &[
+                Flag {
+                    name: "separator",
+                    alias: Some('s'),
+                    doc: "Separator between joined selections (Default: newline)",
+                    completions: Some(&[])
+                },
+                Flag {
+                    name: "count",
+                    alias: Some('c'),
+                    doc: "How many times to paste",
+                    completions: Some(&[])
+                },
+                Flag {
+                    name: "position",
+                    alias: Some('p'),
+                    doc: "Location of where to paste",
+                    completions: Some(&PasteJoined::VARIANTS)
+                },
+                Flag {
+                    name: "register",
+                    alias: Some('r'),
+                    doc: "Paste from this register",
+                    completions: Some(&[])
+                }
+            ],
+            ..Signature::DEFAULT
+        },
+    },
+    TypableCommand {
         name: "yank-join",
-        aliases: &[],
-        doc: "Yank joined selections. A separator can be provided as first argument. Default value is newline.",
+        aliases: &["yj"],
+        doc: "Yank the selections joined with a separator",
         fun: yank_joined,
         completer: CommandCompleter::none(),
         signature: Signature {
-            positionals: (0, Some(1)),
+            positionals: (0, Some(0)),
+            flags: &[
+                Flag {
+                    name: "separator",
+                    alias: Some('s'),
+                    doc: "Separator to between joined selections [default: newline]",
+                    completions: Some(&[])
+                },
+                Flag {
+                    name: "register",
+                    alias: Some('r'),
+                    doc: "Yank into this register",
+                    completions: Some(&[])
+                }
+            ],
             ..Signature::DEFAULT
         },
     },
@@ -3054,17 +3199,6 @@ pub const TYPABLE_COMMAND_LIST: &[TypableCommand] = &[
         },
     },
     TypableCommand {
-        name: "clipboard-yank-join",
-        aliases: &[],
-        doc: "Yank joined selections into system clipboard. A separator can be provided as first argument. Default value is newline.", // FIXME: current UI can't display long doc.
-        fun: yank_joined_to_clipboard,
-        completer: CommandCompleter::none(),
-        signature: Signature {
-            positionals: (0, Some(1)),
-            ..Signature::DEFAULT
-        },
-    },
-    TypableCommand {
         name: "primary-clipboard-yank",
         aliases: &[],
         doc: "Yank main selection into system primary clipboard.",
@@ -3072,17 +3206,6 @@ pub const TYPABLE_COMMAND_LIST: &[TypableCommand] = &[
         completer: CommandCompleter::none(),
         signature: Signature {
             positionals: (0, Some(0)),
-            ..Signature::DEFAULT
-        },
-    },
-    TypableCommand {
-        name: "primary-clipboard-yank-join",
-        aliases: &[],
-        doc: "Yank joined selections into system primary clipboard. A separator can be provided as first argument. Default value is newline.", // FIXME: current UI can't display long doc.
-        fun: yank_joined_to_primary_clipboard,
-        completer: CommandCompleter::none(),
-        signature: Signature {
-            positionals: (0, Some(1)),
             ..Signature::DEFAULT
         },
     },
@@ -3661,6 +3784,17 @@ pub const TYPABLE_COMMAND_LIST: &[TypableCommand] = &[
             ..Signature::DEFAULT
         },
     },
+    TypableCommand {
+        name: "set-max-width",
+        aliases: &[],
+        doc: "Set the maximum width of the editor, or swap between 2 widths. If set to 0 it will take up the entire width.",
+        fun: set_max_width,
+        completer: CommandCompleter::none(),
+        signature: Signature {
+            positionals: (0, Some(2)),
+            ..Signature::DEFAULT
+        },
+    },
 ];
 
 pub static TYPABLE_COMMAND_MAP: Lazy<HashMap<&'static str, &'static TypableCommand>> =
@@ -3728,6 +3862,11 @@ pub(super) fn command_mode(cx: &mut Context) {
             }
         },
     );
+    if cx.editor.config().statusline.merge_with_commandline {
+        // command line prompt has the same background as the statusline when
+        // the statusline and the command line are merged
+        prompt.background = Some(cx.editor.theme.get("ui.statusline"))
+    }
     prompt.doc_fn = Box::new(command_line_doc);
 
     // Calculate initial completion

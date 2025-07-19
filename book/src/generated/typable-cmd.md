@@ -32,11 +32,10 @@
 | `:cquit`, `:cq` | Quit with exit code (default 1). Accepts an optional integer exit code (:cq 2). |
 | `:cquit!`, `:cq!` | Force quit with exit code (default 1) ignoring unsaved changes. Accepts an optional integer exit code (:cq! 2). |
 | `:theme` | Change the editor theme (show current theme if no name specified). |
-| `:yank-join` | Yank joined selections. A separator can be provided as first argument. Default value is newline. |
+| `:yank-join`, `:yj` | Yank the selections joined with a separator |
+| `:paste-join`, `:pj` | Join selections with a separator and paste |
 | `:clipboard-yank` | Yank main selection into system clipboard. |
-| `:clipboard-yank-join` | Yank joined selections into system clipboard. A separator can be provided as first argument. Default value is newline. |
 | `:primary-clipboard-yank` | Yank main selection into system primary clipboard. |
-| `:primary-clipboard-yank-join` | Yank joined selections into system primary clipboard. A separator can be provided as first argument. Default value is newline. |
 | `:clipboard-paste-after` | Paste system clipboard after selections. |
 | `:clipboard-paste-before` | Paste system clipboard before selections. |
 | `:clipboard-paste-replace` | Replace selections with content of system clipboard. |
@@ -89,3 +88,4 @@
 | `:read`, `:r` | Load a file into buffer |
 | `:echo` | Prints the given arguments to the statusline. |
 | `:noop` | Does nothing. |
+| `:set-max-width` | Set the maximum width of the editor, or swap between 2 widths. If set to 0 it will take up the entire width. |
