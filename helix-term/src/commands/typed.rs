@@ -2696,6 +2696,40 @@ fn noop(_cx: &mut compositor::Context, _args: Args, _event: PromptEvent) -> anyh
     Ok(())
 }
 
+fn set_max_width(
+    cx: &mut compositor::Context,
+    args: Args,
+    _event: PromptEvent,
+) -> anyhow::Result<()> {
+    let mut args = args.iter();
+    let Some(width) = args.next() else {
+        bail!(":set-max-width takes 1 or 2 arguments")
+    };
+    let width: u16 = width.parse()?;
+    let alt_width: Option<u16> = args.next().map(|w| w.parse()).transpose()?;
+
+    let set_width = match alt_width {
+        Some(alt_width) if cx.editor.tree.max_width == width => {
+            cx.editor.tree.max_width = alt_width;
+            alt_width
+        }
+        _ => {
+            cx.editor.tree.max_width = width;
+            width
+        }
+    };
+    cx.editor.tree.recalculate();
+
+    if set_width == 0 {
+        cx.editor.set_status("Unset maximum width");
+    } else {
+        cx.editor
+            .set_status(format!("Set maximum width to {}", set_width));
+    }
+
+    Ok(())
+}
+
 /// This command accepts a single boolean --skip-visible flag and no positionals.
 const BUFFER_CLOSE_OTHERS_SIGNATURE: Signature = Signature {
     positionals: (0, Some(0)),
@@ -3747,6 +3781,17 @@ pub const TYPABLE_COMMAND_LIST: &[TypableCommand] = &[
         completer: CommandCompleter::none(),
         signature: Signature {
             positionals: (0, None),
+            ..Signature::DEFAULT
+        },
+    },
+    TypableCommand {
+        name: "set-max-width",
+        aliases: &[],
+        doc: "Set the maximum width of the editor, or swap between 2 widths. If set to 0 it will take up the entire width.",
+        fun: set_max_width,
+        completer: CommandCompleter::none(),
+        signature: Signature {
+            positionals: (0, Some(2)),
             ..Signature::DEFAULT
         },
     },
