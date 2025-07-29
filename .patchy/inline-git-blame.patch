@@ -1,0 +1,3905 @@
+From e03458b923a9693c6f8844d4914433ffde12ccd6 Mon Sep 17 00:00:00 2001
+From: Dan Bluhm Hansen <00.pavers_dither@icloud.com>
+Date: Tue, 29 Jul 2025 09:37:01 +0200
+Subject: [PATCH] Squashed commit of the following:
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+commit 1c0b99db28898166fd9f0e9a1c9f3332e5442322
+Author: Nik Revenco <pm@nikrev.com>
+Date:   Sun Jul 27 10:51:12 2025 +0100
+
+    refactor: Do not use `unwrap_or_default` on simple integer
+
+    See https://github.com/rust-lang/rust-clippy/pull/15037
+
+commit 7a83e9e09b89415a665c346c51b1d728ac022787
+Author: Nik Revenco <pm@nikrev.com>
+Date:   Sun Jul 27 10:43:39 2025 +0100
+
+    feat: horizontal scroll of the current document into account when drawing the blame
+
+    Co-authored-by: Taylor Plewe <tplewe@outlook.com>
+
+commit 5e21b7f1183cd7f7b16d6e73cbbf949e7b1932ec
+Author: Nik Revenco <pm@nikrev.com>
+Date:   Tue Jun 17 11:40:21 2025 +0100
+
+    fix: Cargo.lock
+
+commit 14d4163a54c1b75510b271f86d4a761b38c59f95
+Merge: a476d6dc1 fed3edcab
+Author: Nik Revenco <pm@nikrev.com>
+Date:   Tue Jun 17 11:37:05 2025 +0100
+
+    Merge branch 'master' into gix-blame
+
+commit a476d6dc1cf37b0dedbd892cb058d7461e7e9c77
+Author: Nik Revenco <154856872+NikitaRevenco@users.noreply.github.com>
+Date:   Sat Jun 7 14:06:25 2025 +0100
+
+    Revert "feat: if you are the author, use "You" instead of name"
+
+    This reverts commit 41cb919b5da4a51694ab54b7d9726c3041f249a3.
+
+    I don't think it's worth to have this feature for the additional
+    complexity of allowing users to opt-out, plus considering the fact that
+    it might be inaccurate and cause confusion
+
+    Similar discussion: https://github.com/zed-industries/zed/issues/10557
+
+commit 41cb919b5da4a51694ab54b7d9726c3041f249a3
+Author: Nik Revenco <154856872+NikitaRevenco@users.noreply.github.com>
+Date:   Sat Jun 7 11:57:55 2025 +0100
+
+    feat: if you are the author, use "You" instead of name
+
+commit 100ad75d9ebbf53d39c115a7774a21d490271971
+Author: Nik Revenco <154856872+NikitaRevenco@users.noreply.github.com>
+Date:   Sat Jun 7 11:35:46 2025 +0100
+
+    chore: clarify comment
+
+commit d00ff25af02728c2b7b5ed88314d856abf812d7e
+Merge: 08c66504b f4b488e38
+Author: Nik Revenco <154856872+NikitaRevenco@users.noreply.github.com>
+Date:   Sat Jun 7 11:34:29 2025 +0100
+
+    Merge branch 'master' into gix-blame
+
+commit 08c66504b3a7f17bf4f860845740bb389b34f9b1
+Author: Nik Revenco <154856872+NikitaRevenco@users.noreply.github.com>
+Date:   Mon May 19 13:54:00 2025 +0100
+
+    docs: Add line breaks to paragraph + improve wording
+
+commit e64b4fad1ba3521d8b560a1551ad1af8d581c053
+Author: Nik Revenco <154856872+nik-rev@users.noreply.github.com>
+Date:   Mon May 19 13:47:34 2025 +0100
+
+    docs: improve wording
+
+    Co-authored-by: uncenter <uncenter@uncenter.dev>
+
+commit 92dc3ca521cff61f48ab927247b7d5bceae2c8dd
+Author: Nik Revenco <154856872+nik-rev@users.noreply.github.com>
+Date:   Mon May 19 13:44:00 2025 +0100
+
+    docs: improve wording
+
+    Co-authored-by: uncenter <uncenter@uncenter.dev>
+
+commit eb559cf6777cbc597fcdccfb807746a169bd2fb1
+Author: Nik Revenco <154856872+nik-rev@users.noreply.github.com>
+Date:   Mon May 19 13:43:28 2025 +0100
+
+    docs: remove hard to understand sentence
+
+    Co-authored-by: uncenter <uncenter@uncenter.dev>
+
+commit dd1f31d415f4a49dc7a4f218c6ea5738387109bf
+Author: Nik Revenco <154856872+nik-rev@users.noreply.github.com>
+Date:   Mon May 19 12:21:05 2025 +0100
+
+    docs: improve wording
+
+    Co-authored-by: uncenter <uncenter@uncenter.dev>
+
+commit 9d275514cfb3eb9e0664f0d68e5ae2fa5ed3adcc
+Author: Nik Revenco <154856872+nik-rev@users.noreply.github.com>
+Date:   Mon May 19 12:20:48 2025 +0100
+
+    docs: improve wording
+
+    Co-authored-by: uncenter <uncenter@uncenter.dev>
+
+commit 01e9dc1e39045c67ef8c721adb34df9dc774d981
+Author: Nik Revenco <154856872+NikitaRevenco@users.noreply.github.com>
+Date:   Mon May 19 10:27:10 2025 +0100
+
+    test: use correct variable name
+
+commit 00117f83bb2ebec2d32d9839e43530c26982c435
+Author: Nik Revenco <154856872+NikitaRevenco@users.noreply.github.com>
+Date:   Mon May 19 09:49:15 2025 +0100
+
+    fix: use correct variable name `title` instead of `message`
+
+commit 4eebdeca63787c881a72a1eac1688c504a3700a0
+Author: Nik Revenco <154856872+NikitaRevenco@users.noreply.github.com>
+Date:   Mon May 19 09:47:47 2025 +0100
+
+    test: use renamed `commit_message`
+
+commit a859cb2b2d7069e034366cace16b5179a07ac6f5
+Author: Nik Revenco <154856872+NikitaRevenco@users.noreply.github.com>
+Date:   Mon May 19 09:44:17 2025 +0100
+
+    docs: change sentence
+
+commit f1a29eeff368c503680f715fe8f3a33124f57408
+Author: Nik Revenco <154856872+NikitaRevenco@users.noreply.github.com>
+Date:   Mon May 19 09:41:01 2025 +0100
+
+    feat: rename the `message` variable to `title`
+
+commit 0123bac0f0476c52ededf3cb173aa7e05af8d383
+Author: Nik Revenco <154856872+NikitaRevenco@users.noreply.github.com>
+Date:   Mon May 19 09:31:18 2025 +0100
+
+    docs: remove confusing instructions
+
+    These instructions are confusing and hard to interpret. The details
+    won't matter for almost all people, so there's no need to provide this
+    information
+
+commit 1ca7ee8e669f9640faf43b1721d3dbe8accd2a8a
+Author: Nik Revenco <154856872+NikitaRevenco@users.noreply.github.com>
+Date:   Mon May 19 09:27:54 2025 +0100
+
+    feat: rename config options
+
+    Based off uncenter's review
+
+commit b8bd060128977f26b6a4046e4246ccaa9bc8df6e
+Author: Nik Revenco <154856872+NikitaRevenco@users.noreply.github.com>
+Date:   Mon May 19 09:11:34 2025 +0100
+
+    chore: fix merge conflicts
+
+commit deb58977c64293dc2345af34c40cd52bd84a0046
+Merge: 7effac92a 3ceae88c3
+Author: Nik Revenco <154856872+NikitaRevenco@users.noreply.github.com>
+Date:   Mon May 19 09:11:20 2025 +0100
+
+    Merge branch 'master' into gix-blame
+
+commit 7effac92aa9121a306b4ef8cb575c61d1bd472b6
+Author: Nik Revenco <154856872+NikitaRevenco@users.noreply.github.com>
+Date:   Tue May 6 18:22:25 2025 +0100
+
+    fix: only render inline blame once per line at most
+
+    Renders inline blame for the last visual line
+
+commit be5fbff319651646f61c30aef92eb9435104a517
+Author: Nik Revenco <154856872+NikitaRevenco@users.noreply.github.com>
+Date:   Tue May 6 17:38:04 2025 +0100
+
+    chore: resolve merge conflicts
+
+commit b31f1c72cacc2d43d6f142ead30e78fa2793ed8e
+Merge: 03f0883e7 e53462c78
+Author: Nik Revenco <154856872+NikitaRevenco@users.noreply.github.com>
+Date:   Tue May 6 17:10:02 2025 +0100
+
+    Merge branch 'master' into gix-blame
+
+commit 03f0883e7e11a4f7e6bc60418a22df0815dde429
+Author: Nik Revenco <154856872+NikitaRevenco@users.noreply.github.com>
+Date:   Wed Apr 16 23:34:56 2025 +0100
+
+    chore: fix merge conflicts
+
+commit 5d83e93459a6ee7b8c6a6a93b8f920a1b1d00737
+Merge: 616758ee8 37b5d8ba9
+Author: Nik Revenco <154856872+NikitaRevenco@users.noreply.github.com>
+Date:   Wed Apr 16 23:09:49 2025 +0100
+
+    Merge branch 'master' into gix-blame
+
+commit 616758ee81565d16fdc69a061c20ef1774a2a62d
+Author: Nik Revenco <154856872+NikitaRevenco@users.noreply.github.com>
+Date:   Fri Apr 4 08:19:40 2025 +0100
+
+    refactor: rename macro
+
+    _
+
+commit c74fec4c6e77972da36e1c929bada17d3a643f34
+Author: Nik Revenco <154856872+NikitaRevenco@users.noreply.github.com>
+Date:   Wed Apr 2 00:12:38 2025 +0100
+
+    fix?: do not block on the main thread when acquiring diff handle
+
+    not sure if this will work as I can't reproduce this
+    but let's see!
+
+commit e8d7e76c737396d002abc0eafcda5f8449a0db95
+Author: Nik Revenco <154856872+nik-rev@users.noreply.github.com>
+Date:   Tue Apr 1 12:17:48 2025 +0100
+
+    fix: spelling error
+
+    Co-authored-by: Sebastian Klähn <39526136+Septias@users.noreply.github.com>
+
+commit 1a0dad36b75e95e1b264536c5a5696186efece17
+Author: Nik Revenco <154856872+NikitaRevenco@users.noreply.github.com>
+Date:   Sun Mar 30 11:42:43 2025 +0100
+
+    perf: only render inline blame for visible lines when `all-lines` is set
+
+    Previously, we rendereded the inline blame for lines in 3X the range of
+    the viewport
+
+    This is not necessary because when we scroll down, the rendering will
+    occur before we see the new content
+
+commit 95344a958506069af6b05f8142f20eb245574189
+Author: Nik Revenco <154856872+NikitaRevenco@users.noreply.github.com>
+Date:   Sat Mar 29 23:59:06 2025 +0000
+
+    perf: use string preallocations for string concatenation
+
+commit af3b670de6c92475a07390b0d4d1a38fdb2274f4
+Author: Nik Revenco <154856872+NikitaRevenco@users.noreply.github.com>
+Date:   Tue Mar 25 21:35:45 2025 +0000
+
+    refactor: move expression
+
+    _
+
+commit b3b1c88d27a634ea8423f02b71658adbdea9bdad
+Author: Nik Revenco <154856872+NikitaRevenco@users.noreply.github.com>
+Date:   Tue Mar 25 21:34:06 2025 +0000
+
+    refactor: pass the `Style` instead of `Theme`
+
+commit c101f372988e91756959c75960294a2340a4acef
+Author: Nik Revenco <154856872+NikitaRevenco@users.noreply.github.com>
+Date:   Tue Mar 25 21:31:08 2025 +0000
+
+    style: fmt
+
+commit 082ba4d741896499388f4592e897165675819a7e
+Author: Nik Revenco <154856872+NikitaRevenco@users.noreply.github.com>
+Date:   Tue Mar 25 21:27:14 2025 +0000
+
+    refactor: `match` over `if`
+
+commit ab5663891c1a26eaed3c31cf7e7a9ce3ea7cdfb4
+Author: Nik Revenco <154856872+NikitaRevenco@users.noreply.github.com>
+Date:   Tue Mar 25 21:24:33 2025 +0000
+
+    refactor: render inline blame in a separate Editor function
+
+commit 00d168a78d4e6756101d352124f8f6e1f9b2db50
+Author: Nik Revenco <154856872+NikitaRevenco@users.noreply.github.com>
+Date:   Tue Mar 25 21:14:02 2025 +0000
+
+    fix: funny boolean inversion
+
+commit a8097f1cdc1df111035c56abe6f41095b7ce1536
+Author: Nik Revenco <154856872+NikitaRevenco@users.noreply.github.com>
+Date:   Tue Mar 25 20:02:05 2025 +0000
+
+    perf: use `Vec<T>` instead of `HashMap<usize, T>`
+
+commit 22f9571687bb73c8758e65e9c52b3516ef1be414
+Author: Nik Revenco <154856872+NikitaRevenco@users.noreply.github.com>
+Date:   Tue Mar 25 19:01:12 2025 +0000
+
+    feat: split `inline-blame.behaviour` into two options
+
+    _
+
+    _
+
+commit b9f82262084174efc2250394c2bc85d6139c335a
+Author: Nik Revenco <154856872+NikitaRevenco@users.noreply.github.com>
+Date:   Tue Mar 25 13:03:20 2025 +0000
+
+    refactor: remove `new_config` from EditorConfigDidChange event
+
+    There is no need for it because we have access to `Editor::config()`
+
+commit d34074af1b552858d1fe6fdfec270ed725311a5b
+Author: Nik Revenco <154856872+NikitaRevenco@users.noreply.github.com>
+Date:   Tue Mar 25 12:51:47 2025 +0000
+
+    perf: do not render inline blame on invisible lines
+
+commit ac0e677fae088ef4ccf252411857346c649656cd
+Author: Nik Revenco <154856872+NikitaRevenco@users.noreply.github.com>
+Date:   Tue Mar 25 12:34:01 2025 +0000
+
+    chore: appease clippy
+
+commit 76a92aff2ff1873c0db0446c1568e3409e86be23
+Author: Nik Revenco <154856872+NikitaRevenco@users.noreply.github.com>
+Date:   Tue Mar 25 12:25:12 2025 +0000
+
+    feat: `all-lines` option for inline blame
+
+commit 7478d9e688e32cb24b38c558307ab88c78cc0472
+Author: Nik Revenco <154856872+NikitaRevenco@users.noreply.github.com>
+Date:   Tue Mar 25 11:55:05 2025 +0000
+
+    refactor: extract as variable
+
+commit f54fdef099c5e7ae8094579dfc70489d20620835
+Author: Nik Revenco <154856872+NikitaRevenco@users.noreply.github.com>
+Date:   Tue Mar 25 11:46:36 2025 +0000
+
+    refactor: remove extra layer of sync
+
+commit 8f0721f00aca257809a52af8c4bf8876053b6bbe
+Author: Nik Revenco <154856872+NikitaRevenco@users.noreply.github.com>
+Date:   Mon Mar 24 16:07:19 2025 +0000
+
+    use format! instead of preallocating
+
+    this is more efficient apparently
+
+commit 07c69c1e742caa8139ee115f9027ab3ef13b15df
+Author: Nik Revenco <154856872+NikitaRevenco@users.noreply.github.com>
+Date:   Mon Mar 24 04:00:02 2025 +0000
+
+    fix: update blame when editing config
+
+commit 647615ddecccad396be9136c3bb0913c4d0890d3
+Author: Nik Revenco <154856872+NikitaRevenco@users.noreply.github.com>
+Date:   Mon Mar 24 01:31:01 2025 +0000
+
+    perf: optimize obtaining blame for the same line
+
+    _
+
+    fix: blame_line_impl
+
+    _
+
+    _
+
+    _
+
+    _
+
+    _
+
+commit 29f442887a62c49524ac8b2b34d3ec154d4a4f6e
+Author: Nik Revenco <154856872+NikitaRevenco@users.noreply.github.com>
+Date:   Tue Mar 18 01:11:57 2025 +0000
+
+    feat: Inline Git Blame
+
+    fix: use relative path when finding file
+
+    style: cargo fmt
+
+    _
+
+    chore: better error message
+
+    refactor: rename to `blame_line`
+
+    fix: use line of primary cursor for git blame
+
+    feat: basic implementation of blocking Blame handler
+
+    feat: implement basic virtual text (end of line blame)
+
+    feat: figure out how to draw stuff at the end of lines
+
+    feat: implement end of line virtual text for the current line
+
+    feat: implement inline git blame
+
+    chore: clean up
+
+    chore: remove unused import
+
+    _
+
+    chore: set `blame` to `false` by default
+
+    docs: document `[editor.vcs.blame]`
+
+    chore: add progress
+
+    perf: use background task for worker
+
+    _
+
+    chore: remove unnecessary panic!s
+
+    chore: remove commented code
+
+    refactor: remove some layers of abstraction
+
+    refactor: remove nesting
+
+    feat: [editor.vcs] -> [editor.version-control]
+
+    fix: account for inserted and deleted lines
+
+    _
+
+    refactor: extract into a `blame` module
+
+    feat: allow using custom commit format
+
+    feat: allow more customizability for inline blame
+
+    test: add tests for custom inline commit parsser
+
+    refactor: rename `blame` -> `blame_line`
+
+    _
+
+    _
+
+    test: create helper macros for tests
+
+    test: make test syntax more expressive. Allow specifying line numbers
+    that just got added
+
+    test: with interspersed lines
+
+    feat: add `line_blame` static command
+
+    _
+
+    test: add an extra test case
+
+    test: add ability to have `delete`d lines
+
+    test: fix on windows (?)
+
+    test: `delete` test case
+
+    test: add extra step to test case
+
+    test: add documentation for macro
+
+    refactor: use `hashmap!` macro
+
+    refactor: collapse match arm
+
+    fix: remove panic
+
+    perf: update inline git blame every 150 milliseconds instead of on each
+    command
+
+    test: add attributes on blocks
+
+    style: move function earlier in the file
+
+    perf: cache blame results in a hashma
+
+    chore: remove log statements
+
+    chore: clean up.
+
+    ALSO: removes checking for inline blame every N seconds.
+
+    _
+
+    perf: use mspc instead of busy-wait
+
+    docs: add information why we don't optimize the repo
+
+    _
+
+    test: add back the commented out tests
+
+    chore: comment out cfg(not(windows))
+
+    test: add extra history to blame test
+
+    docs: remove incorrect static command
+
+    _
+
+    test: disable test on windows
+
+    feat: send inline blame event update when reloading or saving the
+    document
+
+    feat: rename `version-control` -> `inline-blame`
+
+    feat: update theme key used for inline-blame
+
+    chore: remove unused #![allow]
+
+    chore:
+
+    style: remove accidental formatting
+
+    docs: remove incorrect key
+
+    perf: Use a single `ThreadSafeRepository` instead of re-constructing it
+    each time
+
+    feat: add `inline_blame` static command bound to `space + B`
+
+    style: revert formatting in keymap.md
+
+    chore: do not compute blame for document when changing config option
+
+    This isn't needed anymore because the inline-blame will be computed
+    regardless if `inline_blame.enable` is set or not
+
+    style: remove newline
+
+    refactor: use `fold` instead of loop
+
+    chore: clean up
+
+    feat: log error forl line blame when it happens
+
+    feat: improve message when we don't have the blame
+
+    We know that we don't have it because we're still calculating it.
+
+    feat: do not render inline blame for empty lines
+
+    _
+
+    feat: do not show blame output when we are on a hunk that was added
+
+    refactor: remove additional wrapper methods
+
+    fix
+
+    _
+
+    feat: more readable time for git blame
+
+    chr
+
+    feat:
+
+    feat: improved error handling
+
+    fix: path separator on Windows
+
+    test: disable on windows
+
+    refactor: move pretty date function formatter into `helix-stdx`
+
+    perf: do not use a syscall on each render
+
+    chore: add TODO comment to update gix version
+
+    chore: use `gix::path` conversion from Path -> BString
+
+    _
+
+    _
+
+    chore: do not update file blame on document save
+
+    This is not needed because when we write the file, we don't make a new
+    commit so the blame will not change.
+
+    refactor: use statics to get time elapsed instead of editor state
+
+    refactor: do not use custom event, use handler instead
+
+    fix: do not spawn a new handler
+
+    docs: correct examples for `editor.inline-blame.format`
+
+    docs: correct static command name
+
+    refactor: add comments, and improve variable names
+
+    I didn't really understand this function when I made it. Was just
+    copy-pasted from end of line diagnostics
+
+    I wanted to know what this is actually doing, so I investigated and
+    while doing this also added comments and improved names of variables
+    so others can understand too
+
+    fix: time in future is accounted for
+
+    perf: inline some functions that are called in only 1 place, during a
+    render loop
+
+    perf: add option to disable requesting inline blame in the background
+
+    fix: request blame again when document is reloaded
+
+    chore: inline blame is disabled with request on demand
+
+    feat: when requesting line blame with "blame on demand", show blame in
+    status
+
+    perf: use less allocations
+
+    perf: less allocations in `format_relative_time`
+
+    _
+
+    _
+
+    _
+
+    _
+
+    docs: correct name of command
+
+    _
+
+    feat: improve error message
+
+    _
+
+    feat: rename enum variants for inline blame behaviour
+
+    docs: improve description of behaviour field
+---
+ Cargo.lock                                  | 553 +++++++++--------
+ book/src/editor.md                          |  34 ++
+ book/src/generated/static-cmd.md            |   1 +
+ book/src/keymap.md                          |   1 +
+ book/src/themes.md                          |   1 +
+ helix-stdx/src/lib.rs                       |   2 +
+ helix-stdx/src/str.rs                       |  18 +
+ helix-stdx/src/time.rs                      |  75 +++
+ helix-term/src/application.rs               |   5 +
+ helix-term/src/commands.rs                  |  51 ++
+ helix-term/src/commands/typed.rs            |  34 ++
+ helix-term/src/events.rs                    |   4 +-
+ helix-term/src/handlers.rs                  |   5 +
+ helix-term/src/handlers/blame.rs            |  98 +++
+ helix-term/src/keymap/default.rs            |   1 +
+ helix-term/src/ui/document.rs               |   8 +
+ helix-term/src/ui/editor.rs                 |  61 +-
+ helix-term/src/ui/text_decorations.rs       |   1 +
+ helix-term/src/ui/text_decorations/blame.rs |  95 +++
+ helix-vcs/Cargo.toml                        |   3 +-
+ helix-vcs/src/diff.rs                       |   7 +
+ helix-vcs/src/git.rs                        |   4 +-
+ helix-vcs/src/git/blame.rs                  | 630 ++++++++++++++++++++
+ helix-vcs/src/git/test.rs                   |  26 +-
+ helix-vcs/src/lib.rs                        |   7 +-
+ helix-view/src/document.rs                  |  87 +++
+ helix-view/src/editor.rs                    |  39 ++
+ helix-view/src/events.rs                    |   7 +-
+ helix-view/src/handlers.rs                  |  12 +
+ helix-view/src/view.rs                      |  12 +
+ 30 files changed, 1612 insertions(+), 270 deletions(-)
+ create mode 100644 helix-stdx/src/str.rs
+ create mode 100644 helix-stdx/src/time.rs
+ create mode 100644 helix-term/src/handlers/blame.rs
+ create mode 100644 helix-term/src/ui/text_decorations/blame.rs
+ create mode 100644 helix-vcs/src/git/blame.rs
+
+diff --git a/Cargo.lock b/Cargo.lock
+index d7a90210c..885325bf2 100644
+--- a/Cargo.lock
++++ b/Cargo.lock
+@@ -4,19 +4,13 @@ version = 3
+ 
+ [[package]]
+ name = "addr2line"
+-version = "0.22.0"
++version = "0.24.2"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "6e4503c46a5c0c7844e948c9a4d6acd9f50cccb4de1c48eb9e291ea17470c678"
++checksum = "dfbe277e56a376000877090da837660b4427aad530e3028d44e0bffe4f89a1c1"
+ dependencies = [
+  "gimli",
+ ]
+ 
+-[[package]]
+-name = "adler"
+-version = "1.0.2"
+-source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "f26201604c87b1e01bd3d98f8d5d9a8fcbb815e8cedb41ffccbeb4bf593a35fe"
+-
+ [[package]]
+ name = "adler2"
+ version = "2.0.0"
+@@ -46,9 +40,9 @@ dependencies = [
+ 
+ [[package]]
+ name = "allocator-api2"
+-version = "0.2.18"
++version = "0.2.21"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "5c6cb57a04249c6480766f7f7cef5467412af1490f8d1e243141daddada3264f"
++checksum = "683d7910e743518b0e34f1186f92494becacb047c7b6bf616c96772180fef923"
+ 
+ [[package]]
+ name = "android-tzdata"
+@@ -79,23 +73,23 @@ checksum = "69f7f8c3906b62b754cd5326047894316021dcfe5a194c8ea52bdd94934a3457"
+ 
+ [[package]]
+ name = "autocfg"
+-version = "1.3.0"
++version = "1.4.0"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "0c4b4d0bd25bd0b74681c0ad21497610ce1b7c91b1022cd21c80c6fbdd9476b0"
++checksum = "ace50bade8e6234aa140d9a2f552bbee1db4d353f69b8217bc503490fc1a9f26"
+ 
+ [[package]]
+ name = "backtrace"
+-version = "0.3.73"
++version = "0.3.75"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "5cc23269a4f8976d0a4d2e7109211a419fe30e8d88d677cd60b6bc79c5732e0a"
++checksum = "6806a6321ec58106fea15becdad98371e28d92ccbc7c8f1b3b6dd724fe8f1002"
+ dependencies = [
+  "addr2line",
+- "cc",
+  "cfg-if",
+  "libc",
+- "miniz_oxide 0.7.4",
++ "miniz_oxide",
+  "object",
+  "rustc-demangle",
++ "windows-targets 0.52.6",
+ ]
+ 
+ [[package]]
+@@ -126,9 +120,9 @@ dependencies = [
+ 
+ [[package]]
+ name = "bumpalo"
+-version = "3.16.0"
++version = "3.17.0"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "79296716171880943b8470b5f8d03aa55eb2e645a4874bdbb28adb49162e012c"
++checksum = "1628fb46dfa0b37568d12e5edd512553eccf6a22a78e8bde00bb4aed84d5bdbf"
+ 
+ [[package]]
+ name = "byteorder"
+@@ -138,9 +132,9 @@ checksum = "1fd0f2584146f6f2ef48085050886acf353beff7305ebd1ae69500e27c67f64b"
+ 
+ [[package]]
+ name = "bytes"
+-version = "1.7.1"
++version = "1.10.1"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "8318a53db07bb3f8dca91a600466bdb3f2eaadeedfdbcf02e1accbad9271ba50"
++checksum = "d71b6127be86fdcfddb610f7182ac57211d4b18a3e9c82eb2d17662f2227ad6a"
+ 
+ [[package]]
+ name = "cassowary"
+@@ -150,9 +144,9 @@ checksum = "df8670b8c7b9dae1793364eafadf7239c40d669904660c5960d74cfd80b46a53"
+ 
+ [[package]]
+ name = "cc"
+-version = "1.2.29"
++version = "1.2.26"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "5c1599538de2394445747c8cf7935946e3cc27e9625f889d979bfb2aaf569362"
++checksum = "956a5e21988b87f372569b66183b78babf23ebc2e744b733e4350a752c4dafac"
+ dependencies = [
+  "shlex",
+ ]
+@@ -235,10 +229,19 @@ dependencies = [
+ ]
+ 
+ [[package]]
+-name = "crossbeam-deque"
+-version = "0.8.5"
++name = "crossbeam-channel"
++version = "0.5.15"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "613f8cc01fe9cf1a3eb3d7f488fd2fa8388403e97039e2f73692932e291a770d"
++checksum = "82b8f8f868b36967f9606790d1903570de9ceaf870a7bf9fbbd3016d636a2cb2"
++dependencies = [
++ "crossbeam-utils",
++]
++
++[[package]]
++name = "crossbeam-deque"
++version = "0.8.6"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "9dd111b7b7f7d55b72c0a6ae361660ee5853c9af73f70c3c2ef6858b950e2e51"
+ dependencies = [
+  "crossbeam-epoch",
+  "crossbeam-utils",
+@@ -255,9 +258,9 @@ dependencies = [
+ 
+ [[package]]
+ name = "crossbeam-utils"
+-version = "0.8.20"
++version = "0.8.21"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "22ec99545bb0ed0ea7bb9b8e1e9122ea386ff8a48c0922e43f36d45ab09e0e80"
++checksum = "d0a5c400df2834b80a4c3327b3aad3a4c4cd4de0629063962b03235697506a28"
+ 
+ [[package]]
+ name = "crossterm"
+@@ -340,9 +343,9 @@ checksum = "92773504d58c093f6de2459af4af33faa518c13451eb8f2b5698ed3d36e7c813"
+ 
+ [[package]]
+ name = "either"
+-version = "1.13.0"
++version = "1.15.0"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "60b1af1c220855b6ceac025d3f6ecdd2b7c4894bfe9cd9bda4fbb4bc7c0d4cf0"
++checksum = "48c757948c5ede0e46177b7add2e67155f70e33c07fea8284df6576da70b3719"
+ 
+ [[package]]
+ name = "encoding_rs"
+@@ -370,15 +373,15 @@ checksum = "c7f84e12ccf0a7ddc17a6c41c93326024c42920d7ee630d04950e6926645c0fe"
+ 
+ [[package]]
+ name = "equivalent"
+-version = "1.0.1"
++version = "1.0.2"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "5443807d6dff69373d433ab9ef5378ad8df50ca6298caf15de6e52e24aaf54d5"
++checksum = "877a4ace8713b0bcf2a4e7eec82529c029f1d0619886d18145fea96c3ffe5c0f"
+ 
+ [[package]]
+ name = "errno"
+-version = "0.3.10"
++version = "0.3.12"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "33d852cb9b869c2a9b3df2f71a3074817f01e1844f839a144f5fcef059a4eb5d"
++checksum = "cea14ef9355e3beab063703aa9dab15afd25f0667c341310c1e5274bb1d0da18"
+ dependencies = [
+  "libc",
+  "windows-sys 0.59.0",
+@@ -386,9 +389,9 @@ dependencies = [
+ 
+ [[package]]
+ name = "error-code"
+-version = "3.2.0"
++version = "3.3.2"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "a0474425d51df81997e2f90a21591180b38eccf27292d755f3e30750225c175b"
++checksum = "dea2df4cf52843e0452895c455a1a2cfbb842a1e7329671acf418fdc53ed4c59"
+ 
+ [[package]]
+ name = "etcetera"
+@@ -413,9 +416,9 @@ dependencies = [
+ 
+ [[package]]
+ name = "fastrand"
+-version = "2.1.1"
++version = "2.3.0"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "e8c02a5121d4ea3eb16a80748c74f5549a5665e4c21333c6098f283870fbdea6"
++checksum = "37909eebbb50d72f9059c3b6d82c0463f2ff062c9e95845c43a6c9c0355411be"
+ 
+ [[package]]
+ name = "fern"
+@@ -428,9 +431,9 @@ dependencies = [
+ 
+ [[package]]
+ name = "filedescriptor"
+-version = "0.8.2"
++version = "0.8.3"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "7199d965852c3bac31f779ef99cbb4537f80e952e2d6aa0ffeb30cce00f4f46e"
++checksum = "e40758ed24c9b2eeb76c35fb0aebc66c626084edd827e07e1552279814c6682d"
+ dependencies = [
+  "libc",
+  "thiserror 1.0.69",
+@@ -457,7 +460,7 @@ checksum = "7ced92e76e966ca2fd84c8f7aa01a4aea65b0eb6648d72f7c8f3e2764a67fece"
+ dependencies = [
+  "crc32fast",
+  "libz-rs-sys",
+- "miniz_oxide 0.8.7",
++ "miniz_oxide",
+ ]
+ 
+ [[package]]
+@@ -529,9 +532,9 @@ dependencies = [
+ 
+ [[package]]
+ name = "getrandom"
+-version = "0.2.15"
++version = "0.2.16"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "c4567c8db10ae91089c99af84c68c38da3ec2f087c3f82960bcdbf3656b6f4d7"
++checksum = "335ff9f135e4384c8150d6f27c6daed433577f86b4750418338c01a1a2528592"
+ dependencies = [
+  "cfg-if",
+  "libc",
+@@ -540,21 +543,21 @@ dependencies = [
+ 
+ [[package]]
+ name = "getrandom"
+-version = "0.3.1"
++version = "0.3.3"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "43a49c392881ce6d5c3b8cb70f98717b7c07aabbdff06687b9030dbfbe2725f8"
++checksum = "26145e563e54f2cadc477553f1ec5ee650b00862f0a58bcd12cbdc5f0ea2d2f4"
+ dependencies = [
+  "cfg-if",
+  "libc",
+- "wasi 0.13.3+wasi-0.2.2",
+- "windows-targets 0.52.6",
++ "r-efi",
++ "wasi 0.14.2+wasi-0.2.4",
+ ]
+ 
+ [[package]]
+ name = "gimli"
+-version = "0.29.0"
++version = "0.31.1"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "40ecd4077b5ae9fd2e9e169b102c6c330d0605168eb0e8bf79952b256dbefffd"
++checksum = "07e28edb80900c19c28f1072f2e8aeca7fa06b23cd4169cefe1af5aa3260783f"
+ 
+ [[package]]
+ name = "gix"
+@@ -564,6 +567,7 @@ checksum = "01237e8d3d78581f71642be8b0c2ae8c0b2b5c251c9c5d9ebbea3c1ea280dce8"
+ dependencies = [
+  "gix-actor",
+  "gix-attributes",
++ "gix-blame",
+  "gix-command",
+  "gix-commitgraph",
+  "gix-config",
+@@ -622,9 +626,9 @@ dependencies = [
+ 
+ [[package]]
+ name = "gix-attributes"
+-version = "0.26.0"
++version = "0.26.1"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "e7e26b3ac280ddb25bb6980d34f4a82ee326f78bf2c6d4ea45eef2d940048b8e"
++checksum = "6f50d813d5c2ce9463ba0c29eea90060df08e38ad8f34b8a192259f8bce5c078"
+ dependencies = [
+  "bstr",
+  "gix-glob",
+@@ -646,6 +650,25 @@ dependencies = [
+  "thiserror 2.0.12",
+ ]
+ 
++[[package]]
++name = "gix-blame"
++version = "0.2.1"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "a6807d2660ea9e15752a5d5867a9b05594ed27395ee18d51df7ebcb84a4809e9"
++dependencies = [
++ "gix-commitgraph",
++ "gix-date",
++ "gix-diff",
++ "gix-hash",
++ "gix-object",
++ "gix-revwalk",
++ "gix-trace",
++ "gix-traverse",
++ "gix-worktree",
++ "smallvec",
++ "thiserror 2.0.12",
++]
++
+ [[package]]
+ name = "gix-chunk"
+ version = "0.4.11"
+@@ -657,9 +680,9 @@ dependencies = [
+ 
+ [[package]]
+ name = "gix-command"
+-version = "0.6.0"
++version = "0.6.1"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "d2f47f3fb4ba33644061e8e0e1030ef2a937d42dc969553118c320a205a9fb28"
++checksum = "d05dd813ef6bb798570308aa7f1245cefa350ec9f30dc53308335eb22b9d0f8b"
+ dependencies = [
+  "bstr",
+  "gix-path",
+@@ -717,9 +740,9 @@ dependencies = [
+ 
+ [[package]]
+ name = "gix-date"
+-version = "0.10.1"
++version = "0.10.2"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "3a98593f1f1e14b9fa15c5b921b2c465e904d698b9463e21bb377be8376c3c1a"
++checksum = "139d1d52b21741e3f0c72b0fc65e1ff34d4eaceb100ef529d182725d2e09b8cb"
+ dependencies = [
+  "bstr",
+  "itoa",
+@@ -795,12 +818,14 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
+ checksum = "56f4399af6ec4fd9db84dd4cf9656c5c785ab492ab40a7c27ea92b4241923fed"
+ dependencies = [
+  "crc32fast",
++ "crossbeam-channel",
+  "flate2",
+  "gix-path",
+  "gix-trace",
+  "gix-utils",
+  "libc",
+  "once_cell",
++ "parking_lot",
+  "prodash",
+  "thiserror 2.0.12",
+  "walkdir",
+@@ -808,9 +833,9 @@ dependencies = [
+ 
+ [[package]]
+ name = "gix-filter"
+-version = "0.19.1"
++version = "0.19.2"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "f90c21f0d61778f518bbb7c431b00247bf4534b2153c3e85bcf383876c55ca6c"
++checksum = "ecf004912949bbcf308d71aac4458321748ecb59f4d046830d25214208c471f1"
+ dependencies = [
+  "bstr",
+  "encoding_rs",
+@@ -843,9 +868,9 @@ dependencies = [
+ 
+ [[package]]
+ name = "gix-glob"
+-version = "0.20.0"
++version = "0.20.1"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "2926b03666e83b8d01c10cf06e5733521aacbd2d97179a4c9b1fdddabb9e937d"
++checksum = "90181472925b587f6079698f79065ff64786e6d6c14089517a1972bca99fb6e9"
+ dependencies = [
+  "bitflags",
+  "bstr",
+@@ -891,9 +916,9 @@ dependencies = [
+ 
+ [[package]]
+ name = "gix-index"
+-version = "0.40.0"
++version = "0.40.1"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "e6d505aea7d7c4267a3153cb90c712a89970b4dd02a2cb3205be322891f530b5"
++checksum = "b38e919efd59cb8275d23ad2394b2ab9d002007b27620e145d866d546403b665"
+ dependencies = [
+  "bitflags",
+  "bstr",
+@@ -1014,9 +1039,9 @@ dependencies = [
+ 
+ [[package]]
+ name = "gix-path"
+-version = "0.10.17"
++version = "0.10.18"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "c091d2e887e02c3462f52252c5ea61150270c0f2657b642e8d0d6df56c16e642"
++checksum = "567f65fec4ef10dfab97ae71f26a27fd4d7fe7b8e3f90c8a58551c41ff3fb65b"
+ dependencies = [
+  "bstr",
+  "gix-trace",
+@@ -1236,9 +1261,9 @@ dependencies = [
+ 
+ [[package]]
+ name = "gix-traverse"
+-version = "0.46.1"
++version = "0.46.2"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "39094185f6d9a4d81101130fbbf7f598a06441d774ae3b3ae7930a613bbe1157"
++checksum = "b8648172f85aca3d6e919c06504b7ac26baef54e04c55eb0100fa588c102cc33"
+ dependencies = [
+  "bitflags",
+  "gix-commitgraph",
+@@ -1609,6 +1634,7 @@ dependencies = [
+  "gix",
+  "helix-core",
+  "helix-event",
++ "helix-stdx",
+  "imara-diff 0.2.0",
+  "log",
+  "parking_lot",
+@@ -1660,23 +1686,24 @@ checksum = "d231dfb89cfffdbc30e7fc41579ed6066ad03abda9e567ccafae602b97ec5024"
+ 
+ [[package]]
+ name = "home"
+-version = "0.5.9"
++version = "0.5.11"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "e3d1354bf6b7235cb4a0576c2619fd4ed18183f689b12b006a0ee7329eeff9a5"
++checksum = "589533453244b0995c858700322199b2becb13b627df2851f64a2775d024abcf"
+ dependencies = [
+- "windows-sys 0.52.0",
++ "windows-sys 0.59.0",
+ ]
+ 
+ [[package]]
+ name = "iana-time-zone"
+-version = "0.1.60"
++version = "0.1.63"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "e7ffbb5a1b541ea2561f8c41c087286cc091e21e556a4f09a8f6cbf17b69b141"
++checksum = "b0c919e5debc312ad217002b8048a17b7d83f80703865bbfcfebb0458b0b27d8"
+ dependencies = [
+  "android_system_properties",
+  "core-foundation-sys",
+  "iana-time-zone-haiku",
+  "js-sys",
++ "log",
+  "wasm-bindgen",
+  "windows-core",
+ ]
+@@ -1692,21 +1719,22 @@ dependencies = [
+ 
+ [[package]]
+ name = "icu_collections"
+-version = "1.5.0"
++version = "2.0.0"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "db2fa452206ebee18c4b5c2274dbf1de17008e874b4dc4f0aea9d01ca79e4526"
++checksum = "200072f5d0e3614556f94a9930d5dc3e0662a652823904c3a75dc3b0af7fee47"
+ dependencies = [
+  "displaydoc",
++ "potential_utf",
+  "yoke",
+  "zerofrom",
+  "zerovec",
+ ]
+ 
+ [[package]]
+-name = "icu_locid"
+-version = "1.5.0"
++name = "icu_locale_core"
++version = "2.0.0"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "13acbb8371917fc971be86fc8057c41a64b521c184808a698c02acc242dbf637"
++checksum = "0cde2700ccaed3872079a65fb1a78f6c0a36c91570f28755dda67bc8f7d9f00a"
+ dependencies = [
+  "displaydoc",
+  "litemap",
+@@ -1715,31 +1743,11 @@ dependencies = [
+  "zerovec",
+ ]
+ 
+-[[package]]
+-name = "icu_locid_transform"
+-version = "1.5.0"
+-source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "01d11ac35de8e40fdeda00d9e1e9d92525f3f9d887cdd7aa81d727596788b54e"
+-dependencies = [
+- "displaydoc",
+- "icu_locid",
+- "icu_locid_transform_data",
+- "icu_provider",
+- "tinystr",
+- "zerovec",
+-]
+-
+-[[package]]
+-name = "icu_locid_transform_data"
+-version = "1.5.0"
+-source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "fdc8ff3388f852bede6b579ad4e978ab004f139284d7b28715f773507b946f6e"
+-
+ [[package]]
+ name = "icu_normalizer"
+-version = "1.5.0"
++version = "2.0.0"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "19ce3e0da2ec68599d193c93d088142efd7f9c5d6fc9b803774855747dc6a84f"
++checksum = "436880e8e18df4d7bbc06d58432329d6458cc84531f7ac5f024e93deadb37979"
+ dependencies = [
+  "displaydoc",
+  "icu_collections",
+@@ -1747,67 +1755,54 @@ dependencies = [
+  "icu_properties",
+  "icu_provider",
+  "smallvec",
+- "utf16_iter",
+- "utf8_iter",
+- "write16",
+  "zerovec",
+ ]
+ 
+ [[package]]
+ name = "icu_normalizer_data"
+-version = "1.5.0"
++version = "2.0.0"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "f8cafbf7aa791e9b22bec55a167906f9e1215fd475cd22adfcf660e03e989516"
++checksum = "00210d6893afc98edb752b664b8890f0ef174c8adbb8d0be9710fa66fbbf72d3"
+ 
+ [[package]]
+ name = "icu_properties"
+-version = "1.5.1"
++version = "2.0.0"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "93d6020766cfc6302c15dbbc9c8778c37e62c14427cb7f6e601d849e092aeef5"
++checksum = "2549ca8c7241c82f59c80ba2a6f415d931c5b58d24fb8412caa1a1f02c49139a"
+ dependencies = [
+  "displaydoc",
+  "icu_collections",
+- "icu_locid_transform",
++ "icu_locale_core",
+  "icu_properties_data",
+  "icu_provider",
+- "tinystr",
++ "potential_utf",
++ "zerotrie",
+  "zerovec",
+ ]
+ 
+ [[package]]
+ name = "icu_properties_data"
+-version = "1.5.0"
++version = "2.0.0"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "67a8effbc3dd3e4ba1afa8ad918d5684b8868b3b26500753effea8d2eed19569"
++checksum = "8197e866e47b68f8f7d95249e172903bec06004b18b2937f1095d40a0c57de04"
+ 
+ [[package]]
+ name = "icu_provider"
+-version = "1.5.0"
++version = "2.0.0"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "6ed421c8a8ef78d3e2dbc98a973be2f3770cb42b606e3ab18d6237c4dfde68d9"
++checksum = "03c80da27b5f4187909049ee2d72f276f0d9f99a42c306bd0131ecfe04d8e5af"
+ dependencies = [
+  "displaydoc",
+- "icu_locid",
+- "icu_provider_macros",
++ "icu_locale_core",
+  "stable_deref_trait",
+  "tinystr",
+  "writeable",
+  "yoke",
+  "zerofrom",
++ "zerotrie",
+  "zerovec",
+ ]
+ 
+-[[package]]
+-name = "icu_provider_macros"
+-version = "1.5.0"
+-source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "1ec89e9337638ecdc08744df490b221a7399bf8d164eb52a665454e60e075ad6"
+-dependencies = [
+- "proc-macro2",
+- "quote",
+- "syn",
+-]
+-
+ [[package]]
+ name = "idna"
+ version = "1.0.3"
+@@ -1821,9 +1816,9 @@ dependencies = [
+ 
+ [[package]]
+ name = "idna_adapter"
+-version = "1.2.0"
++version = "1.2.1"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "daca1df1c957320b2cf139ac61e7bd64fed304c5040df000a745aa1de3b4ef71"
++checksum = "3acae9609540aa318d1bc588455225fb2085b9ed0c4f6bd0d9d5bcd86f1a0344"
+ dependencies = [
+  "icu_normalizer",
+  "icu_properties",
+@@ -1882,9 +1877,9 @@ checksum = "f4c7245a08504955605670dbf141fceab975f15ca21570696aebe9d2e71576bd"
+ 
+ [[package]]
+ name = "io-uring"
+-version = "0.7.8"
++version = "0.7.9"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "b86e202f00093dcba4275d4636b93ef9dd75d025ae560d2521b45ea28ab49013"
++checksum = "d93587f37623a1a17d94ef2bc9ada592f5465fe7732084ab7beefabe5c77c0c4"
+ dependencies = [
+  "bitflags",
+  "cfg-if",
+@@ -1912,15 +1907,15 @@ dependencies = [
+ 
+ [[package]]
+ name = "itoa"
+-version = "1.0.11"
++version = "1.0.15"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "49f1f14873335454500d59611f1cf4a4b0f786f9ac11f4312a78e4cf2566695b"
++checksum = "4a5f13b858c8d314ee3e8f639011f7ccefe71f97f96e50151fb991f267928e2c"
+ 
+ [[package]]
+ name = "jiff"
+-version = "0.2.10"
++version = "0.2.13"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "5a064218214dc6a10fbae5ec5fa888d80c45d611aba169222fc272072bf7aef6"
++checksum = "f02000660d30638906021176af16b17498bd0d12813dbfe7b276d8bc7f3c0806"
+ dependencies = [
+  "jiff-static",
+  "jiff-tzdb-platform",
+@@ -1933,9 +1928,9 @@ dependencies = [
+ 
+ [[package]]
+ name = "jiff-static"
+-version = "0.2.10"
++version = "0.2.13"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "199b7932d97e325aff3a7030e141eafe7f2c6268e1d1b24859b753a627f45254"
++checksum = "f3c30758ddd7188629c6713fc45d1188af4f44c90582311d0c8d8c9907f60c48"
+ dependencies = [
+  "proc-macro2",
+  "quote",
+@@ -1959,10 +1954,11 @@ dependencies = [
+ 
+ [[package]]
+ name = "js-sys"
+-version = "0.3.70"
++version = "0.3.77"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "1868808506b929d7b0cfa8f75951347aa71bb21144b7791bae35d9bccfcfe37a"
++checksum = "1cfaf33c695fc6e08064efbc1f72ec937429614f25eef83af942d0e227c3a28f"
+ dependencies = [
++ "once_cell",
+  "wasm-bindgen",
+ ]
+ 
+@@ -1988,7 +1984,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
+ checksum = "6a793df0d7afeac54f95b471d3af7f0d4fb975699f972341a4b76988d49cdf0c"
+ dependencies = [
+  "cfg-if",
+- "windows-targets 0.53.2",
++ "windows-targets 0.52.6",
+ ]
+ 
+ [[package]]
+@@ -2013,21 +2009,21 @@ dependencies = [
+ 
+ [[package]]
+ name = "linux-raw-sys"
+-version = "0.4.14"
++version = "0.4.15"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "78b3ae25bc7c8c38cec158d1f2757ee79e9b3740fbc7ccf0e59e4b08d793fa89"
++checksum = "d26c52dbd32dccf2d10cac7725f8eae5296885fb5703b261f7d0a0739ec807ab"
+ 
+ [[package]]
+ name = "linux-raw-sys"
+-version = "0.9.2"
++version = "0.9.4"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "6db9c683daf087dc577b7506e9695b3d556a9f3849903fa28186283afd6809e9"
++checksum = "cd945864f07fe9f5371a27ad7b52a172b4b499999f1d97574c9fa68373937e12"
+ 
+ [[package]]
+ name = "litemap"
+-version = "0.7.3"
++version = "0.8.0"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "643cb0b8d4fcc284004d5fd0d67ccf61dfffadb7f75e1e71bc420f4688a3a704"
++checksum = "241eaef5fd12c88705a01fc1066c48c4b36e0dd4377dcdc7ec3942cea7a69956"
+ 
+ [[package]]
+ name = "lock_api"
+@@ -2064,38 +2060,28 @@ checksum = "78ca9ab1a0babb1e7d5695e3530886289c18cf2f87ec19a575a0abdce112e3a3"
+ 
+ [[package]]
+ name = "memmap2"
+-version = "0.9.4"
++version = "0.9.5"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "fe751422e4a8caa417e13c3ea66452215d7d63e19e604f4980461212f3ae1322"
++checksum = "fd3f7eed9d3848f8b98834af67102b720745c4ec028fcd0aa0239277e7de374f"
+ dependencies = [
+  "libc",
+ ]
+ 
+ [[package]]
+ name = "miniz_oxide"
+-version = "0.7.4"
++version = "0.8.8"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "b8a240ddb74feaf34a79a7add65a741f3167852fba007066dcac1ca548d89c08"
+-dependencies = [
+- "adler",
+-]
+-
+-[[package]]
+-name = "miniz_oxide"
+-version = "0.8.7"
+-source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "ff70ce3e48ae43fa075863cef62e8b43b71a4f2382229920e0df362592919430"
++checksum = "3be647b768db090acb35d5ec5db2b0e1f1de11133ca123b9eacf5137868f892a"
+ dependencies = [
+  "adler2",
+ ]
+ 
+ [[package]]
+ name = "mio"
+-version = "1.0.2"
++version = "1.0.3"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "80e04d1dcff3aae0704555fe5fee3bcfaf3d1fdf8a7e521d5b9d2b42acb52cec"
++checksum = "2886843bf800fba2e3377cff24abf6379b4c4d5c6681eaf9ea5b0d15090450bd"
+ dependencies = [
+- "hermit-abi",
+  "libc",
+  "log",
+  "wasi 0.11.0+wasi-snapshot-preview1",
+@@ -2144,9 +2130,9 @@ dependencies = [
+ 
+ [[package]]
+ name = "object"
+-version = "0.36.4"
++version = "0.36.7"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "084f1a5821ac4c651660a94a7153d27ac9d8a53736203f58b31945ded098070a"
++checksum = "62948e14d923ea95ea2c7c86c71013138b66525b86bdc08d2dcc262bdb497b87"
+ dependencies = [
+  "memchr",
+ ]
+@@ -2193,9 +2179,9 @@ dependencies = [
+ 
+ [[package]]
+ name = "pathdiff"
+-version = "0.2.1"
++version = "0.2.3"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "8835116a5c179084a830efb3adc117ab007512b535bc1a21c991d3b32a6b44dd"
++checksum = "df94ce210e5bc13cb6651479fa48d14f601d9858cfe0467f43ae157023b938d3"
+ 
+ [[package]]
+ name = "percent-encoding"
+@@ -2205,9 +2191,9 @@ checksum = "e3148f5046208a5d56bcfc03053e3ca6334e51da8dfb19b6cdc8b306fae3283e"
+ 
+ [[package]]
+ name = "pin-project-lite"
+-version = "0.2.14"
++version = "0.2.16"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "bda66fc9667c18cb2758a2ac84d1167245054bcf85d5d1aaa6923f45801bdd02"
++checksum = "3b3cff922bd51709b605d9ead9aa71031d81447142d828eb4a6eba76fe619f9b"
+ 
+ [[package]]
+ name = "pin-utils"
+@@ -2230,6 +2216,15 @@ dependencies = [
+  "portable-atomic",
+ ]
+ 
++[[package]]
++name = "potential_utf"
++version = "0.1.2"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "e5a7c30837279ca13e7c867e9e40053bc68740f988cb07f7ca6df43cc734b585"
++dependencies = [
++ "zerovec",
++]
++
+ [[package]]
+ name = "proc-macro2"
+ version = "1.0.95"
+@@ -2278,6 +2273,12 @@ dependencies = [
+  "proc-macro2",
+ ]
+ 
++[[package]]
++name = "r-efi"
++version = "5.2.0"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "74765f6d916ee2faa39bc8e68e4f3ed8949b48cccdac59983d287a7cb71ce9c5"
++
+ [[package]]
+ name = "rand"
+ version = "0.8.5"
+@@ -2293,7 +2294,7 @@ version = "0.6.4"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+ checksum = "ec0be4795e2f6a28069bec0b5ff3e2ac9bafc99e6a9a7dc3547996c5c816922c"
+ dependencies = [
+- "getrandom 0.2.15",
++ "getrandom 0.2.16",
+ ]
+ 
+ [[package]]
+@@ -2318,9 +2319,9 @@ dependencies = [
+ 
+ [[package]]
+ name = "redox_syscall"
+-version = "0.5.3"
++version = "0.5.12"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "2a908a6e00f1fdd0dfd9c0eb08ce85126f6d8bbda50017e74bc4a4b7d4a926a4"
++checksum = "928fca9cf2aa042393a8325b9ead81d2f0df4cb12e1e24cef072922ccd99c5af"
+ dependencies = [
+  "bitflags",
+ ]
+@@ -2392,7 +2393,7 @@ dependencies = [
+  "bitflags",
+  "errno",
+  "libc",
+- "linux-raw-sys 0.4.14",
++ "linux-raw-sys 0.4.15",
+  "windows-sys 0.59.0",
+ ]
+ 
+@@ -2405,15 +2406,21 @@ dependencies = [
+  "bitflags",
+  "errno",
+  "libc",
+- "linux-raw-sys 0.9.2",
++ "linux-raw-sys 0.9.4",
+  "windows-sys 0.59.0",
+ ]
+ 
+ [[package]]
+-name = "ryu"
+-version = "1.0.18"
++name = "rustversion"
++version = "1.0.20"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "f3cb5ba0dc43242ce17de99c180e96db90b235b8a9fdc9543c96d2209116bd9f"
++checksum = "eded382c5f5f786b989652c49544c4877d9f015cc22e145a5ea8ea66c2921cd2"
++
++[[package]]
++name = "ryu"
++version = "1.0.20"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "28d3b2b1366ec20994f1fd18c3c594f05c5dd4bc44d8bb0c1c632c8d6829481f"
+ 
+ [[package]]
+ name = "same-file"
+@@ -2527,9 +2534,9 @@ dependencies = [
+ 
+ [[package]]
+ name = "signal-hook-registry"
+-version = "1.4.2"
++version = "1.4.5"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "a9e9e0b4211b72e7b8b6e85c807d36c212bdb33ea8587f7569562a84df5465b1"
++checksum = "9203b8055f63a2a00e2f593bb0510367fe707d7ff1e5c872de2f537b339e5410"
+ dependencies = [
+  "libc",
+ ]
+@@ -2589,12 +2596,12 @@ checksum = "b7c388c1b5e93756d0c740965c41e8822f866621d41acbdf6336a6a168f8840c"
+ 
+ [[package]]
+ name = "socket2"
+-version = "0.5.7"
++version = "0.6.0"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "ce305eb0b4296696835b71df73eb912e0f1ffd2556a501fcede6e0c50349191c"
++checksum = "233504af464074f9d066d7b5416c5f9b894a5862a6506e306f7b816cdd6f1807"
+ dependencies = [
+  "libc",
+- "windows-sys 0.52.0",
++ "windows-sys 0.59.0",
+ ]
+ 
+ [[package]]
+@@ -2611,9 +2618,9 @@ checksum = "a2eb9349b6444b326872e140eb1cf5e7c522154d69e7a0ffb0fb81c06b37543f"
+ 
+ [[package]]
+ name = "str_indices"
+-version = "0.4.3"
++version = "0.4.4"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "e9557cb6521e8d009c51a8666f09356f4b817ba9ba0981a305bd86aee47bd35c"
++checksum = "d08889ec5408683408db66ad89e0e1f93dff55c73a4ccc71c427d5b277ee47e6"
+ 
+ [[package]]
+ name = "syn"
+@@ -2628,9 +2635,9 @@ dependencies = [
+ 
+ [[package]]
+ name = "synstructure"
+-version = "0.13.1"
++version = "0.13.2"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "c8af7666ab7b6390ab78131fb5b0fce11d6b7a6951602017c35fa82800708971"
++checksum = "728a70f3dbaf5bab7f0c4b1ac8d7ae5ea60a4b5549c8a5914361c99147a709d2"
+ dependencies = [
+  "proc-macro2",
+  "quote",
+@@ -2644,7 +2651,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
+ checksum = "e8a64e3985349f2441a1a9ef0b853f869006c3855f2cda6862a94d26ebb9d6a1"
+ dependencies = [
+  "fastrand",
+- "getrandom 0.3.1",
++ "getrandom 0.3.3",
+  "once_cell",
+  "rustix 1.0.7",
+  "windows-sys 0.59.0",
+@@ -2721,9 +2728,9 @@ dependencies = [
+ 
+ [[package]]
+ name = "tinystr"
+-version = "0.7.6"
++version = "0.8.1"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "9117f5d4db391c1cf6927e7bea3db74b9a1c1add8f7eda9ffd5364f40f57b82f"
++checksum = "5d4f6d1145dcb577acf783d4e601bc1d76a13337bb54e6233add580b07344c8b"
+ dependencies = [
+  "displaydoc",
+  "zerovec",
+@@ -2731,9 +2738,9 @@ dependencies = [
+ 
+ [[package]]
+ name = "tinyvec"
+-version = "1.8.0"
++version = "1.9.0"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "445e881f4f6d382d5f27c034e25eb92edd7c784ceab92a0937db7f2e9471b938"
++checksum = "09b3661f17e86524eccd4371ab0429194e0d7c008abb45f7a7495b1719463c71"
+ dependencies = [
+  "tinyvec_macros",
+ ]
+@@ -2746,9 +2753,9 @@ checksum = "1f3ccbac311fea05f86f61904b462b55fb3df8837a366dfc601a0161d0532f20"
+ 
+ [[package]]
+ name = "tokio"
+-version = "1.46.1"
++version = "1.47.0"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "0cc3a2344dafbe23a245241fe8b09735b521110d30fcefbbd5feb1797ca35d17"
++checksum = "43864ed400b6043a4757a25c7a64a8efde741aed79a056a2fb348a406701bb35"
+ dependencies = [
+  "backtrace",
+  "bytes",
+@@ -2761,7 +2768,7 @@ dependencies = [
+  "slab",
+  "socket2",
+  "tokio-macros",
+- "windows-sys 0.52.0",
++ "windows-sys 0.59.0",
+ ]
+ 
+ [[package]]
+@@ -2788,9 +2795,9 @@ dependencies = [
+ 
+ [[package]]
+ name = "toml"
+-version = "0.9.2"
++version = "0.9.3"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "ed0aee96c12fa71097902e0bb061a5e1ebd766a6636bb605ba401c45c1650eac"
++checksum = "e06723639aaded957e5a80be250c1f82f274b9d23ebb4d94163668470623461c"
+ dependencies = [
+  "indexmap",
+  "serde",
+@@ -2844,9 +2851,9 @@ dependencies = [
+ 
+ [[package]]
+ name = "tree-house-bindings"
+-version = "0.2.1"
++version = "0.2.0"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "3f1646788fe0afdbf8e191b5d0f558df7333d8857665a67053c532ec811e6086"
++checksum = "690809022f44e3d2329882649724b6e0027ade3fada65e4631d303e744dc32b4"
+ dependencies = [
+  "cc",
+  "libloading",
+@@ -2863,12 +2870,9 @@ checksum = "1dccffe3ce07af9386bfd29e80c0ab1a8205a2fc34e4bcd40364df902cfa8f3f"
+ 
+ [[package]]
+ name = "unicase"
+-version = "2.7.0"
++version = "2.8.1"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "f7d2d4dafb69621809a81864c9c1b864479e1235c0dd4e199924b9742439ed89"
+-dependencies = [
+- "version_check",
+-]
++checksum = "75b844d17643ee918803943289730bec8aac480150456169e647ed0b576ba539"
+ 
+ [[package]]
+ name = "unicode-bom"
+@@ -2884,9 +2888,9 @@ checksum = "24adfe8311434967077a6adff125729161e6e4934d76f6b7c55318ac5c9246d3"
+ 
+ [[package]]
+ name = "unicode-ident"
+-version = "1.0.12"
++version = "1.0.18"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "3354b9ac3fae1ff6755cb6db53683adb661634f67557942dea4facebec0fee4b"
++checksum = "5a5f39404a5da50712a4c1eecf25e90dd62b613502b7e925fd4e4d19b5c96512"
+ 
+ [[package]]
+ name = "unicode-linebreak"
+@@ -2896,9 +2900,9 @@ checksum = "3b09c83c3c29d37506a3e260c08c03743a6bb66a9cd432c6934ab501a190571f"
+ 
+ [[package]]
+ name = "unicode-normalization"
+-version = "0.1.23"
++version = "0.1.24"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "a56d1686db2308d901306f92a263857ef59ea39678a5458e7cb17f01415101f5"
++checksum = "5033c97c4262335cded6d6fc3e5c18ab755e1a3dc96376350f3d8e9f009ad956"
+ dependencies = [
+  "tinyvec",
+ ]
+@@ -2933,12 +2937,6 @@ dependencies = [
+  "serde",
+ ]
+ 
+-[[package]]
+-name = "utf16_iter"
+-version = "1.0.5"
+-source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "c8232dd3cdaed5356e0f716d285e4b40b932ac434100fe9b7e0e8e935b9e6246"
+-
+ [[package]]
+ name = "utf8_iter"
+ version = "1.0.4"
+@@ -2969,33 +2967,33 @@ checksum = "9c8d87e72b64a3b4db28d11ce29237c246188f4f51057d65a7eab63b7987e423"
+ 
+ [[package]]
+ name = "wasi"
+-version = "0.13.3+wasi-0.2.2"
++version = "0.14.2+wasi-0.2.4"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "26816d2e1a4a36a2940b96c5296ce403917633dff8f3440e9b236ed6f6bacad2"
++checksum = "9683f9a5a998d873c0d21fcbe3c083009670149a8fab228644b8bd36b2c48cb3"
+ dependencies = [
+  "wit-bindgen-rt",
+ ]
+ 
+ [[package]]
+ name = "wasm-bindgen"
+-version = "0.2.93"
++version = "0.2.100"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "a82edfc16a6c469f5f44dc7b571814045d60404b55a0ee849f9bcfa2e63dd9b5"
++checksum = "1edc8929d7499fc4e8f0be2262a241556cfc54a0bea223790e71446f2aab1ef5"
+ dependencies = [
+  "cfg-if",
+  "once_cell",
++ "rustversion",
+  "wasm-bindgen-macro",
+ ]
+ 
+ [[package]]
+ name = "wasm-bindgen-backend"
+-version = "0.2.93"
++version = "0.2.100"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "9de396da306523044d3302746f1208fa71d7532227f15e347e2d93e4145dd77b"
++checksum = "2f0a0651a5c2bc21487bde11ee802ccaf4c51935d0d3d42a6101f98161700bc6"
+ dependencies = [
+  "bumpalo",
+  "log",
+- "once_cell",
+  "proc-macro2",
+  "quote",
+  "syn",
+@@ -3004,9 +3002,9 @@ dependencies = [
+ 
+ [[package]]
+ name = "wasm-bindgen-macro"
+-version = "0.2.93"
++version = "0.2.100"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "585c4c91a46b072c92e908d99cb1dcdf95c5218eeb6f3bf1efa991ee7a68cccf"
++checksum = "7fe63fc6d09ed3792bd0897b314f53de8e16568c2b3f7982f468c0bf9bd0b407"
+ dependencies = [
+  "quote",
+  "wasm-bindgen-macro-support",
+@@ -3014,9 +3012,9 @@ dependencies = [
+ 
+ [[package]]
+ name = "wasm-bindgen-macro-support"
+-version = "0.2.93"
++version = "0.2.100"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "afc340c74d9005395cf9dd098506f7f44e38f2b4a21c6aaacf9a105ea5e1e836"
++checksum = "8ae87ea40c9f689fc23f209965b6fb8a99ad69aeeb0231408be24920604395de"
+ dependencies = [
+  "proc-macro2",
+  "quote",
+@@ -3027,9 +3025,12 @@ dependencies = [
+ 
+ [[package]]
+ name = "wasm-bindgen-shared"
+-version = "0.2.93"
++version = "0.2.100"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "c62a0a307cb4a311d3a07867860911ca130c3494e8c2719593806c08bc5d0484"
++checksum = "1a05d73b933a847d6cccdda8f838a22ff101ad9bf93e33684f39c1f5f0eece3d"
++dependencies = [
++ "unicode-ident",
++]
+ 
+ [[package]]
+ name = "which"
+@@ -3075,18 +3076,62 @@ checksum = "712e227841d057c1ee1cd2fb22fa7e5a5461ae8e48fa2ca79ec42cfc1931183f"
+ 
+ [[package]]
+ name = "windows-core"
+-version = "0.52.0"
++version = "0.61.1"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "33ab640c8d7e35bf8ba19b884ba838ceb4fba93a4e8c65a9059d08afcfc683d9"
++checksum = "46ec44dc15085cea82cf9c78f85a9114c463a369786585ad2882d1ff0b0acf40"
+ dependencies = [
+- "windows-targets 0.52.6",
++ "windows-implement",
++ "windows-interface",
++ "windows-link",
++ "windows-result",
++ "windows-strings",
++]
++
++[[package]]
++name = "windows-implement"
++version = "0.60.0"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "a47fddd13af08290e67f4acabf4b459f647552718f683a7b415d290ac744a836"
++dependencies = [
++ "proc-macro2",
++ "quote",
++ "syn",
++]
++
++[[package]]
++name = "windows-interface"
++version = "0.59.1"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "bd9211b69f8dcdfa817bfd14bf1c97c9188afa36f4750130fcdf3f400eca9fa8"
++dependencies = [
++ "proc-macro2",
++ "quote",
++ "syn",
+ ]
+ 
+ [[package]]
+ name = "windows-link"
+-version = "0.1.0"
++version = "0.1.3"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "6dccfd733ce2b1753b03b6d3c65edf020262ea35e20ccdf3e288043e6dd620e3"
++checksum = "5e6ad25900d524eaabdbbb96d20b4311e1e7ae1699af4fb28c17ae66c80d798a"
++
++[[package]]
++name = "windows-result"
++version = "0.3.3"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "4b895b5356fc36103d0f64dd1e94dfa7ac5633f1c9dd6e80fe9ec4adef69e09d"
++dependencies = [
++ "windows-link",
++]
++
++[[package]]
++name = "windows-strings"
++version = "0.4.1"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "2a7ab927b2637c19b3dbe0965e75d8f2d30bdd697a1516191cad2ec4df8fb28a"
++dependencies = [
++ "windows-link",
++]
+ 
+ [[package]]
+ name = "windows-sys"
+@@ -3112,7 +3157,7 @@ version = "0.60.2"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+ checksum = "f2f500e4d28234f72040990ec9d39e3a6b950f9f22d3dba18416c35882612bcb"
+ dependencies = [
+- "windows-targets 0.53.2",
++ "windows-targets 0.53.3",
+ ]
+ 
+ [[package]]
+@@ -3133,10 +3178,11 @@ dependencies = [
+ 
+ [[package]]
+ name = "windows-targets"
+-version = "0.53.2"
++version = "0.53.3"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "c66f69fcc9ce11da9966ddb31a40968cad001c5bedeb5c2b82ede4253ab48aef"
++checksum = "d5fe6031c4041849d7c496a8ded650796e7b6ecc19df1a431c1a363342e5dc91"
+ dependencies = [
++ "windows-link",
+  "windows_aarch64_gnullvm 0.53.0",
+  "windows_aarch64_msvc 0.53.0",
+  "windows_i686_gnu 0.53.0",
+@@ -3260,24 +3306,18 @@ checksum = "d135d17ab770252ad95e9a872d365cf3090e3be864a34ab46f48555993efc904"
+ 
+ [[package]]
+ name = "wit-bindgen-rt"
+-version = "0.33.0"
++version = "0.39.0"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "3268f3d866458b787f390cf61f4bbb563b922d091359f9608842999eaee3943c"
++checksum = "6f42320e61fe2cfd34354ecb597f86f413484a798ba44a8ca1165c58d42da6c1"
+ dependencies = [
+  "bitflags",
+ ]
+ 
+-[[package]]
+-name = "write16"
+-version = "1.0.0"
+-source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "d1890f4022759daae28ed4fe62859b1236caebfc61ede2f63ed4e695f3f6d936"
+-
+ [[package]]
+ name = "writeable"
+-version = "0.5.5"
++version = "0.6.1"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "1e9df38ee2d2c3c5948ea468a8406ff0db0b29ae1ffde1bcf20ef305bcc95c51"
++checksum = "ea2f10b9bb0928dfb1b42b65e1f9e36f7f54dbdf08457afefb38afcdec4fa2bb"
+ 
+ [[package]]
+ name = "xtask"
+@@ -3292,9 +3332,9 @@ dependencies = [
+ 
+ [[package]]
+ name = "yoke"
+-version = "0.7.4"
++version = "0.8.0"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "6c5b1314b079b0930c31e3af543d8ee1757b1951ae1e1565ec704403a7240ca5"
++checksum = "5f41bb01b8226ef4bfd589436a297c53d118f65921786300e427be8d487695cc"
+ dependencies = [
+  "serde",
+  "stable_deref_trait",
+@@ -3304,9 +3344,9 @@ dependencies = [
+ 
+ [[package]]
+ name = "yoke-derive"
+-version = "0.7.4"
++version = "0.8.0"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "28cc31741b18cb6f1d5ff12f5b7523e3d6eb0852bbbad19d73905511d9849b95"
++checksum = "38da3c9736e16c5d3c8c597a9aaa5d1fa565d0532ae05e27c24aa62fb32c0ab6"
+ dependencies = [
+  "proc-macro2",
+  "quote",
+@@ -3336,18 +3376,18 @@ dependencies = [
+ 
+ [[package]]
+ name = "zerofrom"
+-version = "0.1.4"
++version = "0.1.6"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "91ec111ce797d0e0784a1116d0ddcdbea84322cd79e5d5ad173daeba4f93ab55"
++checksum = "50cc42e0333e05660c3587f3bf9d0478688e15d870fab3346451ce7f8c9fbea5"
+ dependencies = [
+  "zerofrom-derive",
+ ]
+ 
+ [[package]]
+ name = "zerofrom-derive"
+-version = "0.1.4"
++version = "0.1.6"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "0ea7b4a3637ea8669cedf0f1fd5c286a17f3de97b8dd5a70a6c167a1730e63a5"
++checksum = "d71e5d6e06ab090c67b5e44993ec16b72dcbaabc526db883a360057678b48502"
+ dependencies = [
+  "proc-macro2",
+  "quote",
+@@ -3356,10 +3396,21 @@ dependencies = [
+ ]
+ 
+ [[package]]
+-name = "zerovec"
+-version = "0.10.4"
++name = "zerotrie"
++version = "0.2.2"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "aa2b893d79df23bfb12d5461018d408ea19dfafe76c2c7ef6d4eba614f8ff079"
++checksum = "36f0bbd478583f79edad978b407914f61b2972f5af6fa089686016be8f9af595"
++dependencies = [
++ "displaydoc",
++ "yoke",
++ "zerofrom",
++]
++
++[[package]]
++name = "zerovec"
++version = "0.11.2"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "4a05eb080e015ba39cc9e23bbe5e7fb04d5fb040350f99f34e338d5fdd294428"
+ dependencies = [
+  "yoke",
+  "zerofrom",
+@@ -3368,9 +3419,9 @@ dependencies = [
+ 
+ [[package]]
+ name = "zerovec-derive"
+-version = "0.10.3"
++version = "0.11.1"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "6eafa6dfb17584ea3e2bd6e76e0cc15ad7af12b09abdd1ca55961bed9b1063c6"
++checksum = "5b96237efa0c878c64bd89c436f661be4e46b2f3eff1ebb976f7ef2321d2f58f"
+ dependencies = [
+  "proc-macro2",
+  "quote",
+diff --git a/book/src/editor.md b/book/src/editor.md
+index f3b3dde59..49c632249 100644
+--- a/book/src/editor.md
++++ b/book/src/editor.md
+@@ -4,6 +4,7 @@ ## Editor
+ - [`[editor.clipboard-provider]` Section](#editorclipboard-provider-section)
+ - [`[editor.statusline]` Section](#editorstatusline-section)
+ - [`[editor.lsp]` Section](#editorlsp-section)
++- [`[editor.inline-blame]` Section](#editorinlineblame-section)
+ - [`[editor.cursor-shape]` Section](#editorcursor-shape-section)
+ - [`[editor.file-picker]` Section](#editorfile-picker-section)
+ - [`[editor.auto-pairs]` Section](#editorauto-pairs-section)
+@@ -173,6 +174,39 @@ ### `[editor.lsp]` Section
+ 
+ [^2]: You may also have to activate them in the language server config for them to appear, not just in Helix. Inlay hints in Helix are still being improved on and may be a little bit laggy/janky under some circumstances. Please report any bugs you see so we can fix them!
+ 
++### `[editor.inline-blame]` Section
++
++Inline blame is virtual text that appears at the end of a line, displaying information about the most recent commit that affected this line.
++
++| Key     | Description                                | Default |
++| ------- | ------------------------------------------ | ------- |
++| `show` | When to show inline blame | `"never"` |
++| `auto-fetch` | Automatically fetch blame information in the background | `false` |
++| `format` | Inline blame message format | `"{author}, {time-ago} • {title} • {commit}"` |
++
++`show` can be one of the following:
++- `"all-lines"`: Inline blame is on every line.
++- `"cursor-line"`: Inline blame is only on the line of the primary cursor.
++- `"hidden"`: Inline blame is hidden.
++
++With `auto-fetch` set to `false`, blame for the current file is fetched only when explicitly requested, such as when using `space + B` to display the blame for the line of the cursor. There may be a little delay when loading the blame.
++
++When `auto-fetch` is set to `true`, blame for the file is fetched in the background; this will have no effect on performance, but will use a little bit extra resources in the background. Directly requesting the blame with `space + B` will be instant. Inline blame will show as soon as the blame is available when loading new files.
++
++When opening new files, even with `show` set to `"all-lines"` or `"cursor-line"`, the inline blame won't show. It needs to be fetched first in order to become available, which can be triggered manually with `space + B`.
++
++#### `format`
++
++Change the `format` string to customize the blame message displayed. Variables are text placeholders wrapped in curly braces: `{variable}`. The following variables are available:
++
++- `author`: The author of the commit
++- `date`: When the commit was made
++- `time-ago`: How long ago the commit was made
++- `title`: The title of the commit
++- `body`: The body of the commit
++- `commit`: The short hex SHA1 hash of the commit
++- `email`: The email of the author of the commit
++
+ ### `[editor.cursor-shape]` Section
+ 
+ Defines the shape of cursor in each mode.
+diff --git a/book/src/generated/static-cmd.md b/book/src/generated/static-cmd.md
+index 6d5566ec7..40bbfedf1 100644
+--- a/book/src/generated/static-cmd.md
++++ b/book/src/generated/static-cmd.md
+@@ -321,5 +321,6 @@
+ | `extend_to_word` | Extend to a two-character label | select: `` gw `` |
+ | `goto_next_tabstop` | Goto next snippet placeholder |  |
+ | `goto_prev_tabstop` | Goto next snippet placeholder |  |
++| `blame_line` | Show blame for the current line | normal: `` <space>B ``, select: `` <space>B `` |
+ | `rotate_selections_first` | Make the first selection your primary one |  |
+ | `rotate_selections_last` | Make the last selection your primary one |  |
+diff --git a/book/src/keymap.md b/book/src/keymap.md
+index 99550c498..651dc9313 100644
+--- a/book/src/keymap.md
++++ b/book/src/keymap.md
+@@ -333,6 +333,7 @@ #### Space mode
+ | `R`     | Replace selections by clipboard contents                                | `replace_selections_with_clipboard`        |
+ | `/`     | Global search in workspace folder                                       | `global_search`                            |
+ | `?`     | Open command palette                                                    | `command_palette`                          |
++| `B`     | Show blame for the current line                                         | `blame_line`                             |
+ 
+ > 💡 Global search displays results in a fuzzy picker, use `Space + '` to bring it back up after opening a file.
+ 
+diff --git a/book/src/themes.md b/book/src/themes.md
+index 8140120bc..7541289a0 100644
+--- a/book/src/themes.md
++++ b/book/src/themes.md
+@@ -327,6 +327,7 @@ #### Interface
+ | `ui.virtual.inlay-hint.type`      | Style for inlay hints of kind `type` (language servers are not required to set a kind)         |
+ | `ui.virtual.wrap`                 | Soft-wrap indicator (see the [`editor.soft-wrap` config][editor-section])                      |
+ | `ui.virtual.jump-label`           | Style for virtual jump labels                                                                  |
++| `ui.virtual.inline-blame`         | Inline blame indicator (see the [`editor.inline-blame` config][editor-section])                |
+ | `ui.menu`                         | Code and command completion menus                                                              |
+ | `ui.menu.selected`                | Selected autocomplete item                                                                     |
+ | `ui.menu.scroll`                  | `fg` sets thumb color, `bg` sets track color of scrollbar                                      |
+diff --git a/helix-stdx/src/lib.rs b/helix-stdx/src/lib.rs
+index e371f3920..143d141df 100644
+--- a/helix-stdx/src/lib.rs
++++ b/helix-stdx/src/lib.rs
+@@ -6,5 +6,7 @@
+ pub mod path;
+ pub mod range;
+ pub mod rope;
++pub mod str;
++pub mod time;
+ 
+ pub use range::Range;
+diff --git a/helix-stdx/src/str.rs b/helix-stdx/src/str.rs
+new file mode 100644
+index 000000000..942acea95
+--- /dev/null
++++ b/helix-stdx/src/str.rs
+@@ -0,0 +1,18 @@
++/// Concatenates strings together.
++///
++/// `str_concat!(a, " ", b, " ", c)` is:
++/// - more performant than `format!("{a} {b} {c}")`
++/// - more ergonomic than using `String::with_capacity` followed by a series of `String::push_str`
++#[macro_export]
++macro_rules! str_concat {
++    ($($value:expr),*) => {{
++        // Rust does not allow using `+` as separator between value
++        // so we must add that at the end of everything. The `0` is necessary
++        // at the end so it does not end with "+ " (which would be invalid syntax)
++        let mut buf = String::with_capacity($($value.len() + )* 0);
++        $(
++            buf.push_str(&$value);
++        )*
++        buf
++    }}
++}
+diff --git a/helix-stdx/src/time.rs b/helix-stdx/src/time.rs
+new file mode 100644
+index 000000000..08a45988c
+--- /dev/null
++++ b/helix-stdx/src/time.rs
+@@ -0,0 +1,75 @@
++use std::time::{Instant, SystemTime};
++
++use once_cell::sync::Lazy;
++
++const SECOND: i64 = 1;
++const MINUTE: i64 = 60 * SECOND;
++const HOUR: i64 = 60 * MINUTE;
++const DAY: i64 = 24 * HOUR;
++const MONTH: i64 = 30 * DAY;
++const YEAR: i64 = 365 * DAY;
++
++/// Like `std::time::SystemTime::now()` but does not cause a syscall on every invocation.
++///
++/// There is just one syscall at the start of the program, subsequent invocations are
++/// much cheaper and use the monotonic clock instead of trigerring a syscall.
++#[inline]
++fn now() -> SystemTime {
++    static START_INSTANT: Lazy<Instant> = Lazy::new(Instant::now);
++    static START_SYSTEM_TIME: Lazy<SystemTime> = Lazy::new(SystemTime::now);
++
++    *START_SYSTEM_TIME + START_INSTANT.elapsed()
++}
++
++/// Formats a timestamp into a human-readable relative time string.
++///
++/// # Arguments
++///
++/// * `timestamp` - A point in history. Seconds since UNIX epoch (UTC)
++/// * `timezone_offset` - Timezone offset in seconds
++///
++/// # Returns
++///
++/// A String representing the relative time (e.g., "4 years ago", "11 months from now")
++#[inline]
++pub fn format_relative_time(timestamp: i64, timezone_offset: i32) -> String {
++    let timestamp = timestamp + timezone_offset as i64;
++    let now = now()
++        .duration_since(std::time::UNIX_EPOCH)
++        .unwrap_or_default()
++        .as_secs() as i64
++        + timezone_offset as i64;
++
++    let time_passed = now - timestamp;
++
++    let time_difference = time_passed.abs();
++
++    let (value, unit) = if time_difference >= YEAR {
++        let years = time_difference / YEAR;
++        (years, if years == 1 { "year" } else { "years" })
++    } else if time_difference >= MONTH {
++        let months = time_difference / MONTH;
++        (months, if months == 1 { "month" } else { "months" })
++    } else if time_difference >= DAY {
++        let days = time_difference / DAY;
++        (days, if days == 1 { "day" } else { "days" })
++    } else if time_difference >= HOUR {
++        let hours = time_difference / HOUR;
++        (hours, if hours == 1 { "hour" } else { "hours" })
++    } else if time_difference >= MINUTE {
++        let minutes = time_difference / MINUTE;
++        (minutes, if minutes == 1 { "minute" } else { "minutes" })
++    } else {
++        let seconds = time_difference / SECOND;
++        (seconds, if seconds == 1 { "second" } else { "seconds" })
++    };
++    let value = value.to_string();
++
++    let label = if time_passed.is_positive() {
++        "ago"
++    } else {
++        "from now"
++    };
++
++    crate::str_concat!(value, " ", unit, " ", label)
++}
+diff --git a/helix-term/src/application.rs b/helix-term/src/application.rs
+index edf4392c6..f7bfb24b1 100644
+--- a/helix-term/src/application.rs
++++ b/helix-term/src/application.rs
+@@ -11,6 +11,7 @@
+     align_view,
+     document::{DocumentOpenError, DocumentSavedEventResult},
+     editor::{ConfigEvent, EditorEvent},
++    events::EditorConfigDidChange,
+     graphics::Rect,
+     theme,
+     tree::Layout,
+@@ -366,6 +367,10 @@ pub fn handle_config_events(&mut self, config_event: ConfigEvent) {
+             // the Application can apply it.
+             ConfigEvent::Update(editor_config) => {
+                 let mut app_config = (*self.config.load().clone()).clone();
++                helix_event::dispatch(EditorConfigDidChange {
++                    old_config: &app_config.editor,
++                    editor: &mut self.editor,
++                });
+                 app_config.editor = *editor_config;
+                 if let Err(err) = self.terminal.reconfigure(app_config.editor.clone().into()) {
+                     self.editor.set_error(err.to_string());
+diff --git a/helix-term/src/commands.rs b/helix-term/src/commands.rs
+index 5065476db..61a0f72f6 100644
+--- a/helix-term/src/commands.rs
++++ b/helix-term/src/commands.rs
+@@ -11,6 +11,7 @@
+     rope::{self, RopeSliceExt},
+ };
+ use helix_vcs::{FileChange, Hunk};
++use helix_view::document::LineBlameError;
+ pub use lsp::*;
+ pub use syntax::*;
+ use tui::{
+@@ -625,6 +626,7 @@ pub fn doc(&self) -> &str {
+         extend_to_word, "Extend to a two-character label",
+         goto_next_tabstop, "Goto next snippet placeholder",
+         goto_prev_tabstop, "Goto next snippet placeholder",
++        blame_line, "Show blame for the current line",
+         rotate_selections_first, "Make the first selection your primary one",
+         rotate_selections_last, "Make the last selection your primary one",
+     );
+@@ -3504,6 +3506,55 @@ fn insert_at_line_start(cx: &mut Context) {
+     insert_with_indent(cx, IndentFallbackPos::LineStart);
+ }
+ 
++pub(crate) fn blame_line_impl(editor: &mut Editor, doc_id: DocumentId, cursor_line: u32) {
++    let inline_blame_config = &editor.config().inline_blame;
++    let Some(doc) = editor.document(doc_id) else {
++        return;
++    };
++    let line_blame = match doc.line_blame(cursor_line, &inline_blame_config.format) {
++        result
++            if (result.is_ok() && doc.is_blame_potentially_out_of_date)
++                || matches!(result, Err(LineBlameError::NotReadyYet) if !inline_blame_config.auto_fetch) =>
++        {
++            if let Some(path) = doc.path() {
++                let tx = editor.handlers.blame.clone();
++                helix_event::send_blocking(
++                    &tx,
++                    helix_view::handlers::BlameEvent {
++                        path: path.to_path_buf(),
++                        doc_id: doc.id(),
++                        line: Some(cursor_line),
++                    },
++                );
++                editor.set_status(format!("Requested blame for {}...", path.display()));
++                let doc = editor
++                    .document_mut(doc_id)
++                    .expect("exists since we return from the function earlier if it does not");
++                doc.is_blame_potentially_out_of_date = false;
++            } else {
++                editor.set_error("Could not get path of document");
++            };
++            return;
++        }
++        Ok(line_blame) => line_blame,
++        Err(err @ (LineBlameError::NotCommittedYet | LineBlameError::NotReadyYet)) => {
++            editor.set_status(err.to_string());
++            return;
++        }
++        Err(err @ LineBlameError::NoFileBlame(_, _)) => {
++            editor.set_error(err.to_string());
++            return;
++        }
++    };
++
++    editor.set_status(line_blame);
++}
++
++fn blame_line(cx: &mut Context) {
++    let (view, doc) = current_ref!(cx.editor);
++    blame_line_impl(cx.editor, doc.id(), doc.cursor_line(view.id) as u32);
++}
++
+ // `A` inserts at the end of each line with a selection.
+ // If the line is empty, automatically indent.
+ fn insert_at_line_end(cx: &mut Context) {
+diff --git a/helix-term/src/commands/typed.rs b/helix-term/src/commands/typed.rs
+index 3c66a19d4..23d8c0531 100644
+--- a/helix-term/src/commands/typed.rs
++++ b/helix-term/src/commands/typed.rs
+@@ -15,6 +15,7 @@
+ use helix_view::document::{read_to_string, DEFAULT_LANGUAGE_NAME};
+ use helix_view::editor::{CloseError, ConfigEvent};
+ use helix_view::expansion;
++use helix_view::handlers::BlameEvent;
+ use serde_json::Value;
+ use ui::completers::{self, Completer};
+ 
+@@ -1452,16 +1453,33 @@ fn reload(cx: &mut compositor::Context, _args: Args, event: PromptEvent) -> anyh
+     }
+ 
+     let scrolloff = cx.editor.config().scrolloff;
++    let auto_fetch = cx.editor.config().inline_blame.auto_fetch;
+     let (view, doc) = current!(cx.editor);
+     doc.reload(view, &cx.editor.diff_providers).map(|_| {
+         view.ensure_cursor_in_view(doc, scrolloff);
+     })?;
++    let doc_id = doc.id();
+     if let Some(path) = doc.path() {
+         cx.editor
+             .language_servers
+             .file_event_handler
+             .file_changed(path.clone());
+     }
++
++    if doc.should_request_full_file_blame(auto_fetch) {
++        if let Some(path) = doc.path() {
++            helix_event::send_blocking(
++                &cx.editor.handlers.blame,
++                BlameEvent {
++                    path: path.to_path_buf(),
++                    doc_id,
++                    line: None,
++                },
++            );
++        }
++    }
++    doc.is_blame_potentially_out_of_date = true;
++
+     Ok(())
+ }
+ 
+@@ -1488,6 +1506,8 @@ fn reload_all(cx: &mut compositor::Context, _args: Args, event: PromptEvent) ->
+         })
+         .collect();
+ 
++    let blame_compute = cx.editor.config().inline_blame.auto_fetch;
++
+     for (doc_id, view_ids) in docs_view_ids {
+         let doc = doc_mut!(cx.editor, &doc_id);
+ 
+@@ -1515,6 +1535,20 @@ fn reload_all(cx: &mut compositor::Context, _args: Args, event: PromptEvent) ->
+                 view.ensure_cursor_in_view(doc, scrolloff);
+             }
+         }
++
++        if doc.should_request_full_file_blame(blame_compute) {
++            if let Some(path) = doc.path() {
++                helix_event::send_blocking(
++                    &cx.editor.handlers.blame,
++                    BlameEvent {
++                        path: path.to_path_buf(),
++                        doc_id,
++                        line: None,
++                    },
++                );
++            }
++        }
++        doc.is_blame_potentially_out_of_date = true;
+     }
+ 
+     Ok(())
+diff --git a/helix-term/src/events.rs b/helix-term/src/events.rs
+index b0a422989..75d9d607b 100644
+--- a/helix-term/src/events.rs
++++ b/helix-term/src/events.rs
+@@ -2,7 +2,8 @@
+ use helix_view::document::Mode;
+ use helix_view::events::{
+     ConfigDidChange, DiagnosticsDidChange, DocumentDidChange, DocumentDidClose, DocumentDidOpen,
+-    DocumentFocusLost, LanguageServerExited, LanguageServerInitialized, SelectionDidChange,
++    DocumentFocusLost, EditorConfigDidChange, LanguageServerExited, LanguageServerInitialized,
++    SelectionDidChange,
+ };
+ 
+ use crate::commands;
+@@ -20,6 +21,7 @@ pub fn register() {
+     register_event::<PostCommand>();
+     register_event::<DocumentDidOpen>();
+     register_event::<DocumentDidChange>();
++    register_event::<EditorConfigDidChange>();
+     register_event::<DocumentDidClose>();
+     register_event::<DocumentFocusLost>();
+     register_event::<SelectionDidChange>();
+diff --git a/helix-term/src/handlers.rs b/helix-term/src/handlers.rs
+index 46fdbb69e..3ae93d128 100644
+--- a/helix-term/src/handlers.rs
++++ b/helix-term/src/handlers.rs
+@@ -12,9 +12,11 @@
+ 
+ pub use helix_view::handlers::{word_index, Handlers};
+ 
++use self::blame::BlameHandler;
+ use self::document_colors::DocumentColorsHandler;
+ 
+ mod auto_save;
++pub mod blame;
+ pub mod completion;
+ pub mod diagnostics;
+ mod document_colors;
+@@ -31,6 +33,7 @@ pub fn setup(config: Arc<ArcSwap<Config>>) -> Handlers {
+     let word_index = word_index::Handler::spawn();
+     let pull_diagnostics = PullDiagnosticsHandler::new().spawn();
+     let pull_all_documents_diagnostics = PullAllDocumentsDiagnosticHandler::new().spawn();
++    let blame = BlameHandler::default().spawn();
+ 
+     let handlers = Handlers {
+         completions: helix_view::handlers::completion::CompletionHandler::new(event_tx),
+@@ -40,6 +43,7 @@ pub fn setup(config: Arc<ArcSwap<Config>>) -> Handlers {
+         word_index,
+         pull_diagnostics,
+         pull_all_documents_diagnostics,
++        blame,
+     };
+ 
+     helix_view::handlers::register_hooks(&handlers);
+@@ -49,5 +53,6 @@ pub fn setup(config: Arc<ArcSwap<Config>>) -> Handlers {
+     diagnostics::register_hooks(&handlers);
+     snippet::register_hooks(&handlers);
+     document_colors::register_hooks(&handlers);
++    blame::register_hooks(&handlers);
+     handlers
+ }
+diff --git a/helix-term/src/handlers/blame.rs b/helix-term/src/handlers/blame.rs
+new file mode 100644
+index 000000000..309b26aee
+--- /dev/null
++++ b/helix-term/src/handlers/blame.rs
+@@ -0,0 +1,98 @@
++use std::{mem, time::Duration};
++
++use helix_event::register_hook;
++use helix_vcs::FileBlame;
++use helix_view::{
++    events::{DocumentDidOpen, EditorConfigDidChange},
++    handlers::{BlameEvent, Handlers},
++    DocumentId,
++};
++use tokio::time::Instant;
++
++use crate::job;
++
++#[derive(Default)]
++pub struct BlameHandler {
++    file_blame: Option<anyhow::Result<FileBlame>>,
++    doc_id: DocumentId,
++    show_blame_for_line_in_statusline: Option<u32>,
++}
++
++impl helix_event::AsyncHook for BlameHandler {
++    type Event = BlameEvent;
++
++    fn handle_event(
++        &mut self,
++        event: Self::Event,
++        _timeout: Option<tokio::time::Instant>,
++    ) -> Option<tokio::time::Instant> {
++        self.doc_id = event.doc_id;
++        self.show_blame_for_line_in_statusline = event.line;
++        self.file_blame = Some(FileBlame::try_new(event.path));
++        Some(Instant::now() + Duration::from_millis(50))
++    }
++
++    fn finish_debounce(&mut self) {
++        let doc_id = self.doc_id;
++        let line_blame = self.show_blame_for_line_in_statusline;
++        let result = mem::take(&mut self.file_blame);
++        if let Some(result) = result {
++            tokio::spawn(async move {
++                job::dispatch(move |editor, _| {
++                    let Some(doc) = editor.document_mut(doc_id) else {
++                        return;
++                    };
++                    doc.file_blame = Some(result);
++                    if !editor.config().inline_blame.auto_fetch {
++                        if let Some(line) = line_blame {
++                            crate::commands::blame_line_impl(editor, doc_id, line);
++                        } else {
++                            editor.set_status("Blame for this file is now available")
++                        }
++                    }
++                })
++                .await;
++            });
++        }
++    }
++}
++
++pub(super) fn register_hooks(handlers: &Handlers) {
++    let tx = handlers.blame.clone();
++    register_hook!(move |event: &mut DocumentDidOpen<'_>| {
++        if event.editor.config().inline_blame.auto_fetch {
++            helix_event::send_blocking(
++                &tx,
++                BlameEvent {
++                    path: event.path.to_path_buf(),
++                    doc_id: event.doc,
++                    line: None,
++                },
++            );
++        }
++        Ok(())
++    });
++    let tx = handlers.blame.clone();
++    register_hook!(move |event: &mut EditorConfigDidChange<'_>| {
++        let has_enabled_inline_blame = !event.old_config.inline_blame.auto_fetch
++            && event.editor.config().inline_blame.auto_fetch;
++
++        if has_enabled_inline_blame {
++            // request blame for all documents, since any of them could have
++            // outdated blame
++            for doc in event.editor.documents() {
++                if let Some(path) = doc.path() {
++                    helix_event::send_blocking(
++                        &tx,
++                        BlameEvent {
++                            path: path.to_path_buf(),
++                            doc_id: doc.id(),
++                            line: None,
++                        },
++                    );
++                }
++            }
++        }
++        Ok(())
++    });
++}
+diff --git a/helix-term/src/keymap/default.rs b/helix-term/src/keymap/default.rs
+index 119160f54..88835fdef 100644
+--- a/helix-term/src/keymap/default.rs
++++ b/helix-term/src/keymap/default.rs
+@@ -303,6 +303,7 @@ pub fn default() -> HashMap<Mode, KeyTrie> {
+             "C" => toggle_block_comments,
+             "A-c" => toggle_line_comments,
+             "?" => command_palette,
++            "B" => blame_line,
+         },
+         "z" => { "View"
+             "z" | "c" => align_view_center,
+diff --git a/helix-term/src/ui/document.rs b/helix-term/src/ui/document.rs
+index 524d829c4..2d2d77b32 100644
+--- a/helix-term/src/ui/document.rs
++++ b/helix-term/src/ui/document.rs
+@@ -25,6 +25,8 @@ pub struct LinePos {
+     pub doc_line: usize,
+     /// Vertical offset from the top of the inner view area
+     pub visual_line: u16,
++    /// The given visual line is the last visual line of the document line
++    pub is_last_visual_line: bool,
+ }
+ 
+ #[allow(clippy::too_many_arguments)]
+@@ -85,6 +87,7 @@ pub fn render_text(
+         first_visual_line: false,
+         doc_line: usize::MAX,
+         visual_line: u16::MAX,
++        is_last_visual_line: true,
+     };
+     let mut last_line_end = 0;
+     let mut is_in_indent_area = true;
+@@ -113,6 +116,10 @@ pub fn render_text(
+ 
+         // apply decorations before rendering a new line
+         if grapheme.visual_pos.row as u16 != last_line_pos.visual_line {
++            if last_line_pos.doc_line == grapheme.line_idx {
++                last_line_pos.is_last_visual_line = false;
++            }
++
+             // we initiate doc_line with usize::MAX because no file
+             // can reach that size (memory allocations are limited to isize::MAX)
+             // initially there is no "previous" line (so doc_line is set to usize::MAX)
+@@ -127,6 +134,7 @@ pub fn render_text(
+                 first_visual_line: grapheme.line_idx != last_line_pos.doc_line,
+                 doc_line: grapheme.line_idx,
+                 visual_line: grapheme.visual_pos.row as u16,
++                is_last_visual_line: true,
+             };
+             decorations.decorate_line(renderer, last_line_pos);
+         }
+diff --git a/helix-term/src/ui/editor.rs b/helix-term/src/ui/editor.rs
+index 045b62443..9ceff1d68 100644
+--- a/helix-term/src/ui/editor.rs
++++ b/helix-term/src/ui/editor.rs
+@@ -25,7 +25,7 @@
+ use helix_view::{
+     annotations::diagnostics::DiagnosticFilter,
+     document::{Mode, SCRATCH_BUFFER_NAME},
+-    editor::{CompleteAction, CursorShapeConfig},
++    editor::{CompleteAction, CursorShapeConfig, InlineBlameConfig, InlineBlameShow},
+     graphics::{Color, CursorKind, Modifier, Rect, Style},
+     input::{KeyEvent, MouseButton, MouseEvent, MouseEventKind},
+     keyboard::{KeyCode, KeyModifiers},
+@@ -35,6 +35,8 @@
+ 
+ use tui::{buffer::Buffer as Surface, text::Span};
+ 
++use super::text_decorations::blame::InlineBlame;
++
+ pub struct EditorView {
+     pub keymaps: Keymaps,
+     on_next_key: Option<(OnKeyCallback, OnKeyCallbackKind)>,
+@@ -172,6 +174,7 @@ pub fn render_view(
+         }
+ 
+         Self::render_rulers(editor, doc, view, inner, surface, theme);
++        Self::render_inline_blame(&config.inline_blame, doc, view, &mut decorations, theme);
+ 
+         let primary_cursor = doc
+             .selection(view.id)
+@@ -196,6 +199,7 @@ pub fn render_view(
+             inline_diagnostic_config,
+             config.end_of_line_diagnostics,
+         ));
++
+         render_document(
+             surface,
+             inner,
+@@ -237,6 +241,61 @@ pub fn render_view(
+         statusline::render(&mut context, statusline_area, surface)
+     }
+ 
++    fn render_inline_blame(
++        inline_blame: &InlineBlameConfig,
++        doc: &Document,
++        view: &View,
++        decorations: &mut DecorationManager,
++        theme: &Theme,
++    ) {
++        const INLINE_BLAME_SCOPE: &str = "ui.virtual.inline-blame";
++        let text = doc.text();
++        match inline_blame.show {
++            InlineBlameShow::Never => (),
++            InlineBlameShow::CursorLine => {
++                let cursor_line_idx = doc.cursor_line(view.id);
++
++                // do not render inline blame for empty lines to reduce visual noise
++                if text.line(cursor_line_idx) != doc.line_ending.as_str() {
++                    if let Ok(line_blame) =
++                        doc.line_blame(cursor_line_idx as u32, &inline_blame.format)
++                    {
++                        decorations.add_decoration(InlineBlame::new(
++                            theme.get(INLINE_BLAME_SCOPE),
++                            text_decorations::blame::LineBlame::OneLine((
++                                cursor_line_idx,
++                                line_blame,
++                            )),
++                        ));
++                    };
++                }
++            }
++            InlineBlameShow::AllLines => {
++                let mut blame_lines = vec![None; text.len_lines()];
++
++                let blame_for_all_lines = view.line_range(doc).filter_map(|line_idx| {
++                    // do not render inline blame for empty lines to reduce visual noise
++                    if text.line(line_idx) != doc.line_ending.as_str() {
++                        doc.line_blame(line_idx as u32, &inline_blame.format)
++                            .ok()
++                            .map(|blame| (line_idx, blame))
++                    } else {
++                        None
++                    }
++                });
++
++                for (line_idx, blame) in blame_for_all_lines {
++                    blame_lines[line_idx] = Some(blame);
++                }
++
++                decorations.add_decoration(InlineBlame::new(
++                    theme.get(INLINE_BLAME_SCOPE),
++                    text_decorations::blame::LineBlame::ManyLines(blame_lines),
++                ));
++            }
++        }
++    }
++
+     pub fn render_rulers(
+         editor: &Editor,
+         doc: &Document,
+diff --git a/helix-term/src/ui/text_decorations.rs b/helix-term/src/ui/text_decorations.rs
+index 931ea4311..f9d757ad8 100644
+--- a/helix-term/src/ui/text_decorations.rs
++++ b/helix-term/src/ui/text_decorations.rs
+@@ -8,6 +8,7 @@
+ 
+ pub use diagnostics::InlineDiagnostics;
+ 
++pub mod blame;
+ mod diagnostics;
+ 
+ /// Decorations are the primary mechanism for extending the text rendering.
+diff --git a/helix-term/src/ui/text_decorations/blame.rs b/helix-term/src/ui/text_decorations/blame.rs
+new file mode 100644
+index 000000000..bc048ef46
+--- /dev/null
++++ b/helix-term/src/ui/text_decorations/blame.rs
+@@ -0,0 +1,95 @@
++use helix_core::Position;
++
++use helix_view::theme::Style;
++
++use crate::ui::document::{LinePos, TextRenderer};
++use crate::ui::text_decorations::Decoration;
++
++pub enum LineBlame {
++    OneLine((usize, String)),
++    // Optimization: Use `Vec<T>` insted of `HashMap<usize, T>`
++    // because we know that the amount of lines visible in the viewport X3 cannot be a very large number,
++    // most likely up to a few hundred. In the absolute extreme case, maybe 5,000.
++    ManyLines(Vec<Option<String>>),
++}
++
++pub struct InlineBlame {
++    lines: LineBlame,
++    style: Style,
++}
++
++impl InlineBlame {
++    pub fn new(style: Style, lines: LineBlame) -> Self {
++        InlineBlame { style, lines }
++    }
++}
++
++impl Decoration for InlineBlame {
++    fn render_virt_lines(
++        &mut self,
++        renderer: &mut TextRenderer,
++        pos: LinePos,
++        virt_off: Position,
++    ) -> Position {
++        // Only render inline blame on the last visual line
++        // This prevents it being rendered multiple times per line, if the
++        // line is wrapping.
++        //
++        // We want to render it on the last visual line because unless the user
++        // has `soft-wrap.wrap-at-text-width` enabled, for a document line that wraps
++        // there will only be space to render inline blame at the last doc line
++        if !pos.is_last_visual_line {
++            return Position::new(0, 0);
++        }
++
++        let blame = match &self.lines {
++            LineBlame::OneLine((line, blame)) => {
++                if line == &pos.doc_line {
++                    // do not draw inline blame for lines that have no content in them
++                    blame
++                } else {
++                    return Position::new(0, 0);
++                }
++            }
++            LineBlame::ManyLines(lines) => {
++                if let Some(Some(blame)) = lines.get(pos.doc_line) {
++                    blame
++                } else {
++                    // do not draw inline blame for lines that have no content in them
++                    return Position::new(0, 0);
++                }
++            }
++        };
++
++        // where the line in the document ends
++        let end_of_line = virt_off.col as u16;
++        // length of line in the document
++        // draw the git blame 6 spaces after the end of the line
++        let start_drawing_at = (end_of_line - renderer.offset.col as u16) + 6;
++        let start_drawing_at_virtual = end_of_line + 6;
++
++        let amount_of_characters_drawn = renderer
++            .column_in_bounds(start_drawing_at_virtual as usize, 1)
++            .then(|| {
++                // the column where we stop drawing the blame
++                let stopped_drawing_at = renderer
++                    .set_string_truncated(
++                        renderer.viewport.x + start_drawing_at,
++                        pos.visual_line,
++                        blame,
++                        renderer.viewport.width.saturating_sub(start_drawing_at) as usize,
++                        |_| self.style,
++                        true,
++                        false,
++                    )
++                    .0;
++
++                let line_length = end_of_line - renderer.offset.col as u16;
++
++                stopped_drawing_at - line_length
++            })
++            .unwrap_or(0);
++
++        Position::new(0, amount_of_characters_drawn as usize)
++    }
++}
+diff --git a/helix-vcs/Cargo.toml b/helix-vcs/Cargo.toml
+index 7ed119820..ee450e5c8 100644
+--- a/helix-vcs/Cargo.toml
++++ b/helix-vcs/Cargo.toml
+@@ -12,12 +12,13 @@ homepage.workspace = true
+ [dependencies]
+ helix-core = { path = "../helix-core" }
+ helix-event = { path = "../helix-event" }
++helix-stdx = { path = "../helix-stdx" }
+ 
+ tokio = { version = "1", features = ["rt", "rt-multi-thread", "time", "sync", "parking_lot", "macros"] }
+ parking_lot.workspace = true
+ arc-swap = { version = "1.7.1" }
+ 
+-gix = { version = "0.72.1", features = ["attributes", "status"], default-features = false, optional = true }
++gix = { version = "0.72.1", features = ["attributes", "status", "blame", "parallel"], default-features = false, optional = true }
+ imara-diff =  "0.2.0"
+ anyhow = "1"
+ 
+diff --git a/helix-vcs/src/diff.rs b/helix-vcs/src/diff.rs
+index cc97ef851..505732581 100644
+--- a/helix-vcs/src/diff.rs
++++ b/helix-vcs/src/diff.rs
+@@ -79,6 +79,13 @@ pub fn load(&self) -> Diff {
+         }
+     }
+ 
++    pub fn try_load(&self) -> Option<Diff> {
++        Some(Diff {
++            diff: self.diff.try_read()?,
++            inverted: self.inverted,
++        })
++    }
++
+     /// Updates the document associated with this redraw handle
+     /// This function is only intended to be called from within the rendering loop
+     /// if called from elsewhere it may fail to acquire the render lock and panic
+diff --git a/helix-vcs/src/git.rs b/helix-vcs/src/git.rs
+index 1be71afac..d1a2b256a 100644
+--- a/helix-vcs/src/git.rs
++++ b/helix-vcs/src/git.rs
+@@ -1,11 +1,11 @@
+ use anyhow::{bail, Context, Result};
+ use arc_swap::ArcSwap;
++use gix::bstr::ByteSlice as _;
+ use gix::filter::plumbing::driver::apply::Delay;
+ use std::io::Read;
+ use std::path::Path;
+ use std::sync::Arc;
+ 
+-use gix::bstr::ByteSlice;
+ use gix::diff::Rewrites;
+ use gix::dir::entry::Status;
+ use gix::objs::tree::EntryKind;
+@@ -22,6 +22,8 @@
+ #[cfg(test)]
+ mod test;
+ 
++pub mod blame;
++
+ #[inline]
+ fn get_repo_dir(file: &Path) -> Result<&Path> {
+     file.parent().context("file has no parent directory")
+diff --git a/helix-vcs/src/git/blame.rs b/helix-vcs/src/git/blame.rs
+new file mode 100644
+index 000000000..63b52a36d
+--- /dev/null
++++ b/helix-vcs/src/git/blame.rs
+@@ -0,0 +1,630 @@
++use anyhow::Context as _;
++use anyhow::Result;
++use parking_lot::Mutex;
++use std::collections::HashMap;
++use std::path::PathBuf;
++
++use super::{get_repo_dir, open_repo};
++
++/// Allows us to save compute resources when requesting blame for the same line
++/// To go from an `ObjectId` (which represents a commit) to `LineBLame`, we have to perform some work.
++///
++/// With this struct, we only do this work once. Getting `LineBlame` for the same line for the 2nd and subsequent
++/// times is going to be free. This is important because we do this step on every render, in the main thread.
++#[derive(Debug)]
++enum LineBlameUnit {
++    /// The raw object id of the commit for a line.
++    /// It will take a bit of compute in order to obtain the `LineBlame` for it.
++    Unprocessed(gix::ObjectId),
++    /// Fully processed line blame information.
++    Processed(LineBlame),
++}
++
++/// Stores information about the blame for a file
++#[derive(Debug)]
++pub struct FileBlame {
++    /// A map from line numbers to blame for that line
++    blame: Mutex<HashMap<u32, LineBlameUnit>>,
++    /// The owning repository for this file's `ObjectId`s
++    repo: gix::ThreadSafeRepository,
++}
++
++impl FileBlame {
++    /// Get the blame information corresponding to a line in the file and diff for that line
++    #[inline]
++    pub fn blame_for_line(&self, line: u32, inserted_lines: u32, removed_lines: u32) -> LineBlame {
++        // Because gix_blame doesn't care about stuff that is not commited, we have to "normalize" the
++        // line number to account for uncommited code.
++        //
++        // You'll notice that blame_line can be 0 when, for instance we have:
++        // - removed 0 lines
++        // - added 10 lines
++        // - cursor_line is 8
++        //
++        // So when our cursor is on the 10th added line or earlier, blame_line will be 0. This means
++        // the blame will be incorrect. But that's fine, because when the cursor_line is on some hunk,
++        // we can show to the user nothing at all. This is detected in the editor
++        let blame_line = line.saturating_sub(inserted_lines) + removed_lines;
++        let repo = self.repo.to_thread_local();
++
++        let mut blame = self.blame.lock();
++        let line_blame_unit = blame.get_mut(&blame_line);
++
++        let commit = match line_blame_unit {
++            // Slow path: This is the first time we're trying to get the blame for this line
++            Some(LineBlameUnit::Unprocessed(object_id)) => repo.find_commit(*object_id).ok(),
++            // Fast path: We've already processed this line before so we don't need to
++            // search all of the repo's commits to compute the blame
++            Some(LineBlameUnit::Processed(line_blame)) => return line_blame.clone(),
++            // This line does not have any blame associated with it
++            None => None,
++        };
++
++        let message = commit.as_ref().and_then(|c| c.message().ok());
++        let author = commit.as_ref().and_then(|c| c.author().ok());
++        let time = author.and_then(|a| a.time.parse::<gix::date::Time>().ok());
++
++        let line_blame = LineBlame {
++            commit_hash: commit
++                .as_ref()
++                .and_then(|c| c.short_id().map(|id| id.to_string()).ok()),
++            author_name: author.map(|a| a.name.to_string()),
++            author_email: author.map(|a| a.email.to_string()),
++            commit_date: time.map(|time| time.format(gix::date::time::format::SHORT)),
++            commit_title: message.as_ref().map(|msg| msg.title.to_string()),
++            commit_body: message
++                .as_ref()
++                .and_then(|msg| msg.body.map(|body| body.to_string())),
++            time_stamp: time.map(|time| (time.seconds, time.offset)),
++            time_ago: None,
++        };
++
++        // we know that `line_blame_unit` here is not processed
++        if let Some(line_blame_unit) = line_blame_unit {
++            *line_blame_unit = LineBlameUnit::Processed(line_blame.clone());
++        };
++
++        line_blame
++    }
++
++    /// Compute blame for this file (expensive)
++    pub fn try_new(file: PathBuf) -> Result<Self> {
++        let thread_safe_repo =
++            open_repo(get_repo_dir(&file)?).context("Failed to open git repo")?;
++        let repo = thread_safe_repo.to_thread_local();
++        let head = repo.head()?.peel_to_commit_in_place()?.id;
++
++        let mut resource_cache = repo.diff_resource_cache_for_tree_diff()?;
++        let file_blame = gix::blame::file(
++            &repo.objects,
++            head,
++            None,
++            &mut resource_cache,
++            // NOTE: bstr always uses unix separators `/`, even on
++            // Windows which uses the `\` separator
++            &gix::path::to_unix_separators_on_windows(gix::path::try_into_bstr(
++                file.strip_prefix(
++                    repo.path()
++                        .parent()
++                        .context("Could not get the parent path of the repo")?,
++                )?,
++            )?),
++            gix::blame::Options::default(),
++        )?
++        .entries;
++
++        Ok(Self {
++            blame: Mutex::new(
++                file_blame
++                    .into_iter()
++                    .flat_map(|blame| {
++                        (blame.start_in_blamed_file..blame.start_in_blamed_file + blame.len.get())
++                            .map(move |i| (i, LineBlameUnit::Unprocessed(blame.commit_id)))
++                    })
++                    .collect(),
++            ),
++            repo: thread_safe_repo,
++        })
++    }
++}
++
++#[derive(Clone, PartialEq, PartialOrd, Ord, Eq, Debug)]
++pub struct LineBlame {
++    commit_hash: Option<String>,
++    author_name: Option<String>,
++    author_email: Option<String>,
++    commit_date: Option<String>,
++    commit_title: Option<String>,
++    commit_body: Option<String>,
++    /// Used to compute `time-ago`
++    time_stamp: Option<(i64, i32)>,
++    /// This field is the only one that needs to be re-computed every time
++    /// we request the `LineBlame`. It exists here for lifetime purposes, so we can return
++    /// `&str` from `Self::get_variable`.
++    ///
++    /// This should only be set from within and never initialized.
++    time_ago: Option<String>,
++}
++
++impl LineBlame {
++    /// Longest variable is: `time-ago` (and `message`)
++    // this is just to reduce allocation by a little bit by specifying the max size we would expect a
++    // variable to be up-front. This function is called every render.
++    const LONGEST_VARIABLE_LENGTH: usize = 7;
++
++    /// # Returns
++    ///
++    /// None => Invalid variable
++    /// Some(None) => Valid variable, but is empty
++    #[inline]
++    fn get_variable(&mut self, var: &str) -> Option<Option<&str>> {
++        Some(
++            // if adding new variables, update `Self::LONGEST_VARIABLE_LENGTH`
++            match var {
++                "commit" => &self.commit_hash,
++                "author" => &self.author_name,
++                "date" => &self.commit_date,
++                "title" => &self.commit_title,
++                "email" => &self.author_email,
++                "body" => &self.commit_body,
++                "time-ago" => {
++                    let time_ago = self.time_stamp.map(|(utc_seconds, timezone_offset)| {
++                        helix_stdx::time::format_relative_time(utc_seconds, timezone_offset)
++                    });
++                    self.time_ago = time_ago;
++                    &self.time_ago
++                }
++                _ => return None,
++            }
++            .as_deref(),
++        )
++    }
++
++    /// Parse the user's blame format
++    #[inline]
++    pub fn parse_format(&mut self, format: &str) -> String {
++        let mut line_blame = String::new();
++        let mut content_before_variable = String::with_capacity(format.len());
++
++        let mut chars = format.char_indices().peekable();
++        // in all cases, when any of the variables is empty we exclude the content before the variable
++        // However, if the variable is the first and it is empty - then exclude the content after the variable
++        let mut exclude_content_after_variable = false;
++        while let Some((ch_idx, ch)) = chars.next() {
++            if ch == '{' {
++                let mut variable = String::with_capacity(Self::LONGEST_VARIABLE_LENGTH);
++                // eat all characters until the end
++                while let Some((_, ch)) = chars.next_if(|(_, ch)| *ch != '}') {
++                    variable.push(ch);
++                }
++                // eat the '}' if it was found
++                let has_closing = chars.next().is_some();
++
++                #[derive(PartialEq, Eq, PartialOrd, Ord)]
++                enum Variable<'a> {
++                    Valid(&'a str),
++                    Invalid(&'a str),
++                    Empty,
++                }
++
++                let variable_value = self.get_variable(&variable).map_or_else(
++                    || {
++                        // Invalid variable. So just add whatever we parsed before.
++                        // The length of the variable, including opening and optionally
++                        // closing curly braces
++                        let variable_len = 1 + variable.len() + has_closing as usize;
++
++                        Variable::Invalid(&format[ch_idx..ch_idx + variable_len])
++                    },
++                    |s| s.map(Variable::Valid).unwrap_or(Variable::Empty),
++                );
++
++                match variable_value {
++                    Variable::Invalid(value) | Variable::Valid(value) => {
++                        if exclude_content_after_variable {
++                            // don't push anything.
++                            exclude_content_after_variable = false;
++                        } else {
++                            line_blame.push_str(&content_before_variable);
++                        }
++                        line_blame.push_str(value);
++                    }
++                    Variable::Empty => {
++                        if line_blame.is_empty() {
++                            // exclude content AFTER this variable (at next iteration of the loop,
++                            // we'll exclude the content before a valid variable)
++                            exclude_content_after_variable = true;
++                        } else {
++                            // exclude content BEFORE this variable
++                            // also just don't add anything.
++                        }
++                    }
++                }
++
++                // we've consumed the content before the variable so just get rid of it and
++                // make space for new
++                content_before_variable.drain(..);
++            } else {
++                content_before_variable.push(ch);
++            }
++        }
++
++        line_blame
++    }
++}
++
++#[cfg(test)]
++mod test {
++    use super::*;
++    use crate::git::test::create_commit_with_message;
++    use crate::git::test::empty_git_repo;
++    use std::fs::File;
++
++    /// describes how a line was modified
++    #[derive(PartialEq, PartialOrd, Ord, Eq)]
++    enum LineDiff {
++        /// this line is added
++        Insert,
++        /// this line is deleted
++        Delete,
++        /// no changes for this line
++        None,
++    }
++
++    /// checks if the first argument is `no_commit` or not
++    macro_rules! no_commit_flag {
++        (no_commit, $commit_msg:literal) => {
++            false
++        };
++        (, $commit_msg:literal) => {
++            true
++        };
++        ($any:tt, $commit_msg:literal) => {
++            compile_error!(concat!(
++                "expected `no_commit` or nothing for commit ",
++                $commit_msg
++            ))
++        };
++    }
++
++    /// checks if the first argument is `insert` or `delete`
++    macro_rules! line_diff_flag {
++        (insert, $commit_msg:literal, $line:expr) => {
++            LineDiff::Insert
++        };
++        (delete, $commit_msg:literal, $line:expr) => {
++            LineDiff::Delete
++        };
++        (, $commit_msg:literal, $line:expr) => {
++            LineDiff::None
++        };
++        ($any:tt, $commit_msg:literal, $line:expr) => {
++            compile_error!(concat!(
++                "expected `insert`, `delete` or nothing for commit ",
++                $commit_msg,
++                " line ",
++                $line
++            ))
++        };
++    }
++
++    /// This macro exists because we can't pass a `match` statement into `concat!`
++    /// we would like to exclude any lines that are `delete`
++    macro_rules! line_diff_flag_str {
++        (insert, $commit_msg:literal, $line:expr) => {
++            concat!($line, newline_literal!())
++        };
++        (delete, $commit_msg:literal, $line:expr) => {
++            ""
++        };
++        (, $commit_msg:literal, $line:expr) => {
++            concat!($line, newline_literal!())
++        };
++        ($any:tt, $commit_msg:literal, $line:expr) => {
++            compile_error!(concat!(
++                "expected `insert`, `delete` or nothing for commit ",
++                $commit_msg,
++                " line ",
++                $line
++            ))
++        };
++    }
++
++    #[cfg(windows)]
++    macro_rules! newline_literal {
++        () => {
++            "\r\n"
++        };
++    }
++    #[cfg(not(windows))]
++    macro_rules! newline_literal {
++        () => {
++            "\n"
++        };
++    }
++
++    /// Helper macro to create a history of the same file being modified.
++    macro_rules! assert_line_blame_progress {
++        (
++            $(
++                // a unique identifier for the commit, other commits must not use this
++                // If `no_commit` option is used, use the identifier of the previous commit
++                $commit_msg:literal
++                // must be `no_commit` if exists.
++                // If exists, this block won't be committed
++                $($no_commit:ident)? =>
++                $(
++                    // contents of a line in the file
++                    $line:literal
++                    // what commit identifier we are expecting for this line
++                    $($expected:literal)?
++                    // must be `insert` or `delete` if exists
++                    // if exists, must be used with `no_commit`
++                    // - `insert`: this line is added
++                    // - `delete`: this line is deleted
++                    $($line_diff:ident)?
++                ),+
++            );+
++            $(;)?
++        ) => {{
++            use std::fs::OpenOptions;
++            use std::io::Write;
++
++            let repo = empty_git_repo();
++            let file = repo.path().join("file.txt");
++            File::create(&file).expect("could not create file");
++
++            $(
++                let file_content = concat!(
++                    $(
++                        line_diff_flag_str!($($line_diff)?, $commit_msg, $line),
++                    )*
++                );
++                eprintln!("at commit {}:\n\n{file_content}", stringify!($commit_msg));
++
++                let mut f = OpenOptions::new()
++                    .write(true)
++                    .truncate(true)
++                    .open(&file)
++                    .unwrap();
++
++                f.write_all(file_content.as_bytes()).unwrap();
++
++                let should_commit = no_commit_flag!($($no_commit)?, $commit_msg);
++                if should_commit {
++                    create_commit_with_message(repo.path(), true, stringify!($commit_msg));
++                }
++
++                let mut line_number = 0;
++                let mut added_lines = 0;
++                let mut removed_lines = 0;
++
++                $(
++                    let line_diff_flag = line_diff_flag!($($line_diff)?, $commit_msg, $line);
++                    #[allow(unused_assignments)]
++                    match line_diff_flag {
++                        LineDiff::Insert => added_lines += 1,
++                        LineDiff::Delete => removed_lines += 1,
++                        LineDiff::None => ()
++                    }
++                    // completely skip lines that are marked as `delete`
++                    if line_diff_flag != LineDiff::Delete {
++                        // if there is no $expected, then we don't care what blame_line returns
++                        // because we won't show it to the user.
++                        $(
++                            let blame_result =
++                                FileBlame::try_new(file.clone())
++                                    .unwrap()
++                                    .blame_for_line(line_number, added_lines, removed_lines)
++                                    .commit_title;
++
++                            assert_eq!(
++                                blame_result,
++                                Some(concat!(stringify!($expected), newline_literal!()).to_owned()),
++                                "Blame mismatch\nat commit: {}\nat line: {}\nline contents: {}\nexpected commit: {}\nbut got commit: {}",
++                                $commit_msg,
++                                line_number,
++                                file_content
++                                    .lines()
++                                    .nth(line_number.try_into().unwrap())
++                                    .unwrap(),
++                                stringify!($expected),
++                                blame_result
++                                    .as_ref()
++                                    .map(|blame| blame.trim_end())
++                                    .unwrap_or("<no commit>")
++                            );
++                        )?
++                        #[allow(unused_assignments)]
++                        {
++                            line_number += 1;
++                        }
++                    }
++                )*
++            )*
++        }};
++    }
++
++    // For some reasons the CI is failing on windows with the message "Commits not found".
++    // The created temporary repository has no commits... But this is not an issue on unix.
++    // There is nothing platform-specific in this implementation. This is a problem only
++    // for tests on Windows.
++    // As such it should be fine to disable this test in Windows.
++    // As long as these tests pass on other platforms, on Windows it will work too.
++    #[cfg(not(windows))]
++    #[test]
++    pub fn blamed_lines() {
++        assert_line_blame_progress! {
++            // initialize
++            1 =>
++                "fn main() {" 1,
++                "" 1,
++                "}" 1;
++            // modifying a line works
++            2 =>
++                "fn main() {" 1,
++                "  one" 2,
++                "}" 1;
++            // inserting a line works
++            3 =>
++                "fn main() {" 1,
++                "  one" 2,
++                "  two" 3,
++                "}" 1;
++            // deleting a line works
++            4 =>
++                "fn main() {" 1,
++                "  two" 3,
++                "}" 1;
++            // when a line is inserted in-between the blame order is preserved
++            4 no_commit =>
++                "fn main() {" 1,
++                "  hello world" insert,
++                "  two" 3,
++                "}" 1;
++            // Having a bunch of random lines interspersed should not change which lines
++            // have blame for which commits
++            4 no_commit =>
++                "  six" insert,
++                "  three" insert,
++                "fn main() {" 1,
++                "  five" insert,
++                "  four" insert,
++                "  two" 3,
++                "  five" insert,
++                "  four" insert,
++                "}" 1,
++                "  five" insert,
++                "  four" insert;
++            // committing all of those insertions should recognize that they are
++            // from the current commit, while still keeping the information about
++            // previous commits
++            5 =>
++                "  six" 5,
++                "  three" 5,
++                "fn main() {" 1,
++                "  five" 5,
++                "  four" 5,
++                "  two" 3,
++                "  five" 5,
++                "  four" 5,
++                "}" 1,
++                "  five" 5,
++                "  four" 5;
++            // several lines deleted
++            5 no_commit =>
++                "  six" 5,
++                "  three" 5,
++                "fn main() {" delete,
++                "  five" delete,
++                "  four" delete,
++                "  two" delete,
++                "  five" delete,
++                "  four" 5,
++                "}" 1,
++                "  five" 5,
++                "  four" 5;
++            // committing the deleted changes
++            6 =>
++                "  six" 5,
++                "  three" 5,
++                "  four" 5,
++                "}" 1,
++                "  five" 5,
++                "  four" 5;
++            // mixing inserts with deletes
++            6 no_commit =>
++                "  six" delete,
++                "  2" insert,
++                "  three" delete,
++                "  four" 5,
++                "  1" insert,
++                "}" 1,
++                "]" insert,
++                "  five" delete,
++                "  four" 5;
++            // committing inserts and deletes
++            7 =>
++                "  2" 7,
++                "  four" 5,
++                "  1" 7,
++                "}" 1,
++                "]" 7,
++                "  four" 5;
++        };
++    }
++
++    fn bob() -> LineBlame {
++        LineBlame {
++            commit_hash: Some("f14ab1cf".to_owned()),
++            author_name: Some("Bob TheBuilder".to_owned()),
++            author_email: Some("bob@bob.com".to_owned()),
++            commit_date: Some("2028-01-10".to_owned()),
++            commit_title: Some("feat!: extend house".to_owned()),
++            commit_body: Some("BREAKING CHANGE: Removed door".to_owned()),
++            time_stamp: None,
++            time_ago: None,
++        }
++    }
++
++    #[test]
++    pub fn inline_blame_format_parser() {
++        let format = "{author}, {date} • {title} • {commit}";
++
++        assert_eq!(
++            bob().parse_format(format),
++            "Bob TheBuilder, 2028-01-10 • feat!: extend house • f14ab1cf".to_owned()
++        );
++        assert_eq!(
++            LineBlame {
++                author_name: None,
++                ..bob()
++            }
++            .parse_format(format),
++            "2028-01-10 • feat!: extend house • f14ab1cf".to_owned()
++        );
++        assert_eq!(
++            LineBlame {
++                commit_date: None,
++                ..bob()
++            }
++            .parse_format(format),
++            "Bob TheBuilder • feat!: extend house • f14ab1cf".to_owned()
++        );
++        assert_eq!(
++            LineBlame {
++                commit_title: None,
++                author_email: None,
++                ..bob()
++            }
++            .parse_format(format),
++            "Bob TheBuilder, 2028-01-10 • f14ab1cf".to_owned()
++        );
++        assert_eq!(
++            LineBlame {
++                commit_hash: None,
++                ..bob()
++            }
++            .parse_format(format),
++            "Bob TheBuilder, 2028-01-10 • feat!: extend house".to_owned()
++        );
++        assert_eq!(
++            LineBlame {
++                commit_date: None,
++                author_name: None,
++                ..bob()
++            }
++            .parse_format(format),
++            "feat!: extend house • f14ab1cf".to_owned()
++        );
++        assert_eq!(
++            LineBlame {
++                author_name: None,
++                commit_title: None,
++                ..bob()
++            }
++            .parse_format(format),
++            "2028-01-10 • f14ab1cf".to_owned()
++        );
++    }
++}
+diff --git a/helix-vcs/src/git/test.rs b/helix-vcs/src/git/test.rs
+index 164040f50..c758c80b0 100644
+--- a/helix-vcs/src/git/test.rs
++++ b/helix-vcs/src/git/test.rs
+@@ -4,11 +4,11 @@
+ 
+ use crate::git;
+ 
+-fn exec_git_cmd(args: &str, git_dir: &Path) {
++pub fn exec_git_cmd(args: &[&str], git_dir: &Path) {
+     let res = Command::new("git")
+         .arg("-C")
+         .arg(git_dir) // execute the git command in this directory
+-        .args(args.split_whitespace())
++        .args(args)
+         .env_remove("GIT_DIR")
+         .env_remove("GIT_ASKPASS")
+         .env_remove("SSH_ASKPASS")
+@@ -25,26 +25,30 @@ fn exec_git_cmd(args: &str, git_dir: &Path) {
+         .env("GIT_CONFIG_KEY_1", "init.defaultBranch")
+         .env("GIT_CONFIG_VALUE_1", "main")
+         .output()
+-        .unwrap_or_else(|_| panic!("`git {args}` failed"));
++        .unwrap_or_else(|_| panic!("`git {args:?}` failed"));
+     if !res.status.success() {
+         println!("{}", String::from_utf8_lossy(&res.stdout));
+         eprintln!("{}", String::from_utf8_lossy(&res.stderr));
+-        panic!("`git {args}` failed (see output above)")
++        panic!("`git {args:?}` failed (see output above)")
+     }
+ }
+ 
+-fn create_commit(repo: &Path, add_modified: bool) {
++pub fn create_commit(repo: &Path, add_modified: bool) {
++    create_commit_with_message(repo, add_modified, "commit")
++}
++
++pub fn create_commit_with_message(repo: &Path, add_modified: bool, message: &str) {
+     if add_modified {
+-        exec_git_cmd("add -A", repo);
++        exec_git_cmd(&["add", "-A"], repo);
+     }
+-    exec_git_cmd("commit -m message", repo);
++    exec_git_cmd(&["commit", "-m", message], repo);
+ }
+ 
+-fn empty_git_repo() -> TempDir {
++pub fn empty_git_repo() -> TempDir {
+     let tmp = tempfile::tempdir().expect("create temp dir for git testing");
+-    exec_git_cmd("init", tmp.path());
+-    exec_git_cmd("config user.email test@helix.org", tmp.path());
+-    exec_git_cmd("config user.name helix-test", tmp.path());
++    exec_git_cmd(&["init"], tmp.path());
++    exec_git_cmd(&["config", "user.email", "test@helix.org"], tmp.path());
++    exec_git_cmd(&["config", "user.name", "helix-test"], tmp.path());
+     tmp
+ }
+ 
+diff --git a/helix-vcs/src/lib.rs b/helix-vcs/src/lib.rs
+index 4c5f2036a..cac5ee939 100644
+--- a/helix-vcs/src/lib.rs
++++ b/helix-vcs/src/lib.rs
+@@ -11,6 +11,7 @@
+ 
+ #[cfg(feature = "git")]
+ mod git;
++pub use git::blame::FileBlame;
+ 
+ mod diff;
+ 
+@@ -22,7 +23,7 @@
+ 
+ /// Contains all active diff providers. Diff providers are compiled in via features. Currently
+ /// only `git` is supported.
+-#[derive(Clone)]
++#[derive(Clone, Debug)]
+ pub struct DiffProviderRegistry {
+     providers: Vec<DiffProvider>,
+ }
+@@ -94,8 +95,8 @@ fn default() -> Self {
+ /// cloning [DiffProviderRegistry] as `Clone` cannot be used in trait objects.
+ ///
+ /// `Copy` is simply to ensure the `clone()` call is the simplest it can be.
+-#[derive(Copy, Clone)]
+-enum DiffProvider {
++#[derive(Copy, Clone, Debug)]
++pub enum DiffProvider {
+     #[cfg(feature = "git")]
+     Git,
+     None,
+diff --git a/helix-view/src/document.rs b/helix-view/src/document.rs
+index 67d7a821e..a7c23dfa8 100644
+--- a/helix-view/src/document.rs
++++ b/helix-view/src/document.rs
+@@ -198,6 +198,10 @@ pub struct Document {
+ 
+     diff_handle: Option<DiffHandle>,
+     version_control_head: Option<Arc<ArcSwap<Box<str>>>>,
++    /// Contains blame information for each line in the file
++    /// We store the Result because when we access the blame manually we want to log the error
++    /// But if it is in the background we are just going to ignore the error
++    pub file_blame: Option<anyhow::Result<helix_vcs::FileBlame>>,
+ 
+     // when document was used for most-recent-used buffer picker
+     pub focused_at: std::time::Instant,
+@@ -213,6 +217,8 @@ pub struct Document {
+     pub color_swatch_controller: TaskController,
+     pub pull_diagnostic_controller: TaskController,
+ 
++    /// When fetching blame on-demand, if this field is `true` we request the blame for this document again
++    pub is_blame_potentially_out_of_date: bool,
+     // NOTE: this field should eventually go away - we should use the Editor's syn_loader instead
+     // of storing a copy on every doc. Then we can remove the surrounding `Arc` and use the
+     // `ArcSwap` directly.
+@@ -293,6 +299,16 @@ pub struct DocumentInlayHintsId {
+     pub last_line: usize,
+ }
+ 
++#[derive(Debug, thiserror::Error)]
++pub enum LineBlameError<'a> {
++    #[error("Not committed yet")]
++    NotCommittedYet,
++    #[error("Unable to get blame for line {0}: {1}")]
++    NoFileBlame(u32, &'a anyhow::Error),
++    #[error("The blame for this file is not ready yet. Try again in a few seconds")]
++    NotReadyYet,
++}
++
+ use std::{fmt, mem};
+ impl fmt::Debug for Document {
+     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+@@ -730,12 +746,22 @@ pub fn from(
+             jump_labels: HashMap::new(),
+             color_swatches: None,
+             color_swatch_controller: TaskController::new(),
++            file_blame: None,
++            is_blame_potentially_out_of_date: false,
+             syn_loader,
+             previous_diagnostic_id: None,
+             pull_diagnostic_controller: TaskController::new(),
+         }
+     }
+ 
++    pub fn should_request_full_file_blame(&mut self, auto_fetch: bool) -> bool {
++        if auto_fetch {
++            true
++        } else {
++            self.is_blame_potentially_out_of_date
++        }
++    }
++
+     pub fn default(
+         config: Arc<dyn DynAccess<Config>>,
+         syn_loader: Arc<ArcSwap<syntax::Loader>>,
+@@ -1347,6 +1373,13 @@ pub fn origin(&self) -> Range {
+         Range::new(0, 1).grapheme_aligned(self.text().slice(..))
+     }
+ 
++    /// Get the line of cursor for the primary selection
++    pub fn cursor_line(&self, view_id: ViewId) -> usize {
++        let text = self.text();
++        let selection = self.selection(view_id);
++        text.char_to_line(selection.primary().cursor(text.slice(..)))
++    }
++
+     /// Reset the view's selection on this document to the
+     /// [origin](Document::origin) cursor.
+     pub fn reset_selection(&mut self, view_id: ViewId) {
+@@ -1578,6 +1611,60 @@ pub fn apply(&mut self, transaction: &Transaction, view_id: ViewId) -> bool {
+         self.apply_inner(transaction, view_id, true)
+     }
+ 
++    /// Get the line blame for this view
++    pub fn line_blame(&self, cursor_line: u32, format: &str) -> Result<String, LineBlameError> {
++        // how many lines were inserted and deleted before the cursor line
++        let (inserted_lines, deleted_lines) = self
++            .diff_handle()
++            .map_or(
++                // in theory there can be situations where we don't have the diff for a file
++                // but we have the blame. In this case, we can just act like there is no diff
++                Some((0, 0)),
++                |diff_handle| {
++                    // Compute the amount of lines inserted and deleted before the `line`
++                    // This information is needed to accurately transform the state of the
++                    // file in the file system into what gix::blame knows about (gix::blame only
++                    // knows about commit history, it does not know about uncommitted changes)
++                    diff_handle
++                        .try_load()?
++                        .hunks_intersecting_line_ranges(std::iter::once((0, cursor_line as usize)))
++                        .try_fold(
++                            (0, 0),
++                            |(total_inserted_lines, total_deleted_lines), hunk| {
++                                // check if the line intersects the hunk's `after` (which represents
++                                // inserted lines)
++                                (hunk.after.start > cursor_line || hunk.after.end <= cursor_line)
++                                    .then_some((
++                                        total_inserted_lines + (hunk.after.end - hunk.after.start),
++                                        total_deleted_lines + (hunk.before.end - hunk.before.start),
++                                    ))
++                            },
++                        )
++                },
++            )
++            .ok_or(LineBlameError::NotCommittedYet)?;
++
++        let file_blame = match &self.file_blame {
++            None => return Err(LineBlameError::NotReadyYet),
++            Some(result) => match result {
++                Err(err) => {
++                    return Err(LineBlameError::NoFileBlame(
++                        // convert 0-based line into 1-based line
++                        cursor_line.saturating_add(1),
++                        err,
++                    ));
++                }
++                Ok(file_blame) => file_blame,
++            },
++        };
++
++        let line_blame = file_blame
++            .blame_for_line(cursor_line, inserted_lines, deleted_lines)
++            .parse_format(format);
++
++        Ok(line_blame)
++    }
++
+     /// Apply a [`Transaction`] to the [`Document`] to change its text
+     /// without notifying the language servers. This is useful for temporary transactions
+     /// that must not influence the server.
+diff --git a/helix-view/src/editor.rs b/helix-view/src/editor.rs
+index 7bde9d49e..853fc6a27 100644
+--- a/helix-view/src/editor.rs
++++ b/helix-view/src/editor.rs
+@@ -174,6 +174,40 @@ fn default() -> Self {
+     }
+ }
+ 
++#[derive(Debug, Copy, Clone, PartialEq, Eq, Serialize, Deserialize)]
++#[serde(rename_all = "kebab-case")]
++pub enum InlineBlameShow {
++    /// Do not show inline blame, and do not request it in the background
++    ///
++    /// When manually requesting the inline blame, it may take several seconds to appear.
++    Never,
++    /// Show the inline blame on the cursor line
++    CursorLine,
++    /// Show the inline blame on every other line
++    AllLines,
++}
++
++#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
++#[serde(rename_all = "kebab-case", default, deny_unknown_fields)]
++pub struct InlineBlameConfig {
++    /// How to show the inline blame
++    pub show: InlineBlameShow,
++    /// Whether the inline blame should be fetched in the background
++    pub auto_fetch: bool,
++    /// How the inline blame should look like and the information it includes
++    pub format: String,
++}
++
++impl Default for InlineBlameConfig {
++    fn default() -> Self {
++        Self {
++            show: InlineBlameShow::Never,
++            format: "{author}, {time-ago} • {title} • {commit}".to_owned(),
++            auto_fetch: false,
++        }
++    }
++}
++
+ #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+ #[serde(rename_all = "kebab-case", default, deny_unknown_fields)]
+ pub struct FilePickerConfig {
+@@ -381,6 +415,8 @@ pub struct Config {
+     pub editor_config: bool,
+     /// Whether to render rainbow colors for matching brackets. Defaults to `false`.
+     pub rainbow_brackets: bool,
++    /// Inline blame allows showing the latest commit that affected the line the cursor is on as virtual text
++    pub inline_blame: InlineBlameConfig,
+ }
+ 
+ #[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Eq, PartialOrd, Ord)]
+@@ -1065,6 +1101,7 @@ fn default() -> Self {
+             inline_diagnostics: InlineDiagnosticsConfig::default(),
+             end_of_line_diagnostics: DiagnosticFilter::Enable(Severity::Hint),
+             clipboard_provider: ClipboardProvider::default(),
++            inline_blame: InlineBlameConfig::default(),
+             editor_config: true,
+             rainbow_brackets: false,
+         }
+@@ -1846,11 +1883,13 @@ pub fn open(&mut self, path: &Path, action: Action) -> Result<DocumentId, Docume
+             doc.set_version_control_head(self.diff_providers.get_current_head_name(&path));
+ 
+             let id = self.new_document(doc);
++
+             self.launch_language_servers(id);
+ 
+             helix_event::dispatch(DocumentDidOpen {
+                 editor: self,
+                 doc: id,
++                path: &path,
+             });
+ 
+             id
+diff --git a/helix-view/src/events.rs b/helix-view/src/events.rs
+index 0435e6a47..4b28c61ff 100644
+--- a/helix-view/src/events.rs
++++ b/helix-view/src/events.rs
+@@ -7,7 +7,8 @@
+ events! {
+     DocumentDidOpen<'a> {
+         editor: &'a mut Editor,
+-        doc: DocumentId
++        doc: DocumentId,
++        path: &'a std::path::PathBuf
+     }
+     DocumentDidChange<'a> {
+         doc: &'a mut Document,
+@@ -16,6 +17,10 @@
+         changes: &'a ChangeSet,
+         ghost_transaction: bool
+     }
++    EditorConfigDidChange<'a> {
++        old_config: &'a Config,
++        editor: &'a mut Editor
++    }
+     DocumentDidClose<'a> {
+         editor: &'a mut Editor,
+         doc: Document
+diff --git a/helix-view/src/handlers.rs b/helix-view/src/handlers.rs
+index 6f3ad1ed2..2436a82c8 100644
+--- a/helix-view/src/handlers.rs
++++ b/helix-view/src/handlers.rs
+@@ -17,6 +17,17 @@ pub enum AutoSaveEvent {
+     LeftInsertMode,
+ }
+ 
++#[derive(Debug)]
++pub struct BlameEvent {
++    /// The path for which we request blame
++    pub path: std::path::PathBuf,
++    /// Document for which the blame is requested
++    pub doc_id: DocumentId,
++    /// If this field is set, when we obtain the blame for the file we will
++    /// show blame for this line in the status line
++    pub line: Option<u32>,
++}
++
+ pub struct Handlers {
+     // only public because most of the actual implementation is in helix-term right now :/
+     pub completions: CompletionHandler,
+@@ -26,6 +37,7 @@ pub struct Handlers {
+     pub word_index: word_index::Handler,
+     pub pull_diagnostics: Sender<lsp::PullDiagnosticsEvent>,
+     pub pull_all_documents_diagnostics: Sender<lsp::PullAllDocumentsDiagnosticsEvent>,
++    pub blame: Sender<BlameEvent>,
+ }
+ 
+ impl Handlers {
+diff --git a/helix-view/src/view.rs b/helix-view/src/view.rs
+index aecf09a61..bf25a78b1 100644
+--- a/helix-view/src/view.rs
++++ b/helix-view/src/view.rs
+@@ -189,6 +189,18 @@ pub fn add_to_history(&mut self, id: DocumentId) {
+         self.docs_access_history.push(id);
+     }
+ 
++    /// The range of lines in the document that the view sees
++    pub fn line_range(&self, doc: &Document) -> std::ops::Range<usize> {
++        let text = doc.text();
++        let text_line_count = text.len_lines();
++        let first_line = text.char_to_line(doc.view_offset(self.id).anchor.min(text.len_chars()));
++        let last_line = first_line
++            .saturating_add(self.inner_height())
++            .min(text_line_count);
++
++        first_line..last_line
++    }
++
+     pub fn inner_area(&self, doc: &Document) -> Rect {
+         self.area.clip_left(self.gutter_offset(doc)).clip_bottom(1) // -1 for statusline
+     }
+-- 
+2.48.1
+
