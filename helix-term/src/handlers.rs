@@ -12,9 +12,11 @@ use crate::handlers::signature_help::SignatureHelpHandler;
 
 pub use helix_view::handlers::{word_index, Handlers};
 
+use self::blame::BlameHandler;
 use self::document_colors::DocumentColorsHandler;
 
 mod auto_save;
+pub mod blame;
 pub mod completion;
 pub mod diagnostics;
 mod document_colors;
@@ -31,6 +33,7 @@ pub fn setup(config: Arc<ArcSwap<Config>>) -> Handlers {
     let word_index = word_index::Handler::spawn();
     let pull_diagnostics = PullDiagnosticsHandler::new().spawn();
     let pull_all_documents_diagnostics = PullAllDocumentsDiagnosticHandler::new().spawn();
+    let blame = BlameHandler::default().spawn();
 
     let handlers = Handlers {
         completions: helix_view::handlers::completion::CompletionHandler::new(event_tx),
@@ -40,6 +43,7 @@ pub fn setup(config: Arc<ArcSwap<Config>>) -> Handlers {
         word_index,
         pull_diagnostics,
         pull_all_documents_diagnostics,
+        blame,
     };
 
     helix_view::handlers::register_hooks(&handlers);
@@ -49,5 +53,6 @@ pub fn setup(config: Arc<ArcSwap<Config>>) -> Handlers {
     diagnostics::register_hooks(&handlers);
     snippet::register_hooks(&handlers);
     document_colors::register_hooks(&handlers);
+    blame::register_hooks(&handlers);
     handlers
 }
